@@ -9,10 +9,16 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-typedef struct s_token_cmds {
-	char **args_words;
-	char pipe
-}
+typedef enum s_type {
+	
+
+}	t_type;
+
+typedef struct s_tokens {
+	t_type	token_type;
+	char	*input_word;
+	struct s_tokens	*next;
+}	t_tokens;
 
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	**ft_split(char const *s, char c);
