@@ -22,11 +22,11 @@ typedef enum s_type {
 
 
 
-typedef struct s_tokens {
+typedef struct s_token {
 	t_type	token_type;
-	char	*input_word;
-	struct s_tokens	*next;
-}	t_tokens;
+	char	*value;
+	struct s_token	*next;
+}	t_token;
 
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	**ft_split(char const *s, char c);
