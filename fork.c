@@ -31,38 +31,38 @@
 // }
 
 
-int main(void)
-{
+// int main(void)
+// {
 
-	char *input;
-	input = readline("minishell$ ");
-	char **args = ft_split(input, ' ');
+// 	char *input;
+// 	input = readline("minishell$ ");
+// 	char **args = ft_split(input, ' ');
 
-    pid_t   pid;
-    int     status;
-    // char    *argv[] = {"/bin/ls", "-la", NULL};
-    char    *envp[] = {NULL}; // empty env for now
+//     pid_t   pid;
+//     int     status;
+//     // char    *argv[] = {"/bin/ls", "-la", NULL};
+//     char    *envp[] = {NULL}; // empty env for now
 
-    pid = fork();
-    if (pid < 0)
-    {
-        perror("fork");
-        return (1);
-    }
-    if (pid == 0)
-    {
-		if (strcmp(args[0], "ls") == 0 || strcmp(args[0], "/bin/ls") == 0)
-		{
-			// Child: replace ourselves with /bin/ls
-			execve("/bin/ls", args, envp);
-			// execve only returns if it FAILED
-			perror("execve");
-			return (127);
-		}
-    }
-    // Parent: wait for ls to finish
-    waitpid(pid, &status, 0);
-    printf("ls exited with: %d\n", WEXITSTATUS(status));
-	free (input);
-    return (0);
-}
+//     pid = fork();
+//     if (pid < 0)
+//     {
+//         perror("fork");
+//         return (1);
+//     }
+//     if (pid == 0)
+//     {
+// 		if (strcmp(args[0], "ls") == 0 || strcmp(args[0], "/bin/ls") == 0)
+// 		{
+// 			// Child: replace ourselves with /bin/ls
+// 			execve("/bin/ls", args, envp);
+// 			// execve only returns if it FAILED
+// 			perror("execve");
+// 			return (127);
+// 		}
+//     }
+//     // Parent: wait for ls to finish
+//     waitpid(pid, &status, 0);
+//     printf("ls exited with: %d\n", WEXITSTATUS(status));
+// 	free (input);
+//     return (0);
+// }

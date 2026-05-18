@@ -10,9 +10,17 @@
 # include <readline/history.h>
 
 typedef enum s_type {
-	
-
+	Ty_WORD,
+	Ty_PIPE,
+	Ty_Single_Q,
+	Ty_Double_Q,
+	//redir_in ?
+	Ty_Redir_Out,
+	//what is heredoc
+	Ty_Append,
 }	t_type;
+
+
 
 typedef struct s_tokens {
 	t_type	token_type;

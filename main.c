@@ -1,16 +1,17 @@
-// #include "minishell.h"
+#include "minishell.h"
 
-// int	main(void)
-// {
-// 	while (1)
-// 	{
-// 		char *input;
+int	main(int argc, char **argv)
+{
+	while (1)
+	{
+		char *input;
 		
-// 		input = readline("minishell$ ");
+		input = readline("minishell$ ");
 		
-// 		char **args = ft_split(input, ' ');
-// 		printf("%s\n", input);
+		// char **args = ft_split(input, ' ');
 		
-// 		free(input);
-// 	}
-// }
+		// printf("%s\n", input);
+		
+		free(input);
+	}
+}
