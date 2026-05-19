@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 17:50:30 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/19 17:09:30 by walneama         ###   ########.fr       */
+/*   Updated: 2026/05/19 17:59:33 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,33 @@ char	*ft_read_word(const char *input, int *pos)
 		error_message("Error with malloc!!");
 	return (word);
 }
+
+char	*ft_read_quoted(const char *input, int *pos, char quote)
+{
+	int start;
+	int len;
+	char *q_word;
+
+	// empty quotes -> return empty string
+	if (input[++(*pos)] == quote)
+	{
+		(*pos)++;	
+		return (ft_strdup(""));
+	}
+	start = *pos;
+	while (input[*pos] && input[*pos] != quote)
+		(*pos)++;
+	// No closing quote -> error
+	if (input[*pos] == '\0')
+		error_message("Missing closing Quote!");
+	len = *pos - start;
+	(*pos)++;
+	q_word = ft_substr(input, start, len);
+	if (!q_word)
+		error_message("Error with malloc!!");
+	return (q_word);
+}
+
 
 void error_message(char *str)
 {
