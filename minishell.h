@@ -14,10 +14,10 @@ typedef enum s_type {
 	Ty_PIPE,
 	Ty_Single_Q,
 	Ty_Double_Q,
-	//redir_in ?
-	Ty_Redir_Out,
-	//what is heredoc
-	Ty_Append,
+	Ty_REDIRECT_IN,
+	Ty_REDIRECT_OUT,
+	Ty_HEREDOC,
+	Ty_APPEND,
 }	t_type;
 
 
@@ -32,4 +32,11 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	**ft_split(char const *s, char c);
 size_t	ft_strlen(const char *s);
 
+int		is_delimiter(char c);
+t_token	*make_token(t_type type, char *value);
+void	addback_token(t_token **head, t_token *new_token);
+char	*ft_read_word(const char *input, int *pos);
+char	*ft_read_quoted(const char *input, int *pos, char quote);
+void	error_message(char *str);
+t_token	*ft_read_redir(const char *input, int *pos);
 #endif

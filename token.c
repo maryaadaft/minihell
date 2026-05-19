@@ -6,13 +6,13 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 17:50:30 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/19 17:59:33 by walneama         ###   ########.fr       */
+/*   Updated: 2026/05/19 19:46:42 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*make_token(t_token_type type, char *value)
+t_token	*make_token(t_type type, char *value)
 {
 	// 1. Allocate
 	// 2. Fill valuee
@@ -21,7 +21,7 @@ t_token	*make_token(t_token_type type, char *value)
 	token = malloc(sizeof(t_token));
 	if (!token)
 		error_message("Error with malloc!");
-	token->type = type;
+	token->token_type = type;
 	token->value = value;
 	token->next = NULL;
 	return (token);
@@ -93,6 +93,30 @@ char	*ft_read_quoted(const char *input, int *pos, char quote)
 	return (q_word);
 }
 
+t_token	*ft_read_redir(const char *input, int *pos)
+{
+	if (input[*pos] == '<' && (input[*pos + 1]) == '<')
+	{
+		(*pos) += 2;	
+		return (make_token(Ty_HEREDOC, "<<"));
+	}
+	else if (input[*pos] == '<')
+	{
+		(*pos)++;
+		return (make_token(Ty_REDIRECT_IN, "<"));
+	}
+	else if (input[*pos] == '>' && input[*pos + 1] == '>')
+	{
+		(*pos) += 2;
+		return (make_token(Ty_APPEND, ">>"));
+	}
+	else if (input[*pos] == '>')
+	{
+		(*pos)++;
+		return (make_token(Ty_REDIRECT_OUT, ">"));
+	}
+	return (NULL);
+}
 
 void error_message(char *str)
 {
