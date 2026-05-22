@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 17:50:30 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/22 10:31:01 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/05/22 15:59:47 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,4 @@ t_token	*ft_read_redir(const char *input, int *pos)
 		return (make_token(Ty_REDIRECT_OUT, ">"));
 	}
 	return (NULL);
-}
-
-void error_message(char *str)
-{
-	write(2, str, ft_strlen(str));
-	exit(1);
 }

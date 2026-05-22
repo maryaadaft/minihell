@@ -20,8 +20,6 @@ typedef enum s_type {
 	Ty_APPEND,
 }	t_type;
 
-
-
 typedef struct s_token {
 	t_type	token_type;
 	char	*value;
@@ -38,8 +36,11 @@ void	addback_token(t_token **head, t_token *new_token);
 char	*ft_read_word(const char *input, int *pos);
 char	*ft_read_quoted(const char *input, int *pos, char quote);
 t_token	*ft_read_redir(const char *input, int *pos);
+t_token	*tokeniser(const char *input);
+t_token *create_next_token(const char *input, int *pos);
 
 int		is_delimiter(char c);
 void	error_message(char *str);
+void	ft_free_tokens(t_token **token_list);
 
 #endif
