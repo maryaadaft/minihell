@@ -43,4 +43,7 @@ int		is_delimiter(char c);
 void	error_message(char *str);
 void	ft_free_tokens(t_token **token_list);
 
+//DELETE LATER -- FOR TESTING ONLY !!!!!!
+void	test_print(char *input, t_token *tokenaya, int pos);
+
 #endif

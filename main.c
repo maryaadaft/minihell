@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/22 17:59:56 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/05/22 18:09:14 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,16 +107,18 @@ int	main(int argc, char **argv)
 		// }
 		// free(input);
 
-		tokenaya = tokeniser(input);
-		while (tokenaya)
-		{
-			create_next_token(input, &pos);
-			printf("token->type: %i\n", tokenaya->token_type);
-			// printf("token->value: %s\n", tokenaya->value);
-			printf("token->value ascii: %d\n", tokenaya->value[0]);
-			// printf("we are at character: %c and pos: %d\n", input[pos], pos);
-			tokenaya = tokenaya->next;
-		}
+		// tokenaya = tokeniser(input);
+		// while (tokenaya)
+		// {
+		// 	create_next_token(input, &pos);
+		// 	printf("token->type: %i\n", tokenaya->token_type);
+		// 	// printf("token->value: %s\n", tokenaya->value);
+		// 	printf("token->value ascii: %d\n", tokenaya->value[0]);
+		// 	// printf("we are at character: %c and pos: %d\n", input[pos], pos);
+		// 	tokenaya = tokenaya->next;
+		// }
+		test_print(input, tokenaya, pos);
+		
 		free(input);
 	}
 }
