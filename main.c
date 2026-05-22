@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/22 18:09:14 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/05/22 18:12:48 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,57 +66,6 @@ int	main(int argc, char **argv)
 		int pos;
 		pos = 0;
 
-		// word
-		// while (input[pos] != '\0')
-		// {
-		// 	if (!is_delimiter(input[pos]))
-		// 		tokenaya = make_token(Ty_WORD, ft_read_word(input, &pos));
-		// 	pos++;
-		// 	printf("token->type: %i\n", tokenaya->token_type);
-		// 	printf("token->value: %s\n", tokenaya->value);
-		// }
-
-		// double_Q
-		// while (input[pos] != '\0')
-		// {
-		// 	if (input[pos] == '"')
-		// 		tokenaya = make_token(Ty_Double_Q, ft_read_quoted(input, &pos, '"'));
-		// 	pos++;
-		// 	printf("token->type: %i\n", tokenaya->token_type);
-		// 	printf("token->value: %s\n", tokenaya->value);
-		// }
-
-		//single_Q
-		// while (input[pos] != '\0')
-		// {
-		// 	if (input[pos] == '\'')
-		// 		tokenaya = make_token(Ty_Single_Q, ft_read_quoted(input, &pos, '\''));
-		// 	pos++;
-		// 	printf("token->type: %i\n", tokenaya->token_type);
-		// 	printf("token->value: %s\n", tokenaya->value);
-		// }
-
-		// REDIRECT
-		// while (input[pos] != '\0')
-		// {
-		// 	if (input[pos] == '>' || input[pos] == '<')
-		// 		tokenaya = ft_read_redir(input, &pos);
-		// 	// no need to increment pos
-		// 	printf("token->type: %i\n", tokenaya->token_type);
-		// 	printf("token->value: %s\n", tokenaya->value);
-		// }
-		// free(input);
-
-		// tokenaya = tokeniser(input);
-		// while (tokenaya)
-		// {
-		// 	create_next_token(input, &pos);
-		// 	printf("token->type: %i\n", tokenaya->token_type);
-		// 	// printf("token->value: %s\n", tokenaya->value);
-		// 	printf("token->value ascii: %d\n", tokenaya->value[0]);
-		// 	// printf("we are at character: %c and pos: %d\n", input[pos], pos);
-		// 	tokenaya = tokenaya->next;
-		// }
 		test_print(input, tokenaya, pos);
 		
 		free(input);
