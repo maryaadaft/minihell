@@ -2,7 +2,7 @@ CC = cc
 
 CFLAGs = -Wall -Wextra -Werror
 
-SRCs = main.c fork.c mylib/ft_split.c mylib/ft_substr.c mylib/ft_strlen.c mylib/ft_strdup.c token.c
+SRCs = main.c fork.c mylib/ft_split.c mylib/ft_substr.c mylib/ft_strlen.c mylib/ft_strdup.c token.c token_utils.c
 
 OBJs = $(SRCs:.c=.o)
 

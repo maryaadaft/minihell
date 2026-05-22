@@ -30,13 +30,16 @@ typedef struct s_token {
 
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	**ft_split(char const *s, char c);
+char	*ft_strdup(const char *s1);
 size_t	ft_strlen(const char *s);
 
-int		is_delimiter(char c);
 t_token	*make_token(t_type type, char *value);
 void	addback_token(t_token **head, t_token *new_token);
 char	*ft_read_word(const char *input, int *pos);
 char	*ft_read_quoted(const char *input, int *pos, char quote);
-void	error_message(char *str);
 t_token	*ft_read_redir(const char *input, int *pos);
+
+int		is_delimiter(char c);
+void	error_message(char *str);
+
 #endif

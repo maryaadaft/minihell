@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 17:50:30 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/19 19:46:42 by walneama         ###   ########.fr       */
+/*   Updated: 2026/05/22 10:31:01 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,6 @@ void	addback_token(t_token **head, t_token *new_token)
 	while (temp->next != NULL)
 		temp = temp->next;
 	temp->next = new_token;
-}
-
-int is_delimiter(char c)
-{
-	return (c == ' ' || c == '\t' || c == '|' || c == '>' || c == '<');
 }
 
 char	*ft_read_word(const char *input, int *pos)
