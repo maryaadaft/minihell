@@ -26,6 +26,18 @@ typedef struct s_token {
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_redir {
+    t_type   type;
+    char            *file;      // filename or heredoc delimiter
+    struct s_redir  *next;
+}   t_redir;
+
+typedef struct s_cmd {
+	char **args;
+	t_redir	*redirs;
+	struct s_cmd *next;
+}	t_cmd;
+
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s1);
