@@ -4,6 +4,7 @@
 # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdint.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
@@ -42,6 +43,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s1);
 size_t	ft_strlen(const char *s);
+void	*ft_calloc(size_t count, size_t size);
 
 t_token	*make_token(t_type type, char *value);
 void	addback_token(t_token **head, t_token *new_token);
@@ -51,11 +53,16 @@ t_token	*ft_read_redir(const char *input, int *pos);
 t_token	*tokeniser(const char *input);
 t_token *create_next_token(const char *input, int *pos);
 
+t_cmd	*ft_parse_cmd(t_token **tok);
+char **ft_parse_args(t_token **tok);
+t_redir     *ft_parse_redir(t_token **tok);
+void	addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd);
+
 int		is_delimiter(char c);
 void	error_message(char *str);
 void	ft_free_tokens(t_token **token_list);
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
-void	test_print(char *input, t_token *tokenaya, int pos);
+void	test_print(char *input, t_token *tokenaya, t_cmd *cmd, int pos);
 
 #endif
