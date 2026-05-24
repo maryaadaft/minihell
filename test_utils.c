@@ -46,10 +46,10 @@ void	test_print(char *input, t_token *tokenaya, int pos)
 		tokenaya = tokeniser(input);
 		while (tokenaya)
 		{
-			create_next_token(input, &pos);
-			printf("token->type: %i\n", tokenaya->token_type);
-			// printf("token->value: %s\n", tokenaya->value);
-			printf("token->value ascii: %d\n", tokenaya->value[0]);
+			// create_next_token(input, &pos);
+			// printf("token->type: %i\n", tokenaya->token_type);
+			printf("token->value: %s\n", tokenaya->value);
+			// printf("token->value ascii: %d\n", tokenaya->value[0]);
 			// printf("we are at character: %c and pos: %d\n", input[pos], pos);
 			tokenaya = tokenaya->next;
 		}
