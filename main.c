@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/24 19:21:23 by walneama         ###   ########.fr       */
+/*   Updated: 2026/05/24 23:08:35 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,10 @@ int	main(int argc, char **argv)
 		t_token *tokenaya;
 		t_cmd *cmd;
 		
+		// use the code in test_utils to test!!
 		int pos;
 		pos = 0;
-
 		test_print(input, tokenaya, cmd, pos);
-		
 		free(input);
 	}
 }

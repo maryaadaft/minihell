@@ -6,12 +6,29 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 16:28:15 by walneama          #+#    #+#             */
-/*   Updated: 2026/05/24 19:52:07 by walneama         ###   ########.fr       */
+/*   Updated: 2026/05/24 23:01:04 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+t_cmd *ft_parse(t_token *tokens)
+{
+	t_cmd	*cmd_list;
+	t_cmd	*new_cmd;
+
+	cmd_list = NULL;
+	if (!tokens)
+		return (NULL); //FREE 
+	while (tokens)
+	{
+		new_cmd = ft_parse_cmd(&tokens);
+		if (!new_cmd)
+			return (NULL); //FREEEE
+		ft_addback_cmd(&cmd_list, new_cmd);
+	}
+	return (cmd_list);
+}
 t_cmd	*ft_parse_cmd(t_token **tok)
 {
 	t_cmd *cmd;
@@ -90,7 +107,7 @@ t_redir     *ft_parse_redir(t_token **tok)
 	return (redi);
 }
 
-void	addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd)
+void	ft_addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd)
 {
 	t_cmd *temp;
 	if (!next_cmd)
@@ -101,7 +118,7 @@ void	addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd)
     	return ;
 	}
 	temp = *cmd_head;
-	while(temp)
+	while(temp->next)
 		temp = temp->next;
 	temp->next = next_cmd;
 }

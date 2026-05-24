@@ -53,10 +53,11 @@ t_token	*ft_read_redir(const char *input, int *pos);
 t_token	*tokeniser(const char *input);
 t_token *create_next_token(const char *input, int *pos);
 
+t_cmd *ft_parse(t_token *tokens);
 t_cmd	*ft_parse_cmd(t_token **tok);
 char **ft_parse_args(t_token **tok);
 t_redir     *ft_parse_redir(t_token **tok);
-void	addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd);
+void	ft_addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd);
 
 int		is_delimiter(char c);
 void	error_message(char *str);
@@ -64,5 +65,8 @@ void	ft_free_tokens(t_token **token_list);
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
 void	test_print(char *input, t_token *tokenaya, t_cmd *cmd, int pos);
+void	print_tokens(t_token *tok);
+void	print_redirs(t_redir *redir);
+void	print_cmds(t_cmd *cmd);
 
 #endif
