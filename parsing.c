@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 16:28:15 by walneama          #+#    #+#             */
-/*   Updated: 2026/05/24 23:01:04 by walneama         ###   ########.fr       */
+/*   Updated: 2026/05/25 12:07:23 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_cmd	*ft_parse_cmd(t_token **tok)
 			if (!cmd->args)
 				return (NULL); //Freeeee WE MUST MUST MUST FREE
 		}
-		else if ((*tok)->token_type == Ty_REDIRECT_IN || (*tok)->token_type == Ty_REDIRECT_OUT  || (*tok)->token_type == Ty_HEREDOC  || (*tok)->token_type == Ty_APPEND)
+		else if ((*tok)->token_type == Ty_RE_IN || (*tok)->token_type == Ty_RE_OUT  || (*tok)->token_type == Ty_HEREDOC  || (*tok)->token_type == Ty_APPEND)
 		{
 			cmd->redirs = ft_parse_redir(tok);
 			if (!cmd->redirs)

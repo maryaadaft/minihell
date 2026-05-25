@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 17:50:30 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/22 18:10:00 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/05/25 12:07:50 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ t_token	*ft_read_redir(const char *input, int *pos)
 	else if (input[*pos] == '<')
 	{
 		(*pos)++;
-		return (make_token(Ty_REDIRECT_IN, "<"));
+		return (make_token(Ty_RE_IN, "<"));
 	}
 	else if (input[*pos] == '>' && input[*pos + 1] == '>')
 	{
@@ -108,7 +108,7 @@ t_token	*ft_read_redir(const char *input, int *pos)
 	else if (input[*pos] == '>')
 	{
 		(*pos)++;
-		return (make_token(Ty_REDIRECT_OUT, ">"));
+		return (make_token(Ty_RE_OUT, ">"));
 	}
 	return (NULL);
 }

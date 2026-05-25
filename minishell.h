@@ -15,8 +15,8 @@ typedef enum s_type {
 	Ty_PIPE,
 	Ty_Single_Q,
 	Ty_Double_Q,
-	Ty_REDIRECT_IN,
-	Ty_REDIRECT_OUT,
+	Ty_RE_IN,
+	Ty_RE_OUT,
 	Ty_HEREDOC,
 	Ty_APPEND,
 }	t_type;
