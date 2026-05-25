@@ -3,15 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 15:29:03 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/25 16:12:37 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/05/25 17:19:49 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	ft_is_redir(t_type	type)
+{
+	return (type == Ty_RE_IN || type == Ty_RE_OUT
+		|| type == 	Ty_HEREDOC || type == Ty_APPEND);
+}
 int	all_space(char *value)
 {
 	int i;
@@ -27,21 +32,31 @@ int	all_space(char *value)
 	return (1);
 }
 
-int	invalid_redirect(char *tokeneya)
-{
-	
-}
-
 int	check_syntax(t_token *tokenaya)
 {
+	if (!tokenaya)
+		return (0);
 	if (tokenaya->token_type == Ty_PIPE)
-		return(1); //free tokens
+		return (num_err_msg("minishell: syntax error near unexpected token `|'"));
 	while (tokenaya)
 	{
-		if(all_space(tokenaya->value))
-			return (1); //free tokenaya list that has spaces
-		else if (tokenaya->token_type == Ty_PIPE && tokenaya->next->token_type == Ty_PIPE)
-			num_err_msg("minishell: syntax error near unexpected token `||'");
-		else if (>< >><< <> <<>> >>> <<< <>|)
+		if (tokenaya->token_type == Ty_PIPE
+			&& !tokenaya->next)
+			return (num_err_msg("minishell: syntax error near unexpected token `|'"));
+		else if (tokenaya->token_type == Ty_PIPE
+			&& tokenaya->next->token_type == Ty_PIPE)
+			return (num_err_msg("minishell: syntax error near unexpected token `||'"));
+		else if (ft_is_redir(tokenaya->token_type)
+			&& (!tokenaya->next
+				|| tokenaya->next->token_type == Ty_PIPE
+				|| ft_is_redir(tokenaya->next->token_type)))
+			return (num_err_msg("minishell: syntax error near unexpected token"));
+		tokenaya = tokenaya->next;
 	}
+	return (0);
 }
+
+// int	invalid_redirect(char *tokeneya)
+// {
+	
+// }

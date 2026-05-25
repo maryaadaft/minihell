@@ -64,6 +64,8 @@ void	error_message(char *str, int exit_code);
 void	*null_err_msg(char *str);
 int		num_err_msg(char *str);
 void	ft_free_tokens(t_token **token_list);
+int		ft_is_redir(t_type type);
+int		check_syntax(t_token *tokenaya);
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
 // void	test_print(char *input);
