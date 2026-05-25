@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/24 23:08:35 by walneama         ###   ########.fr       */
+/*   Updated: 2026/05/25 13:59:43 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,22 +52,22 @@ int	main(int argc, char **argv)
 	while (1)
 	{
 		char *input;
+		t_token	*tokenaya;
+		t_cmd	*cmds;
 		printf("\033[32m");
 		input = readline("minishell$ ");
 		// printf("\033[0m");
 		
-		// char **args = ft_split(input, ' ');
-		// printf("%s\n", input);
 		
-		
-		// TESTING
-		t_token *tokenaya;
-		t_cmd *cmd;
-		
+		tokenaya = tokeniser(input);
+		printf("=== TOKENS ===\n");
+		print_tokens(tokenaya);
+		cmds = ft_parse(tokenaya);
+		printf("=== COMMANDS ===\n");
+		print_cmds(cmds);
+
 		// use the code in test_utils to test!!
-		int pos;
-		pos = 0;
-		test_print(input, tokenaya, cmd, pos);
+		// test_print(input);
 		free(input);
 	}
 }

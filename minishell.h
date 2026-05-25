@@ -60,11 +60,12 @@ t_redir     *ft_parse_redir(t_token **tok);
 void	ft_addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd);
 
 int		is_delimiter(char c);
-void	error_message(char *str);
+void	error_message(char *str, int exit_code);
+void	*null_err_msg(char *str);
 void	ft_free_tokens(t_token **token_list);
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
-void	test_print(char *input, t_token *tokenaya, t_cmd *cmd, int pos);
+// void	test_print(char *input);
 void	print_tokens(t_token *tok);
 void	print_redirs(t_redir *redir);
 void	print_cmds(t_cmd *cmd);

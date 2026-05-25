@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 17:50:30 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/25 12:07:50 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/05/25 14:21:51 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ t_token	*make_token(t_type type, char *value)
 	// 2. Fill valuee
 	// 3. Return
 	t_token *token;
-	token = malloc(sizeof(t_token));
+	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
-		error_message("Error with malloc!");
+		error_message("Error with malloc!", 1); //should kill shell
 	token->token_type = type;
 	token->value = value;
 	token->next = NULL;
@@ -58,7 +58,7 @@ char	*ft_read_word(const char *input, int *pos)
 	len = *pos - start;
 	word = ft_substr(input, start, len);
 	if (!word)
-		error_message("Error with malloc!!");
+		error_message("Error with malloc!!", 1); //free past tokens ?
 	return (word);
 }
 
@@ -79,12 +79,12 @@ char	*ft_read_quoted(const char *input, int *pos, char quote)
 		(*pos)++;
 	// No closing quote -> error
 	if (input[*pos] == '\0')
-		error_message("Missing closing Quote!");
+		null_err_msg ("Missing closing Quote!"); //should not kill the shell, return null and handle elsewhere
 	len = *pos - start;
 	(*pos)++;
 	q_word = ft_substr(input, start, len);
 	if (!q_word)
-		error_message("Error with malloc!!");
+		error_message("Error with malloc!!", 1); //free past tokens?
 	return (q_word);
 }
 
@@ -93,22 +93,22 @@ t_token	*ft_read_redir(const char *input, int *pos)
 	if (input[*pos] == '<' && (input[*pos + 1]) == '<')
 	{
 		(*pos) += 2;	
-		return (make_token(Ty_HEREDOC, "<<"));
+		return (make_token(Ty_HEREDOC, ft_strdup("<<")));
 	}
 	else if (input[*pos] == '<')
 	{
 		(*pos)++;
-		return (make_token(Ty_RE_IN, "<"));
+		return (make_token(Ty_RE_IN, ft_strdup("<")));
 	}
 	else if (input[*pos] == '>' && input[*pos + 1] == '>')
 	{
 		(*pos) += 2;
-		return (make_token(Ty_APPEND, ">>"));
+		return (make_token(Ty_APPEND, ft_strdup(">>")));
 	}
 	else if (input[*pos] == '>')
 	{
 		(*pos)++;
-		return (make_token(Ty_RE_OUT, ">"));
+		return (make_token(Ty_RE_OUT, ft_strdup(">")));
 	}
 	return (NULL);
 }

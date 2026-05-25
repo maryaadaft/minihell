@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 16:28:15 by walneama          #+#    #+#             */
-/*   Updated: 2026/05/25 12:07:23 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/05/25 14:26:42 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_cmd	*ft_parse_cmd(t_token **tok)
 		return (NULL); //FREEEEEEE
 	while (*tok && (*tok)->token_type != Ty_PIPE)
 	{
-		if ((*tok)->token_type == Ty_WORD)
+		if ((*tok)->token_type == Ty_WORD || (*tok)->token_type == Ty_Single_Q || (*tok)->token_type == Ty_Double_Q)
 		{
 			cmd->args = ft_parse_args(tok);
 			if (!cmd->args)
@@ -62,12 +62,14 @@ t_cmd	*ft_parse_cmd(t_token **tok)
 char **ft_parse_args(t_token **tok)
 {
 	int	arg_count;
+	int	i;
 	t_token *head;
 	char **cmd;
 
 	arg_count = 0;
+	i = 0;
 	head = *tok;
-	while (head && head->token_type == Ty_WORD)
+	while (head && (head->token_type == Ty_WORD || head->token_type == Ty_Single_Q || head->token_type == Ty_Double_Q))
 	{
 		arg_count++;
 		head = head->next;
@@ -75,16 +77,15 @@ char **ft_parse_args(t_token **tok)
 	cmd = malloc(sizeof(char *) * (arg_count + 1));
 	if (!cmd)
 		return (NULL); //free
-	arg_count = 0;
-	while(*tok && (*tok)->token_type == Ty_WORD)
+	while(*tok && i < arg_count)
 	{
-		cmd[arg_count] = ft_strdup((*tok)->value);
-		if (!cmd[arg_count])
+		cmd[i] = ft_strdup((*tok)->value);
+		if (!cmd[i])
 			return (NULL); //free
 		*tok = (*tok)->next;
-		arg_count++; 
+		i++; 
 	}
-	cmd[arg_count] = NULL;
+	cmd[i] = NULL;
 	return (cmd);
 }
 
