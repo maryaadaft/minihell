@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 10:39:03 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/25 15:53:37 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/05/25 21:39:57 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,24 @@ void	*null_err_msg(char *str)
 //add free token();
 void	ft_free_tokens(t_token **token_list)
 {
-	if (!token_list || !*token_list)
-	return ;
 	t_token *head;
-	t_token *temp;
+	t_token *next;
 	
+	if	(!token_list || !*token_list)
+		return ;
+	head = *token_list;
 	while (head)
 	{
-		temp = head;
-		free(temp);
-		head = head->next;
+		next = head->next;
+		if (head->value)
+		{
+			free(head->value);
+			head->value = NULL;
+		}
+		free(head);
+		head = next;
 	}
-	free(head);
+	*token_list = NULL;
 }
 
 //incase of malloc failure
@@ -64,12 +70,62 @@ void	free_args(char **args)
 {
 	int w;
 
+	if (!args)
+		return ;
 	w = 0;
 	while (args[w])
 	{
 		free (args[w]);
+		args[w] = NULL;
 		w++;
 	}
-	free (args);
+	free(args);
+	args = NULL;
 	// error_message("Memory Freed and exited", 0);
+}
+
+void free_redir(t_redir **redir_list)
+{
+	t_redir *head;
+	t_redir *next;
+	
+	if (!redir_list || !*redir_list)
+		return ;
+	head = *redir_list;
+	while (head)
+	{
+		next = head->next;
+		if (head->file)
+		{
+			free(head->file);
+			head->file = NULL;
+		}
+		free(head);
+		head = next;
+	}
+	*redir_list = NULL;
+}
+
+void free_cmd(t_cmd **cmd_list)
+{
+	t_cmd *head;
+	t_cmd *next;
+	
+	if (!cmd_list || !*cmd_list)
+		return ;
+	head = *cmd_list;
+	while (head)
+	{
+		next = head->next;
+		if (head->args)
+		{
+			free_args(head->args);
+			head->args = NULL;
+		}
+		if (head->redirs)
+			free_redir(&head->redirs);
+		free(head);
+		head = next;
+	}
+	*cmd_list = NULL;
 }

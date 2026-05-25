@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 17:50:30 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/25 14:21:51 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/05/25 21:16:58 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*ft_read_word(const char *input, int *pos)
 	return (word);
 }
 
-char	*ft_read_quoted(const char *input, int *pos, char quote)
+char	*ft_read_quoted(const cfree(head);har *input, int *pos, char quote)
 {
 	int start;
 	int len;
