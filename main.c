@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/25 13:59:43 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/05/25 22:49:31 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_token	*tokeniser(const char *input)
 	t_token	*token;
 	int	pos;
 
+	if (!input)
+		return (NULL);
 	head = NULL;
 	pos = 0;
 	while (input[pos])
@@ -37,7 +39,7 @@ t_token	*tokeniser(const char *input)
 t_token *create_next_token(const char *input, int *pos)
 {
     if (input[*pos] == '|')
-        return ((*pos)++, make_token(Ty_PIPE, "|"));
+        return ((*pos)++, make_token(Ty_PIPE, ft_strdup("|")));
     if (input[*pos] == '<' || input[*pos] == '>')
         return (ft_read_redir(input, pos));
     if (input[*pos] == '\'')
@@ -53,21 +55,27 @@ int	main(int argc, char **argv)
 	{
 		char *input;
 		t_token	*tokenaya;
-		t_cmd	*cmds;
+		// t_cmd	*cmds;
 		printf("\033[32m");
 		input = readline("minishell$ ");
 		// printf("\033[0m");
+		if (!input)
+		{
+			rl_clear_history();  // ← add this before break
+			break ;
+		}
 		
 		
 		tokenaya = tokeniser(input);
 		printf("=== TOKENS ===\n");
 		print_tokens(tokenaya);
-		cmds = ft_parse(tokenaya);
-		printf("=== COMMANDS ===\n");
-		print_cmds(cmds);
+		// cmds = ft_parse(tokenaya);
+		// printf("=== COMMANDS ===\n");
+		// print_cmds(cmds);
 
 		// use the code in test_utils to test!!
 		// test_print(input);
+		ft_free_tokens(&tokenaya);
 		free(input);
 	}
 }

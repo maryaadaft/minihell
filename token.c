@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 17:50:30 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/25 21:16:58 by walneama         ###   ########.fr       */
+/*   Updated: 2026/05/25 22:48:56 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@ t_token	*make_token(t_type type, char *value)
 	// 2. Fill valuee
 	// 3. Return
 	t_token *token;
+	
+	if (!value)
+		return (NULL);
 	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
-		error_message("Error with malloc!", 1); //should kill shell
+		return (null_err_msg("minishell: malloc failure"));
 	token->token_type = type;
 	token->value = value;
-	token->next = NULL;
 	return (token);
 }
 
@@ -58,11 +60,12 @@ char	*ft_read_word(const char *input, int *pos)
 	len = *pos - start;
 	word = ft_substr(input, start, len);
 	if (!word)
-		error_message("Error with malloc!!", 1); //free past tokens ?
+		return (null_err_msg("minishell: malloc failure"));
+		// error_message("Error with malloc!!", 1); //free past tokens ?
 	return (word);
 }
 
-char	*ft_read_quoted(const cfree(head);har *input, int *pos, char quote)
+char	*ft_read_quoted(const char *input, int *pos, char quote)
 {
 	int start;
 	int len;
@@ -72,19 +75,24 @@ char	*ft_read_quoted(const cfree(head);har *input, int *pos, char quote)
 	if (input[++(*pos)] == quote)
 	{
 		(*pos)++;	
-		return (ft_strdup(""));
+		q_word = ft_strdup("");
+		if (!q_word)
+			return (null_err_msg("minishell: malloc failure"));
+		return (q_word);
 	}
 	start = *pos;
 	while (input[*pos] && input[*pos] != quote)
 		(*pos)++;
 	// No closing quote -> error
 	if (input[*pos] == '\0')
-		null_err_msg ("Missing closing Quote!"); //should not kill the shell, return null and handle elsewhere
+		return (null_err_msg("minishell: syntax error: unclosed quote"));
+		// null_err_msg ("Missing closing Quote!"); //should not kill the shell, return null and handle elsewhere
 	len = *pos - start;
 	(*pos)++;
 	q_word = ft_substr(input, start, len);
 	if (!q_word)
-		error_message("Error with malloc!!", 1); //free past tokens?
+		return (null_err_msg("minishell: malloc failure"));
+		// error_message("Error with malloc!!", 1); //free past tokens?
 	return (q_word);
 }
 
