@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 16:28:15 by walneama          #+#    #+#             */
-/*   Updated: 2026/05/25 14:26:42 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/05/25 15:54:44 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ t_cmd *ft_parse(t_token *tokens)
 	cmd_list = NULL;
 	if (!tokens)
 		return (NULL); //FREE 
+	// if (syntax_safe(tokens) == 1)
+		return (NULL); //free tokens
 	while (tokens)
 	{
 		new_cmd = ft_parse_cmd(&tokens);

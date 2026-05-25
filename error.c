@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 10:39:03 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/25 13:42:40 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/05/25 15:53:37 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,19 @@ void error_message(char *str, int exit_code)
 	exit(exit_code);
 }
 
+int num_err_msg(char *str)
+{
+	printf("\033[31m");
+	write(2, str, ft_strlen(str));
+	printf("\033[0m\n");
+	return(1);
+}
 //error fn for returning null
 void	*null_err_msg(char *str)
 {
-	printf("\033[31m%s\033[0m\n", str);
+	printf("\033[31m");   
+	write(2, str, ft_strlen(str));
+	printf("\033[0m\n");
 	return (NULL);
 }
 

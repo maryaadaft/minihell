@@ -62,6 +62,7 @@ void	ft_addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd);
 int		is_delimiter(char c);
 void	error_message(char *str, int exit_code);
 void	*null_err_msg(char *str);
+int		num_err_msg(char *str);
 void	ft_free_tokens(t_token **token_list);
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
