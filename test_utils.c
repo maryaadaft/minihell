@@ -23,12 +23,12 @@ void	print_cmds(t_cmd *cmd)
     while (cmd)
     {
         int i = 0;
-        while (cmd->args && cmd->args[i])  // ← is cmd->args NULL checked?
+        while (cmd->args && cmd->args[i])
         {
             printf("  arg[%d]: %s\n", i, cmd->args[i]);
             i++;
         }
         print_redirs(cmd->redirs);
-        cmd = cmd->next;                   // ← is cmd->next valid?
+        cmd = cmd->next;                 
     }
 }

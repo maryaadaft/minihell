@@ -6,13 +6,13 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 17:50:30 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/25 22:48:56 by walneama         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:12:53 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*make_token(t_type type, char *value)
+t_token	*make_token(t_shell	*shell, t_type type, char *value)
 {
 	// 1. Allocate
 	// 2. Fill valuee
@@ -23,7 +23,7 @@ t_token	*make_token(t_type type, char *value)
 		return (NULL);
 	token = ft_calloc(1, sizeof(t_token));
 	if (!token)
-		return (null_err_msg("minishell: malloc failure"));
+		malloc_exit(shell);
 	token->token_type = type;
 	token->value = value;
 	return (token);
@@ -48,7 +48,7 @@ void	addback_token(t_token **head, t_token *new_token)
 	temp->next = new_token;
 }
 
-char	*ft_read_word(const char *input, int *pos)
+char	*ft_read_word(t_shell	*shell, const char *input, int *pos)
 {
 	int start;
 	int len;
@@ -60,12 +60,12 @@ char	*ft_read_word(const char *input, int *pos)
 	len = *pos - start;
 	word = ft_substr(input, start, len);
 	if (!word)
-		return (null_err_msg("minishell: malloc failure"));
+		malloc_exit(shell);
 		// error_message("Error with malloc!!", 1); //free past tokens ?
 	return (word);
 }
 
-char	*ft_read_quoted(const char *input, int *pos, char quote)
+char	*ft_read_quoted(t_shell	*shell, const char *input, int *pos, char quote)
 {
 	int start;
 	int len;
@@ -77,7 +77,7 @@ char	*ft_read_quoted(const char *input, int *pos, char quote)
 		(*pos)++;	
 		q_word = ft_strdup("");
 		if (!q_word)
-			return (null_err_msg("minishell: malloc failure"));
+			malloc_exit(shell);
 		return (q_word);
 	}
 	start = *pos;
@@ -86,37 +86,35 @@ char	*ft_read_quoted(const char *input, int *pos, char quote)
 	// No closing quote -> error
 	if (input[*pos] == '\0')
 		return (null_err_msg("minishell: syntax error: unclosed quote"));
-		// null_err_msg ("Missing closing Quote!"); //should not kill the shell, return null and handle elsewhere
 	len = *pos - start;
 	(*pos)++;
 	q_word = ft_substr(input, start, len);
 	if (!q_word)
-		return (null_err_msg("minishell: malloc failure"));
-		// error_message("Error with malloc!!", 1); //free past tokens?
+		malloc_exit(shell);
 	return (q_word);
 }
 
-t_token	*ft_read_redir(const char *input, int *pos)
+t_token	*ft_read_redir(t_shell	*shell, const char *input, int *pos)
 {
 	if (input[*pos] == '<' && (input[*pos + 1]) == '<')
 	{
 		(*pos) += 2;	
-		return (make_token(Ty_HEREDOC, ft_strdup("<<")));
+		return (make_token(shell, Ty_HEREDOC, ft_strdup("<<")));
 	}
 	else if (input[*pos] == '<')
 	{
 		(*pos)++;
-		return (make_token(Ty_RE_IN, ft_strdup("<")));
+		return (make_token(shell, Ty_RE_IN, ft_strdup("<")));
 	}
 	else if (input[*pos] == '>' && input[*pos + 1] == '>')
 	{
 		(*pos) += 2;
-		return (make_token(Ty_APPEND, ft_strdup(">>")));
+		return (make_token(shell, Ty_APPEND, ft_strdup(">>")));
 	}
 	else if (input[*pos] == '>')
 	{
 		(*pos)++;
-		return (make_token(Ty_RE_OUT, ft_strdup(">")));
+		return (make_token(shell, Ty_RE_OUT, ft_strdup(">")));
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 10:39:03 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/25 21:39:57 by walneama         ###   ########.fr       */
+/*   Updated: 2026/05/26 16:19:26 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ void error_message(char *str, int exit_code)
 {
 	write(2, str, ft_strlen(str));
 	exit(exit_code);
+}
+
+void malloc_exit(t_shell *shell)
+{
+	write(2, "minishell: malloc failure\n", 26);
+	ft_free_tokens(shell->tokens);
+	free_cmd(shell->commands);
+	exit(1);
 }
 
 int num_err_msg(char *str)

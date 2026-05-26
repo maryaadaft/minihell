@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 16:28:15 by walneama          #+#    #+#             */
-/*   Updated: 2026/05/25 21:01:39 by walneama         ###   ########.fr       */
+/*   Updated: 2026/05/26 14:52:22 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,16 @@ t_cmd *ft_parse(t_token *tokens)
 	t_cmd	*new_cmd;
 
 	cmd_list = NULL;
-	if (!tokens)
-		return (NULL); //FREE 
-	if (check_syntax(tokens) == 1)
-		return (NULL); //free tokens
+	if (!tokens || check_syntax(tokens) == 1)
+		return (NULL);
 	while (tokens)
 	{
 		new_cmd = ft_parse_cmd(&tokens);
 		if (!new_cmd)
-			return (NULL); //FREEEE
+		{
+			free_cmd(&cmd_list);
+			return (NULL);
+		}
 		ft_addback_cmd(&cmd_list, new_cmd);
 	}
 	return (cmd_list);
@@ -37,14 +38,19 @@ t_cmd	*ft_parse_cmd(t_token **tok)
 
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
-		return (NULL); //FREEEEEEE
+		return (null_err_msg("minishell: malloc failure"));
 	while (*tok && (*tok)->token_type != Ty_PIPE)
 	{
-		if ((*tok)->token_type == Ty_WORD || (*tok)->token_type == Ty_Single_Q || (*tok)->token_type == Ty_Double_Q)
+		if ((*tok)->token_type == Ty_WORD 
+			|| (*tok)->token_type == Ty_Single_Q 
+			|| (*tok)->token_type == Ty_Double_Q)
 		{
 			cmd->args = ft_parse_args(tok);
 			if (!cmd->args)
-				return (NULL); //Freeeee WE MUST MUST MUST FREE
+			{
+				free(cmd);
+				return (NULL); //Freeeee
+			}
 		}
 		else if ((*tok)->token_type == Ty_RE_IN || (*tok)->token_type == Ty_RE_OUT  || (*tok)->token_type == Ty_HEREDOC  || (*tok)->token_type == Ty_APPEND)
 		{
@@ -63,27 +69,32 @@ t_cmd	*ft_parse_cmd(t_token **tok)
 
 char **ft_parse_args(t_token **tok)
 {
-	int	arg_count;
-	int	i;
-	t_token *head;
-	char **cmd;
+	int		i;
+	int		arg_count;
+	t_token	*head;
+	char	**cmd;
 
-	arg_count = 0;
 	i = 0;
+	arg_count = 0;
 	head = *tok;
-	while (head && (head->token_type == Ty_WORD || head->token_type == Ty_Single_Q || head->token_type == Ty_Double_Q))
+	while (head && (head->token_type == Ty_WORD
+			|| head->token_type == Ty_Single_Q 
+			|| head->token_type == Ty_Double_Q))
 	{
 		arg_count++;
 		head = head->next;
 	}
 	cmd = malloc(sizeof(char *) * (arg_count + 1));
 	if (!cmd)
-		return (NULL); //free
+		return (null_err_msg("minishell: malloc failure"));
 	while(*tok && i < arg_count)
 	{
 		cmd[i] = ft_strdup((*tok)->value);
 		if (!cmd[i])
-			return (NULL); //free
+		{
+			free_args(cmd);
+			return (null_err_msg("minishell: malloc failure"));
+		}
 		*tok = (*tok)->next;
 		i++; 
 	}
@@ -100,7 +111,7 @@ t_redir     *ft_parse_redir(t_token **tok)
 		return (NULL); //free ] = ft_strdup((*smth later; //error with malloc
 	redi->type = (*tok)->token_type;
 	*tok = (*tok)->next;
-	if (!*tok && (*tok)->token_type != Ty_WORD)
+	if (!*tok || (*tok)->token_type != Ty_WORD)
 		return (NULL); //handle frees later
 	redi->file = ft_strdup((*tok)->value);
 	if (!redi->file)
