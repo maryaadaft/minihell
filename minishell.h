@@ -10,7 +10,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-typedef enum s_type {
+typedef enum e_type {
 	Ty_WORD,
 	Ty_PIPE,
 	Ty_Single_Q,
@@ -29,7 +29,7 @@ typedef struct s_token {
 
 typedef struct s_redir {
     t_type   type;
-    char            *file;      // filename or heredoc delimiter
+    char            *file;
     struct s_redir  *next;
 }   t_redir;
 
@@ -64,11 +64,11 @@ t_token	*tokeniser(t_shell	*shell, const char *input);
 t_token *create_next_token(t_shell	*shell, const char *input, int *pos);
 
 //parsing fns
-t_cmd *ft_parse(t_token *tokens);
-t_cmd	*ft_parse_cmd(t_token **tok);
-char **ft_parse_args(t_token **tok);
-t_redir     *ft_parse_redir(t_token **tok);
-void	ft_addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd);
+t_cmd		*ft_parse(t_token *tokens);
+t_cmd		*ft_parse_cmd(t_token **tok);
+char		**ft_parse_args(t_token **tok);
+t_redir		*ft_parse_redir(t_token **tok);
+void		ft_addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd);
 
 int		is_delimiter(char c);
 void	error_message(char *str, int exit_code);
