@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 16:28:15 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/02 10:25:41 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/02 21:10:11 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,15 @@ t_cmd	*ft_parse_cmd(t_token **tok)
 	cmd = ft_calloc(1, sizeof(t_cmd));
 	if (!cmd)
 		return (NULL);
-
 	while (*tok && (*tok)->token_type != Ty_PIPE)
 	{
 		if (ft_is_word((*tok)->token_type))
 		{
-			ft_args_append(&cmd->args, (*tok)->value);
+			if (ft_args_append(&cmd->args, (*tok)->value) == -1)
+			{
+				free_cmd(&cmd); 
+				return (NULL);
+			}
 			*tok = (*tok)->next;
 		}
 		else if (ft_is_redir((*tok)->token_type))
@@ -54,7 +57,7 @@ t_cmd	*ft_parse_cmd(t_token **tok)
 			new_redir = ft_parse_redir(tok);
 			if (!new_redir)
 			{
-				free_cmd(&cmd);
+				free_cmd(&cmd); 
 				return (NULL);
 			}
 			ft_redir_addback(&cmd->redirs, new_redir);
@@ -70,7 +73,7 @@ t_cmd	*ft_parse_cmd(t_token **tok)
 	return (cmd);
 }
 
-void	ft_args_append(char ***args, char *new_arg)
+int	ft_args_append(char ***args, char *new_arg)
 {
 	char	**temp_arr;
 	int		i;
@@ -79,45 +82,48 @@ void	ft_args_append(char ***args, char *new_arg)
 	if (*args)
 		while ((*args)[i])
 			i++;
-	temp_arr = malloc(sizeof(char *) * (i + 2));
+	temp_arr = malloc(sizeof(char *) * (i + 2));   // This function owns temp_arr
 	if (!temp_arr)
-	{
-		free(temp_arr);
-		return ;
-	}
+		return (-1);
 	i = 0;
 	if (*args)
 	{
 		while ((*args)[i])
 		{
-			temp_arr[i] = (*args)[i];
+			temp_arr[i] = (*args)[i];   // We only moved pointers
 			i++;
 		}
 	}
 	temp_arr[i] = ft_strdup(new_arg);
 	if (!temp_arr[i])
-		return (free(temp_arr));
+		return (free(temp_arr), -1);
 	temp_arr[i + 1] = NULL;
 	free(*args);
 	*args = temp_arr;
+	return (0);
 }
 
 t_redir     *ft_parse_redir(t_token **tok)
 {
 	t_redir *redi;
 
-	redi = ft_calloc(1, sizeof(t_redir));
+	redi = ft_calloc(1, sizeof(t_redir)); // This function owns redi
 	if (!redi)
-		return (NULL); //free ] = ft_strdup((*smth later; //error with malloc
+		return (NULL);
 	redi->type = (*tok)->token_type;
 	*tok = (*tok)->next;
 	if (!*tok || (*tok)->token_type != Ty_WORD)
-		return (NULL); //handle frees later
+	{
+		free(redi);
+		return (NULL);
+	}
 	redi->file = ft_strdup((*tok)->value);
 	if (!redi->file)
-		return (NULL); //handle frees and error with malloc
+	{
+		free(redi);
+		return (NULL);
+	}
 	*tok = (*tok)->next;
-	redi->next = NULL;
 	return (redi);
 }
 

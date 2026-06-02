@@ -67,7 +67,7 @@ t_token *create_next_token(t_shell	*shell, const char *input, int *pos);
 t_cmd		*ft_parse(t_token *tokens);
 t_cmd		*ft_parse_cmd(t_token **tok);
 // char		**ft_parse_args(t_token **tok);
-void		ft_args_append(char ***args, char *new_arg);
+int			ft_args_append(char ***args, char *new_arg);
 t_redir		*ft_parse_redir(t_token **tok);
 void		ft_redir_addback(t_redir **head, t_redir *new_redir);
 void		ft_addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd);
