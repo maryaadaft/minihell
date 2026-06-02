@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 15:29:03 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/25 17:19:49 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/02 10:07:05 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@ int	ft_is_redir(t_type	type)
 {
 	return (type == Ty_RE_IN || type == Ty_RE_OUT
 		|| type == 	Ty_HEREDOC || type == Ty_APPEND);
+}
+
+int	ft_is_word(t_type	type)
+{
+	return (type == Ty_WORD || type == Ty_Single_Q || type == Ty_Double_Q);
+
 }
 int	all_space(char *value)
 {

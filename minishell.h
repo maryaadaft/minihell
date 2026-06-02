@@ -66,8 +66,10 @@ t_token *create_next_token(t_shell	*shell, const char *input, int *pos);
 //parsing fns
 t_cmd		*ft_parse(t_token *tokens);
 t_cmd		*ft_parse_cmd(t_token **tok);
-char		**ft_parse_args(t_token **tok);
+// char		**ft_parse_args(t_token **tok);
+void		ft_args_append(char ***args, char *new_arg);
 t_redir		*ft_parse_redir(t_token **tok);
+void		ft_redir_addback(t_redir **head, t_redir *new_redir);
 void		ft_addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd);
 
 int		is_delimiter(char c);
@@ -79,6 +81,7 @@ void	ft_free_tokens(t_token **token_list);
 void	free_cmd(t_cmd **cmd_list);
 void	free_args(char **args);
 int		ft_is_redir(t_type type);
+int		ft_is_word(t_type	type);
 int		check_syntax(t_token *tokenaya);
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
