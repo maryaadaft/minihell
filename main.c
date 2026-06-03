@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/05/26 16:46:57 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/03 14:43:00 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,14 @@ int	main(int argc, char **argv)
 			rl_clear_history();
 			break ;
 		}
+		if (*input)
+			add_history(input);
 		tokenaya = tokeniser(&shell, input);
 		if (!tokenaya)
+		{
 			free(input);
+			continue ;
+		}
 		printf("=== TOKENS ===\n");
 		print_tokens(tokenaya);
 		cmds = ft_parse(tokenaya);
@@ -78,6 +83,7 @@ int	main(int argc, char **argv)
 		{
 			ft_free_tokens(&tokenaya);
 			free(input);
+			continue ;
 		}
 		printf("=== COMMANDS ===\n");
 		print_cmds(cmds);
