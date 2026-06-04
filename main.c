@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/03 14:43:00 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/06/04 17:13:20 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,16 @@ t_token	*tokeniser(t_shell	*shell, const char *input)
 	pos = 0;
 	while (input[pos])
 	{
-		while (input[pos] == ' ' || input[pos] == '\t')
+		while (input[pos] == ' ' || input[pos] == '\t' || input[pos] == '\n')
 			pos++;
 		if (!input[pos])
 			break ;
 		token = create_next_token(shell, input, &pos);
 		if (!token)
-			return (ft_free_tokens(&head), NULL);
+		{
+			ft_free_tokens(&head);
+			return (NULL);
+		}
 		addback_token(&head, token);
 	}
 	return (head);
