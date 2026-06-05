@@ -62,6 +62,7 @@ char	*ft_read_quoted(t_shell	*shell, const char *input, int *pos, char quote);
 t_token	*ft_read_redir(t_shell	*shell, const char *input, int *pos);
 t_token	*tokeniser(t_shell	*shell, const char *input);
 t_token *create_next_token(t_shell	*shell, const char *input, int *pos);
+t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos);
 
 //parsing fns
 t_cmd		*ft_parse(t_token *tokens);
@@ -89,5 +90,7 @@ int		check_syntax(t_token *tokenaya);
 void	print_tokens(t_token *tok);
 void	print_redirs(t_redir *redir);
 void	print_cmds(t_cmd *cmd);
+
+// void	ft_execute(t_cmd *cmd, char **envp);
 
 #endif

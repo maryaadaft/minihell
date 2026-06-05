@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 15:29:03 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/04 17:40:47 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/05 13:39:07 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	check_syntax(t_token *tokenaya)
 			return (num_err_msg("minishell: syntax error near unexpected token `||'"));
 		else if (tokenaya->token_type == Ty_PIPE
 			&& ft_is_redir(tokenaya->next->token_type))
-            return (num_err_msg("minishell: syntax error near unexpected token `|'"));
+            return (num_err_msg("minishell: syntax error near unexpected token `|'")); // we still don't know if we need this or not!
 		else if (ft_is_redir(tokenaya->token_type)
 			&& (!tokenaya->next
 				|| tokenaya->next->token_type == Ty_PIPE
@@ -64,8 +64,3 @@ int	check_syntax(t_token *tokenaya)
 	}
 	return (0);
 }
-
-// int	invalid_redirect(char *tokeneya)
-// {
-	
-// }

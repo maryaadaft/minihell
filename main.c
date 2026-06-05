@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/04 17:13:20 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/05 15:53:44 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ t_token	*tokeniser(t_shell	*shell, const char *input)
 			pos++;
 		if (!input[pos])
 			break ;
-		token = create_next_token(shell, input, &pos);
+		if (input[pos] == '|' || input[pos] == '<' || input[pos] == '>')
+			token = create_next_token(shell, input, &pos);
+		else
+			token = ft_read_word_token(shell, input, &pos);
 		if (!token)
 		{
 			ft_free_tokens(&head);
@@ -37,6 +40,36 @@ t_token	*tokeniser(t_shell	*shell, const char *input)
 		addback_token(&head, token);
 	}
 	return (head);
+}
+
+t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
+{
+	char	*result;
+	char	*temp;
+	t_token	*chunk_token;
+
+	result = ft_strdup("");
+	if (!result)
+		malloc_exit(shell);
+	while (input[*pos] && input[*pos] != ' ' && input[*pos] != '\t'
+		&& input[*pos] != '\n' && input[*pos] != '|'
+		&& input[*pos] != '<' && input[*pos] != '>')
+	{
+		chunk_token = create_next_token(shell, input, pos);
+		if (!chunk_token)
+		{
+			free(result);
+			return (NULL);
+		}
+		temp = ft_strjoin(result, chunk_token->value);
+		free(result);
+		free(chunk_token->value);
+		free(chunk_token);
+		if (!temp)
+			malloc_exit(shell);
+		result = temp;
+	}
+	return (make_token(shell, Ty_WORD, result));
 }
 
 t_token *create_next_token(t_shell	*shell, const char *input, int *pos)
