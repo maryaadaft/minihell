@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:11:23 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/05 21:14:09 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/05 23:04:24 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,9 @@ void addback_env(t_env **env_list, t_env *new_env)
 	while (temp->next != NULL)
 		temp = temp->next;
 	temp->next = new_env;
+}
+
+int is_builtin(t_shell *shell)
+{
+	if (!ft_strncmp(shell))
 }
