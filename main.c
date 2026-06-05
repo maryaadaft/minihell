@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/05 15:53:44 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/05 15:56:00 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_token *create_next_token(t_shell	*shell, const char *input, int *pos)
     return (make_token(shell, Ty_WORD, ft_read_word(shell, input, pos)));
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **envp)
 {
 	t_shell shell;
 	t_token	*tokenaya;
