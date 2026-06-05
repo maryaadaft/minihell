@@ -32,3 +32,12 @@ void	print_cmds(t_cmd *cmd)
         cmd = cmd->next;                 
     }
 }
+
+void	print_env(t_env *env)
+{
+	while (env)
+	{
+		printf("key: %s | value: %s\n", env->key, env->value);
+		env = env->next;
+	}
+}

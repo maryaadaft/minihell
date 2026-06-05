@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/05 15:56:00 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/05 21:13:49 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,12 @@ int	main(int argc, char **argv, char **envp)
 	t_cmd	*cmds;
 	char *input;
 
+	(void)argc;
+	(void)argv;
 	shell.tokens = NULL;
 	shell.commands = NULL;
+	shell.env = NULL;
+	env_init(&shell, envp);	
 	while (1)
 	{
 		printf("\033[32m");
@@ -123,8 +127,10 @@ int	main(int argc, char **argv, char **envp)
 		}
 		printf("=== COMMANDS ===\n");
 		print_cmds(cmds);
+		
 		free_cmd(&cmds);
 		ft_free_tokens(&tokenaya);
 		free(input);
 	}
+	free_env(&shell.env);
 }

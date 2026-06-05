@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 21:35:18 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/01 21:35:48 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/05 20:10:42 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,46 @@ void free_cmd(t_cmd **cmd_list)
 		head = next;
 	}
 	*cmd_list = NULL;
+}
+
+void	free_env_node(t_env *node)
+{
+	if (node->key)
+		free(node->key);
+	if (node->value)
+		free(node->value);
+	free(node);
+}
+
+void	free_env(t_env **env_list)
+{
+	t_env	*head;
+	t_env	*next;
+
+	if (!env_list || !*env_list)
+		return ;
+
+	head = *env_list;
+
+	while (head)
+	{
+		next = head->next;
+
+		if (head->key)
+		{
+			free(head->key);
+			head->key = NULL;
+		}
+
+		if (head->value)
+		{
+			free(head->value);
+			head->value = NULL;
+		}
+
+		free(head);
+		head = next;
+	}
+
+	*env_list = NULL;
 }

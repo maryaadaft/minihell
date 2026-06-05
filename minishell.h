@@ -53,11 +53,14 @@ typedef	struct	s_shell {
 }	t_shell;
 
 //library fns
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	**ft_split(char const *s, char c);
-char	*ft_strdup(const char *s1);
-size_t	ft_strlen(const char *s);
 void	*ft_calloc(size_t count, size_t size);
+void	*ft_memset(void *b, int c, size_t len);
+char	**ft_split(char const *s, char c);
+char	*ft_strchr(const char *s, int c);
+char	*ft_strdup(const char *s1);
+char	*ft_strjoin(char const *s1, char const *s2);
+size_t	ft_strlen(const char *s);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 //token fns
 t_token	*make_token(t_shell	*shell, t_type type, char *value);
@@ -89,12 +92,20 @@ void	free_args(char **args);
 int		ft_is_redir(t_type type);
 int		ft_is_word(t_type	type);
 int		check_syntax(t_token *tokenaya);
+void	free_env_node(t_env *node);
+void	free_env(t_env **env_list);
+
+// Envp
+void env_init(t_shell *shell, char **envp);
+t_env *get_env(char *envp);
+void addback_env(t_env **env_list, t_env *new_env);
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
 // void	test_print(char *input);
 void	print_tokens(t_token *tok);
 void	print_redirs(t_redir *redir);
 void	print_cmds(t_cmd *cmd);
+void	print_env(t_env *env);
 
 // void	ft_execute(t_cmd *cmd, char **envp);
 
