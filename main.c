@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/05 21:13:49 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/06 19:42:39 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	main(int argc, char **argv, char **envp)
 	shell.tokens = NULL;
 	shell.commands = NULL;
 	shell.env = NULL;
-	env_init(&shell, envp);	
+	env_init(&shell, envp);
 	while (1)
 	{
 		printf("\033[32m");
@@ -116,8 +116,9 @@ int	main(int argc, char **argv, char **envp)
 			free(input);
 			continue ;
 		}
-		printf("=== TOKENS ===\n");
-		print_tokens(tokenaya);
+		shell.tokens = &tokenaya;
+		// printf("=== TOKENS ===\n");
+		// print_tokens(tokenaya);
 		cmds = ft_parse(tokenaya);
 		if (!cmds)
 		{
@@ -125,12 +126,20 @@ int	main(int argc, char **argv, char **envp)
 			free(input);
 			continue ;
 		}
+		shell.commands = &cmds;
 		printf("=== COMMANDS ===\n");
 		print_cmds(cmds);
 		
+		printf("======\n");
+		if (is_builtin(cmds->args[0]))
+			run_builtin(cmds, &shell);
+		else
+			ft_execute(cmds, envp);
 		free_cmd(&cmds);
 		ft_free_tokens(&tokenaya);
 		free(input);
 	}
+	printf("\n\n\n\n");
+	print_env(shell.env);
 	free_env(&shell.env);
 }

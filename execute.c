@@ -6,28 +6,28 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 15:53:11 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/05 15:53:35 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/06 18:14:03 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "minishell.h"
+#include "minishell.h"
 
-// void	ft_execute(t_cmd *cmd, char **envp)
-// {
-// 	pid_t	pid;
-// 	int		status;
+void	ft_execute(t_cmd *cmd, char **envp)
+{
+	pid_t	pid;
+	int		status;
 
-// 	if (!cmd || !cmd->args || !cmd->args[0])
-// 		return ;
-// 	pid = fork();
-// 	if (pid == 0)
-// 	{
-// 		execvp(cmd->args[0], cmd->args);
-// 		perror("execvp");
-// 		exit(1);
-// 	}
-// 	waitpid(pid, &status, 0);
-// }
+	if (!cmd || !cmd->args || !cmd->args[0])
+		return ;
+	pid = fork();
+	if (pid == 0)
+	{
+		execvp(cmd->args[0], cmd->args);
+		perror("execvp");
+		exit(1);
+	}
+	waitpid(pid, &status, 0);
+}
 
 // int	main(int argc, char **argv, char **envp)
 // {

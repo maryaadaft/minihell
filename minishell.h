@@ -9,6 +9,7 @@
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <limits.h>
 
 typedef enum e_type {
 	Ty_WORD,
@@ -62,6 +63,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+int		is_valid_number(char *str);
 
 //token fns
 t_token	*make_token(t_shell	*shell, t_type type, char *value);
@@ -101,10 +103,14 @@ void	env_init(t_shell *shell, char **envp);
 t_env	*get_env(char *envp);
 void	addback_env(t_env **env_list, t_env *new_env);
 int		is_builtin(char *cmd_name);
+void run_builtin(t_cmd *cmd, t_shell *shell);
 
 // Builtins
 void	ft_echo(t_cmd *cmd);
-
+void	ft_cd(t_cmd *cmd, t_shell **shell);
+char	*get_home(t_shell *shell);
+void	update_pwds(t_shell *shell, char *cwd, int	flag_path);
+void	ft_pwd(t_cmd *cmd);
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
 // void	test_print(char *input);
@@ -113,6 +119,6 @@ void	print_redirs(t_redir *redir);
 void	print_cmds(t_cmd *cmd);
 void	print_env(t_env *env);
 
-// void	ft_execute(t_cmd *cmd, char **envp);
+void	ft_execute(t_cmd *cmd, char **envp);
 
 #endif

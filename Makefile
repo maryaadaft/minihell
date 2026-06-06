@@ -2,7 +2,7 @@ CC = cc
 
 CFLAGs = -Wall -Wextra -Werror -g
 
-SRCs = main.c fork.c mylib/ft_split.c mylib/ft_substr.c mylib/ft_strlen.c mylib/ft_strdup.c token.c token_utils.c error.c test_utils.c parsing.c mylib/ft_calloc.c mylib/ft_strjoin.c mylib/ft_strchr.c mylib/ft_memset.c mylib/ft_strncmp.c  parsing_utils.c free.c env.c
+SRCs = main.c fork.c mylib/ft_split.c mylib/ft_substr.c mylib/ft_strlen.c mylib/ft_strdup.c token.c token_utils.c error.c test_utils.c parsing.c mylib/ft_calloc.c mylib/ft_strjoin.c mylib/ft_strchr.c mylib/ft_memset.c mylib/ft_strncmp.c  parsing_utils.c free.c env.c execute.c builtins/call_cd.c builtins/call_echo.c builtins/call_pwd.c builtins/call_exit.c mylib/is_valid_number.c
 
 OBJs = $(SRCs:.c=.o)
 
