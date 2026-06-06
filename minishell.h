@@ -97,9 +97,14 @@ void	free_env_node(t_env *node);
 void	free_env(t_env **env_list);
 
 // Envp
-void env_init(t_shell *shell, char **envp);
-t_env *get_env(char *envp);
-void addback_env(t_env **env_list, t_env *new_env);
+void	env_init(t_shell *shell, char **envp);
+t_env	*get_env(char *envp);
+void	addback_env(t_env **env_list, t_env *new_env);
+int		is_builtin(char *cmd_name);
+
+// Builtins
+void	ft_echo(t_cmd *cmd);
+
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
 // void	test_print(char *input);
