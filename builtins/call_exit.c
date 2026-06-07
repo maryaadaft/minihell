@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 19:10:41 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/06 21:08:45 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/07 22:01:32 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,54 @@ int	convert_to_int(const char *s)
 	return ((int)(n * sign));
 }
 
-void	ft_exit(t_shell *shell, t_cmd *cmds)
-{
-	int exit_num;
+// only exit -> print exit + last exit_status
+// EXIT + CODE -> PRINT EXIT + THAT CODE
+// exit + invalid code (string) -> 
+//      print exit + minishell: exit: wisswiss: numeric argument required + 	  set exit code to 2
+// exit + too many numbers ->
+//      print exit + minishell: exit: too many arguments  + doesn't exit 	+ 		set exit code = 1 
 
-	if (!is_valid_number(cmds->args[1]))
-		write(2, "invalid exit code, please input a number\n", 42);
-	exit_num = convert_to_int(cmds->args[1]);
-	if (!cmds->args[1] && ft_strncmp(cmds->args[0], "exit", 5) == 0)
+int	ft_exit(t_shell *shell, t_cmd *cmds)
+{
+	int exit_code;   // we have to intialize shell->exit_status in main
+
+	write(2, "exit\n", 5);
+	if (cmds->args[1] && cmds->args[2])
 	{
-		write(2, "exit\n", 1);
-		shell->exit_status = 1;
-		exit(shell->exit_status);
+		write(2, "minishell: exit: too many arguments\n", 36);
+		return (1);
 	}
-	else if (cmds->args[1])
+	if (!cmds->args[1])
+		exit_code = shell->exit_status;
+	else if (!is_valid_number(cmds->args[1]))
 	{
-		shell->exit_status = exit_num;
-		exit(shell->exit_status);
+		write(2, "minishell: exit: ", 17);
+		write(2, cmds->args[1], ft_strlen(cmds->args[1]));
+		write(2, ": numeric argument required\n", 28);
+		exit_code = 2;	
 	}
+	else
+		exit_code = convert_to_int(cmds->args[1]);
+ 	free_shell(shell);
+    exit(exit_code);
 }
+
+// void	ft_exit(t_shell *shell, t_cmd *cmds)
+// {
+// 	int exit_num;
+
+// 	if (!is_valid_number(cmds->args[1]))
+// 		write(2, "invalid exit code, please input a number\n", 42);
+// 	exit_num = convert_to_int(cmds->args[1]);
+// 	if (!cmds->args[1] && ft_strncmp(cmds->args[0], "exit", 5) == 0)
+// 	{
+// 		write(2, "exit\n", 1);
+// 		shell->exit_status = 1;
+// 		exit(shell->exit_status);
+// 	}
+// 	else if (cmds->args[1])
+// 	{
+// 		shell->exit_status = exit_num;
+// 		exit(shell->exit_status);
+// 	}
+// }

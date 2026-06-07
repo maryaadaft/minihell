@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 21:35:18 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/05 20:10:42 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/07 21:35:23 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,4 +140,13 @@ void	free_env(t_env **env_list)
 	}
 
 	*env_list = NULL;
+}
+
+void free_shell(t_shell *shell)
+{
+    free_env(&shell->env);
+    if (shell->commands)
+        free_cmd(shell->commands);
+    if (shell->tokens)
+        ft_free_tokens(shell->tokens);
 }

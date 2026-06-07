@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/06 19:42:39 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/07 21:58:04 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int	main(int argc, char **argv, char **envp)
 	shell.tokens = NULL;
 	shell.commands = NULL;
 	shell.env = NULL;
+	shell.exit_status = 0;
 	env_init(&shell, envp);
 	while (1)
 	{
@@ -139,7 +140,7 @@ int	main(int argc, char **argv, char **envp)
 		ft_free_tokens(&tokenaya);
 		free(input);
 	}
-	printf("\n\n\n\n");
-	print_env(shell.env);
+	// printf("\n\n\n\n");
+	// print_env(shell.env);
 	free_env(&shell.env);
 }

@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:11:23 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/06 19:35:48 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/07 23:05:55 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,32 @@ void addback_env(t_env **env_list, t_env *new_env)
 	temp->next = new_env;
 }
 
+// Basheer wrote this!!!
+void remove_env(t_env **env_list, const char *old_key)
+{
+	t_env	*temp;
+	t_env	*prev;
+
+	if (!old_key || !env_list || !*env_list)
+		return ;
+	prev = NULL;
+	temp = *env_list;
+	while (temp)
+	{
+		if (!ft_strncmp(temp->key, old_key, ft_strlen(old_key) + 1))
+		{
+			if (prev)
+				prev->next = temp->next;
+			else
+				*env_list = temp->next;
+			free_env_node(temp);
+			return ;
+		}
+		prev = temp;
+		temp = temp->next;
+	}
+}
+
 int is_builtin(char *cmd_name)
 {
     if (ft_strncmp(cmd_name, "echo", 5) == 0)
@@ -102,4 +128,10 @@ void run_builtin(t_cmd *cmd, t_shell *shell)
         ft_cd(cmd, &shell);
 	else if(ft_strncmp(cmd->args[0], "pwd", 4) == 0)
 		ft_pwd(cmd);
+	else if (ft_strncmp(cmd->args[0], "exit", 5) == 0)
+        ft_exit(shell, cmd);
+	else if (ft_strncmp(cmd->args[0], "env", 4) == 0)
+        ft_env(shell);
+	else if (ft_strncmp(cmd->args[0], "unset", 6) == 0)
+        ft_unset(cmd, shell);
 }

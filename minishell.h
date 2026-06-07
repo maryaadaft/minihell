@@ -97,13 +97,15 @@ int		ft_is_word(t_type	type);
 int		check_syntax(t_token *tokenaya);
 void	free_env_node(t_env *node);
 void	free_env(t_env **env_list);
+void	free_shell(t_shell *shell);
 
 // Envp
 void	env_init(t_shell *shell, char **envp);
 t_env	*get_env(char *envp);
 void	addback_env(t_env **env_list, t_env *new_env);
+void	remove_env(t_env **env_list, const char *old_key);
 int		is_builtin(char *cmd_name);
-void run_builtin(t_cmd *cmd, t_shell *shell);
+void	run_builtin(t_cmd *cmd, t_shell *shell);
 
 // Builtins
 void	ft_echo(t_cmd *cmd);
@@ -111,6 +113,9 @@ void	ft_cd(t_cmd *cmd, t_shell **shell);
 char	*get_home(t_shell *shell);
 void	update_pwds(t_shell *shell, char *cwd, int	flag_path);
 void	ft_pwd(t_cmd *cmd);
+int		ft_exit(t_shell *shell, t_cmd *cmds);
+void	ft_env(t_shell *shell);
+void	ft_unset(t_cmd *cmd, t_shell *shell);
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
 // void	test_print(char *input);
