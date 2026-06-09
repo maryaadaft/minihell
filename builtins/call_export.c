@@ -6,16 +6,16 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/09 22:29:40 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/09 22:34:10 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 // if export only -> we write all the env in specific format ----- DONE
-// if the key=value exist -> we update
-// if key=value doesn't exist -> we add a new entry
-// if key only without a value -> we add an entry with no value
+// if the key=value exist -> we update ----- DONE
+// if key=value doesn't exist -> we add a new entry ---- DONE
+// if key only without a value -> we add an entry with no value ---- DONE
 
 static void print_export(t_shell *shell)
 {

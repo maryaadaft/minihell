@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 19:10:41 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/07 22:01:32 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/09 22:34:17 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,23 +67,3 @@ int	ft_exit(t_shell *shell, t_cmd *cmds)
  	free_shell(shell);
     exit(exit_code);
 }
-
-// void	ft_exit(t_shell *shell, t_cmd *cmds)
-// {
-// 	int exit_num;
-
-// 	if (!is_valid_number(cmds->args[1]))
-// 		write(2, "invalid exit code, please input a number\n", 42);
-// 	exit_num = convert_to_int(cmds->args[1]);
-// 	if (!cmds->args[1] && ft_strncmp(cmds->args[0], "exit", 5) == 0)
-// 	{
-// 		write(2, "exit\n", 1);
-// 		shell->exit_status = 1;
-// 		exit(shell->exit_status);
-// 	}
-// 	else if (cmds->args[1])
-// 	{
-// 		shell->exit_status = exit_num;
-// 		exit(shell->exit_status);
-// 	}
-// }
