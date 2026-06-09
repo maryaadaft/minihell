@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/09 22:34:10 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/09 22:39:59 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,10 @@ void ft_export(t_cmd *cmd, t_shell *shell)
 	char *value;
 	int i;
 
-	i = 1;
-	if (!cmd->args[i])
+	i = 0;
+	if (!cmd->args[1])
 		return (print_export(shell));
-	while (cmd->args[i])
+	while (cmd->args[++i])
 	{
 		key = get_key(cmd->args[i]);
 		if (!is_valid_key(key))
@@ -105,6 +105,5 @@ void ft_export(t_cmd *cmd, t_shell *shell)
 			free(value);
 		}
 		free(key);
-		i++;
 	}
 }
