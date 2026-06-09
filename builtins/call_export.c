@@ -3,13 +3,108 @@
 /*                                                        :::      ::::::::   */
 /*   call_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/09 14:05:24 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/06/09 22:29:40 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
-t_env *ft_export()
+// if export only -> we write all the env in specific format ----- DONE
+// if the key=value exist -> we update
+// if key=value doesn't exist -> we add a new entry
+// if key only without a value -> we add an entry with no value
+
+static void print_export(t_shell *shell)
+{
+	t_env *temp;
+
+	temp = shell->env;
+	while (temp)
+	{
+		printf("declare -x %s=\"%s\"\n", temp->key, temp->value);
+		temp = temp->next;
+	}
+}
+
+static char *get_key(char *arg)
+{
+	int i;
+
+	i = 0;
+	while (arg[i] && arg[i] != '=')
+		i++;
+	return (ft_substr(arg, 0, i));
+}
+
+static char *get_value(char *arg)
+{
+	char *equal_sign;
+
+	equal_sign = ft_strchr(arg, '=');
+	if (!equal_sign)
+		return (ft_strdup(""));
+	return (ft_strdup(equal_sign + 1));
+}
+
+static void    update_env(t_env *node, char *value)
+{
+	if (node->value)
+		free(node->value);
+	node->value = ft_strdup(value);
+}
+
+static int is_valid_key(char *str)
+{
+    int i;
+
+    i = 0;
+    if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
+        return (0);
+    while (str[i] && str[i] != '=')
+    {
+        if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
+            return (0);
+        i++;
+    }
+    return (1);
+}
+
+static void	export_error_msg(char *arg)
+{
+	write(2, "minishell: export: '", 20);
+	write(2, arg, ft_strlen(arg));
+	write(2, "': not a valid identifier\n", 26);
+}
+
+void ft_export(t_cmd *cmd, t_shell *shell)
+{
+	t_env *node;
+	char *key;
+	char *value;
+	int i;
+
+	i = 1;
+	if (!cmd->args[i])
+		return (print_export(shell));
+	while (cmd->args[i])
+	{
+		key = get_key(cmd->args[i]);
+		if (!is_valid_key(key))
+			export_error_msg(cmd->args[i]);
+		else
+		{
+			value = get_value(cmd->args[i]);
+			node = find_env(shell, key);
+			if (node)
+				update_env(node, value);
+			else
+				addback_env(&shell->env, get_env(cmd->args[i]));
+			free(value);
+		}
+		free(key);
+		i++;
+	}
+}

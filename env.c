@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:11:23 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/07 23:05:55 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/09 22:29:49 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_env *get_env(char *envp)
 	char	*equal_sign;
 	
 	node = malloc(sizeof(t_env));
-	memset(node, 0, sizeof(t_env));
+	ft_memset(node, 0, sizeof(t_env));
 	if (!node)
 		return (NULL);
 	equal_sign = ft_strchr(envp, '=');
@@ -75,7 +75,21 @@ void addback_env(t_env **env_list, t_env *new_env)
 	temp->next = new_env;
 }
 
-// Basheer wrote this!!!
+t_env *find_env(t_shell *shell, char *target)
+{
+	t_env	*temp;
+	
+	temp = shell->env;
+	while (temp)
+	{
+		if (ft_strncmp(temp->key, target, (ft_strlen(target) + 1)) == 0)
+			return (temp);
+		temp = temp->next;
+	}
+	return (NULL);
+}
+
+// Claude wrote this!!!
 void remove_env(t_env **env_list, const char *old_key)
 {
 	t_env	*temp;
@@ -134,4 +148,6 @@ void run_builtin(t_cmd *cmd, t_shell *shell)
         ft_env(shell);
 	else if (ft_strncmp(cmd->args[0], "unset", 6) == 0)
         ft_unset(cmd, shell);
+	else if (ft_strncmp(cmd->args[0], "export", 7) == 0)
+        ft_export(cmd, shell);
 }

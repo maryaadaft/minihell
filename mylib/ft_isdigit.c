@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   call_unset.c                                       :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 22:17:39 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/09 17:04:54 by walneama         ###   ########.fr       */
+/*   Created: 2025/07/15 14:59:26 by walneama          #+#    #+#             */
+/*   Updated: 2026/06/09 22:22:26 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_unset(t_cmd *cmd, t_shell *shell)
+int	ft_isdigit(int c)
 {
-	int 		i;
-
-	i = 1;
-	while (cmd->args[i])
+	if (c >= '0' && c <= '9')
 	{
-		remove_env(&shell->env, cmd->args[i]);
-		i++;
-	}	
+		return (1);
+	}
+	return (0);
 }

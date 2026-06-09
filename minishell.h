@@ -104,6 +104,7 @@ void	env_init(t_shell *shell, char **envp);
 t_env	*get_env(char *envp);
 void	addback_env(t_env **env_list, t_env *new_env);
 void	remove_env(t_env **env_list, const char *old_key);
+t_env	*find_env(t_shell *shell, char *target);
 int		is_builtin(char *cmd_name);
 void	run_builtin(t_cmd *cmd, t_shell *shell);
 
@@ -116,6 +117,7 @@ void	ft_pwd(t_cmd *cmd);
 int		ft_exit(t_shell *shell, t_cmd *cmds);
 void	ft_env(t_shell *shell);
 void	ft_unset(t_cmd *cmd, t_shell *shell);
+void	ft_export(t_cmd *cmd, t_shell *shell);
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
 // void	test_print(char *input);

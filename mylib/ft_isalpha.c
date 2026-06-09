@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   call_unset.c                                       :+:      :+:    :+:   */
+/*   ft_isalpha.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 22:17:39 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/09 17:04:54 by walneama         ###   ########.fr       */
+/*   Created: 2025/07/15 14:10:49 by walneama          #+#    #+#             */
+/*   Updated: 2026/06/09 22:22:21 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_unset(t_cmd *cmd, t_shell *shell)
+int	ft_isalpha(int c)
 {
-	int 		i;
-
-	i = 1;
-	while (cmd->args[i])
+	if ((c >= 65 && c <= 90) || (c >= 97 && c <= 122))
 	{
-		remove_env(&shell->env, cmd->args[i]);
-		i++;
-	}	
+		return (1);
+	}
+	return (0);
 }
