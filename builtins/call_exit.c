@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 19:10:41 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/09 22:34:17 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/10 14:40:56 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,5 @@ int	ft_exit(t_shell *shell, t_cmd *cmds)
 	else
 		exit_code = convert_to_int(cmds->args[1]);
  	free_shell(shell);
-    exit(exit_code);
+	exit(exit_code);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_cd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 18:55:50 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/06 19:37:46 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/10 15:01:36 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void ft_cd(t_cmd *cmd, t_shell **shell)
 		printf("\n\nwe have an errrrroooorr!!!!\n\n");
 	if (chdir(path) == -1)
 	{
-		printf("error and free?\n");
+		// printf("error and free?\n");
+		perror("chdir");
 		return ;
 	}
 	getcwd(cwd, sizeof(cwd));
@@ -67,15 +68,16 @@ void	update_pwds(t_shell *shell, char *cwd, int	flag_path)
 		//old pwd is 0
 		if (flag_path == 0 && ft_strncmp(head_env->key, "OLDPWD", 7) == 0)
 		{
+			free(head_env->value); //need to free the old value before it breaks.
 			head_env->value = ft_strdup(cwd);
 			printf("\n oldpwd is :- %s\n", head_env->value);
 		}
 		else if (flag_path == 1 && ft_strncmp(head_env->key, "PWD", 4) == 0)
 		{
+			free(head_env->value); //need to free the old value before it breaks.
 			head_env->value = ft_strdup(cwd);
 			printf("\n pwd is :- %s\n", head_env->value);
 		}
 		head_env = head_env->next;
 	}
 }
-

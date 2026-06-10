@@ -37,7 +37,7 @@ void	print_env(t_env *env)
 {
 	while (env)
 	{
-		printf("key: %s | value: %s\n", env->key, env->value);
+		// printf("key: %s | value: %s\n", env->key, env->value);
 		env = env->next;
 	}
 }

@@ -9,7 +9,8 @@
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <limits.h>
+# include <limits.h> //the one below doesnt work for normal INT_MAX wtf linux.........
+# include <linux/limits.h> //doesnt work without "linux/" on mimzi's computer lol for PATH_MAX
 
 typedef enum e_type {
 	Ty_WORD,
@@ -64,6 +65,8 @@ size_t	ft_strlen(const char *s);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		is_valid_number(char *str);
+int		ft_isalpha(int c);
+int		ft_isdigit(int c);
 
 //token fns
 t_token	*make_token(t_shell	*shell, t_type type, char *value);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 17:50:30 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/04 17:14:38 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/10 14:09:25 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,73 +48,46 @@ void	addback_token(t_token **head, t_token *new_token)
 	temp->next = new_token;
 }
 
-char	*ft_read_word(t_shell	*shell, const char *input, int *pos)
+t_token *create_next_token(t_shell	*shell, const char *input, int *pos)
 {
-	int start;
-	int len;
-	char *word;
-
-	start = *pos;
-	while (input[*pos] && !is_delimiter(input[*pos]))
-		(*pos)++;
-	len = *pos - start;
-	word = ft_substr(input, start, len);
-	if (!word)
-		malloc_exit(shell);
-		// error_message("Error with malloc!!", 1); //free past tokens ?
-	return (word);
+    if (input[*pos] == '|')
+        return ((*pos)++, make_token(shell, Ty_PIPE, ft_strdup("|")));
+    if (input[*pos] == '<' || input[*pos] == '>')
+        return (ft_read_redir(shell, input, pos));
+    if (input[*pos] == '\'')
+        return (make_token(shell, Ty_Single_Q, ft_read_quoted(shell, input, pos, input[*pos])));
+	if (input[*pos] == '"')
+        return (make_token(shell, Ty_Double_Q, ft_read_quoted(shell, input, pos, input[*pos])));
+    return (make_token(shell, Ty_WORD, ft_read_word(shell, input, pos)));
 }
 
-char	*ft_read_quoted(t_shell	*shell, const char *input, int *pos, char quote)
+t_token	*tokeniser(t_shell	*shell, const char *input)
 {
-	int start;
-	int len;
-	char *q_word;
+	t_token	*head;
+	t_token	*token;
+	int	pos;
 
-	// empty quotes -> return empty string
-	if (input[++(*pos)] == quote)
+	if (!input)
+		return (NULL);
+	head = NULL;
+	pos = 0;
+	while (input[pos])
 	{
-		(*pos)++;	
-		q_word = ft_strdup("");
-		if (!q_word)
-			malloc_exit(shell);
-		return (q_word);
+		while (input[pos] == ' ' || input[pos] == '\t' || input[pos] == '\n')
+			pos++;
+		if (!input[pos])
+			break ;
+		if (input[pos] == '|' || input[pos] == '<' || input[pos] == '>')
+			token = create_next_token(shell, input, &pos);
+		else
+			token = ft_read_word_token(shell, input, &pos);
+		if (!token)
+		{
+			ft_free_tokens(&head);
+			return (NULL);
+		}
+		addback_token(&head, token);
 	}
-	start = *pos;
-	while (input[*pos] && input[*pos] != quote)
-		(*pos)++;
-	// No closing quote -> error
-	if (input[*pos] == '\0')
-		return (null_err_msg("minishell: syntax error: unclosed quote"));
-	len = *pos - start;
-	(*pos)++;
-	q_word = ft_substr(input, start, len);
-	if (!q_word)
-		malloc_exit(shell);
-	return (q_word);
+	return (head);
 }
 
-t_token	*ft_read_redir(t_shell	*shell, const char *input, int *pos)
-{
-	if (input[*pos] == '<' && (input[*pos + 1]) == '<')
-	{
-		(*pos) += 2;	
-		return (make_token(shell, Ty_HEREDOC, ft_strdup("<<")));
-	}
-	else if (input[*pos] == '<')
-	{
-		(*pos)++;
-		return (make_token(shell, Ty_RE_IN, ft_strdup("<")));
-	}
-	else if (input[*pos] == '>' && input[*pos + 1] == '>')
-	{
-		(*pos) += 2;
-		return (make_token(shell, Ty_APPEND, ft_strdup(">>")));
-	}
-	else if (input[*pos] == '>')
-	{
-		(*pos)++;
-		return (make_token(shell, Ty_RE_OUT, ft_strdup(">")));
-	}
-	return (NULL);
-}

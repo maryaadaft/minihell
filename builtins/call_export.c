@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/09 22:39:59 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/10 14:41:37 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,13 @@ static void print_export(t_shell *shell)
 	temp = shell->env;
 	while (temp)
 	{
-		printf("declare -x %s=\"%s\"\n", temp->key, temp->value);
+		if (temp->value && temp->value[0] != '\0')
+			printf("declare -x %s=\"%s\"\n", temp->key, temp->value);
+		else if (temp->value && temp->value[0] == '\0' && ft_strchr(temp->value, '=')) // had = sign
+			printf("declare -x %s=\"\"\n", temp->key);
+		else
+			printf("declare -x %s\n", temp->key);
+		// printf("declare -x %s=\"%s\"\n", temp->key, temp->value);
 		temp = temp->next;
 	}
 }

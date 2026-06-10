@@ -3,87 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/07 21:58:04 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/10 14:09:36 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token	*tokeniser(t_shell	*shell, const char *input)
-{
-	t_token	*head;
-	t_token	*token;
-	int	pos;
-
-	if (!input)
-		return (NULL);
-	head = NULL;
-	pos = 0;
-	while (input[pos])
-	{
-		while (input[pos] == ' ' || input[pos] == '\t' || input[pos] == '\n')
-			pos++;
-		if (!input[pos])
-			break ;
-		if (input[pos] == '|' || input[pos] == '<' || input[pos] == '>')
-			token = create_next_token(shell, input, &pos);
-		else
-			token = ft_read_word_token(shell, input, &pos);
-		if (!token)
-		{
-			ft_free_tokens(&head);
-			return (NULL);
-		}
-		addback_token(&head, token);
-	}
-	return (head);
-}
-
-t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
-{
-	char	*result;
-	char	*temp;
-	t_token	*chunk_token;
-
-	result = ft_strdup("");
-	if (!result)
-		malloc_exit(shell);
-	while (input[*pos] && input[*pos] != ' ' && input[*pos] != '\t'
-		&& input[*pos] != '\n' && input[*pos] != '|'
-		&& input[*pos] != '<' && input[*pos] != '>')
-	{
-		chunk_token = create_next_token(shell, input, pos);
-		if (!chunk_token)
-		{
-			free(result);
-			return (NULL);
-		}
-		temp = ft_strjoin(result, chunk_token->value);
-		free(result);
-		free(chunk_token->value);
-		free(chunk_token);
-		if (!temp)
-			malloc_exit(shell);
-		result = temp;
-	}
-	return (make_token(shell, Ty_WORD, result));
-}
-
-t_token *create_next_token(t_shell	*shell, const char *input, int *pos)
-{
-    if (input[*pos] == '|')
-        return ((*pos)++, make_token(shell, Ty_PIPE, ft_strdup("|")));
-    if (input[*pos] == '<' || input[*pos] == '>')
-        return (ft_read_redir(shell, input, pos));
-    if (input[*pos] == '\'')
-        return (make_token(shell, Ty_Single_Q, ft_read_quoted(shell, input, pos, input[*pos])));
-	if (input[*pos] == '"')
-        return (make_token(shell, Ty_Double_Q, ft_read_quoted(shell, input, pos, input[*pos])));
-    return (make_token(shell, Ty_WORD, ft_read_word(shell, input, pos)));
-}
 
 int	main(int argc, char **argv, char **envp)
 {
