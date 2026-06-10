@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 18:55:50 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/10 15:01:36 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/06/10 15:16:54 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void ft_cd(t_cmd *cmd, t_shell **shell)
 		printf("\n\nwe have an errrrroooorr!!!!\n\n");
 	if (chdir(path) == -1)
 	{
-		// printf("error and free?\n");
 		perror("chdir");
 		return ;
 	}

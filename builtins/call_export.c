@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/10 14:41:37 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/06/10 15:37:29 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,15 @@
 // if key=value doesn't exist -> we add a new entry ---- DONE
 // if key only without a value -> we add an entry with no value ---- DONE
 
-static void print_export(t_shell *shell)
+static void print_export(t_cmd *cmd, t_shell *shell)
 {
 	t_env *temp;
-
 	temp = shell->env;
 	while (temp)
 	{
 		if (temp->value && temp->value[0] != '\0')
 			printf("declare -x %s=\"%s\"\n", temp->key, temp->value);
-		else if (temp->value && temp->value[0] == '\0' && ft_strchr(temp->value, '=')) // had = sign
+		else if (temp->value && temp->value[0] == '\0' && ft_strchr(cmd->args[1], '=')) // had = sign
 			printf("declare -x %s=\"\"\n", temp->key);
 		else
 			printf("declare -x %s\n", temp->key);
@@ -94,7 +93,7 @@ void ft_export(t_cmd *cmd, t_shell *shell)
 
 	i = 0;
 	if (!cmd->args[1])
-		return (print_export(shell));
+		return (print_export(cmd ,shell));
 	while (cmd->args[++i])
 	{
 		key = get_key(cmd->args[i]);
