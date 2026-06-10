@@ -15,6 +15,7 @@ SRCs = main.c \
 	mylib/ft_memset.c \
 	mylib/ft_strncmp.c \
 	mylib/is_valid_number.c \
+	mylib/ft_lstsize.c \
 	token.c token_utils.c error.c test_utils.c parsing.c parsing_utils.c free.c env.c execute.c read_token.c \
 	builtins/call_cd.c \
 	builtins/call_echo.c \

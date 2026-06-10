@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 15:53:11 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/06 18:14:03 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/10 21:06:19 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,48 +29,68 @@ void	ft_execute(t_cmd *cmd, char **envp)
 	waitpid(pid, &status, 0);
 }
 
-// int	main(int argc, char **argv, char **envp)
-// {
-// 	t_shell	shell;
-// 	t_token	*tokenaya;
-// 	t_cmd	*cmds;
-// 	t_cmd	*temp;
-// 	char	*input;
+char **env_to_array(t_shell *shell)
+{
+	int len;
+	char **envp;
+	char *temp_str;
+	t_env *temp;
+	int i;
 
-// 	shell.tokens = NULL;
-// 	shell.commands = NULL;
-// 	while (1)
-// 	{
-// 		printf("\033[32m");
-// 		input = readline("minishell$ ");
-// 		if (!input)
-// 		{
-// 			rl_clear_history();
-// 			break ;
-// 		}
-// 		if (*input)
-// 			add_history(input);
-// 		tokenaya = tokeniser(&shell, input);
-// 		if (!tokenaya)
-// 		{
-// 			free(input);
-// 			continue ;
-// 		}
-// 		cmds = ft_parse(tokenaya);
-// 		if (!cmds)
-// 		{
-// 			ft_free_tokens(&tokenaya);
-// 			free(input);
-// 			continue ;
-// 		}
-// 		temp = cmds;
-// 		while (temp)
-// 		{
-// 			ft_execute(temp, envp);
-// 			temp = temp->next;
-// 		}
-// 		free_cmd(&cmds);
-// 		ft_free_tokens(&tokenaya);
-// 		free(input);
-// 	}
-// }
+	i = 0;
+	temp = shell->env;
+	len = ft_lstsize(shell->env);
+	envp = malloc(sizeof(char *) * (len + 1));
+	if (!envp)
+		return (NULL);
+	while (temp)
+	{
+		temp_str = ft_strjoin(temp->key, "=");
+		if (!temp_str)
+			return (NULL);
+		printf("before: %s\n", temp_str);
+		envp[i] = ft_strjoin(temp_str, temp->value);
+		printf("After : %s\n", envp[i]);
+		free(temp_str);
+		if (!envp[i])
+			return (NULL);
+		i++;
+		temp = temp->next;
+	}
+	envp[i] = NULL;
+	return (envp);
+}
+
+int env_len(t_shell *shell)
+{
+	int		i;
+	t_env	*temp;
+
+	i = 0;
+	temp = shell->env;
+	while (temp)
+	{
+		i++;
+		temp = temp->next;
+	}
+	return (i);
+}
+
+char	*get_path(t_shell *shell, t_cmd *cmd)
+{
+	char *full_path;
+	char **folder;
+	int i;
+	char *temp;
+
+	i = 0;
+	full_path = find_env(shell, "PATH");
+	folder = ft_split(full_path, ':');
+	while (folder[i])
+	{
+		temp = ft_strjoin(folder[i], "/");
+		full_path = ft_strjoin(temp, cmd->args[0]);
+		free(temp);
+		
+	}
+}

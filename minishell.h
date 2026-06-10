@@ -67,6 +67,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		is_valid_number(char *str);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
+int		ft_lstsize(t_env *env);
 
 //token fns
 t_token	*make_token(t_shell	*shell, t_type type, char *value);
@@ -110,6 +111,7 @@ void	remove_env(t_env **env_list, const char *old_key);
 t_env	*find_env(t_shell *shell, char *target);
 int		is_builtin(char *cmd_name);
 void	run_builtin(t_cmd *cmd, t_shell *shell);
+int		env_len(t_shell *shell);
 
 // Builtins
 void	ft_echo(t_cmd *cmd);
@@ -130,5 +132,7 @@ void	print_cmds(t_cmd *cmd);
 void	print_env(t_env *env);
 
 void	ft_execute(t_cmd *cmd, char **envp);
+char	**env_to_array(t_shell *shell);
+char	*get_path(t_shell *shell, t_cmd *cmd);
 
 #endif
