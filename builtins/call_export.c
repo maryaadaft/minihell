@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   call_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2026/06/10 15:37:29 by maryaada         ###   ########.fr       */
+=======
+/*   Updated: 2026/06/10 15:37:37 by walneama         ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
