@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/10 15:41:12 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/10 16:15:39 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,10 @@ static void print_export(t_cmd *cmd, t_shell *shell)
 	{
 		if (temp->value && temp->value[0] != '\0')
 			printf("declare -x %s=\"%s\"\n", temp->key, temp->value);
-		else if (temp->value && temp->value[0] == '\0' && ft_strchr(cmd->args[1], '=')) // had = sign
+		else if (temp->value && temp->value[0] == '\0')
 			printf("declare -x %s=\"\"\n", temp->key);
 		else
 			printf("declare -x %s\n", temp->key);
-		// printf("declare -x %s=\"%s\"\n", temp->key, temp->value);
 		temp = temp->next;
 	}
 }
@@ -49,8 +48,10 @@ static char *get_value(char *arg)
 	char *equal_sign;
 
 	equal_sign = ft_strchr(arg, '=');
-	if (!equal_sign)
+	if ((equal_sign && *(equal_sign + 1) == '\0'))
 		return (ft_strdup(""));
+	if (!equal_sign)
+		return (NULL);
 	return (ft_strdup(equal_sign + 1));
 }
 
@@ -58,6 +59,8 @@ static void    update_env(t_env *node, char *value)
 {
 	if (node->value)
 		free(node->value);
+	if (!value)
+		return ;
 	node->value = ft_strdup(value);
 }
 
@@ -77,36 +80,46 @@ static int is_valid_key(char *str)
     return (1);
 }
 
-static void	export_error_msg(char *arg)
+static void	export_add(t_shell *shell, char *key, char *value)
 {
-	write(2, "minishell: export: '", 20);
-	write(2, arg, ft_strlen(arg));
-	write(2, "': not a valid identifier\n", 26);
+	t_env	*node;
+	t_env	*new;
+
+	node = find_env(shell, key);
+	if (node)
+		update_env(node, value);
+	else
+	{
+		new = ft_calloc(1, sizeof(t_env));
+		new->key = ft_strdup(key);
+		if (value)
+			new->value = ft_strdup(value);
+		addback_env(&shell->env, new);
+	}
 }
 
-void ft_export(t_cmd *cmd, t_shell *shell)
+void	ft_export(t_cmd *cmd, t_shell *shell)
 {
-	t_env *node;
-	char *key;
-	char *value;
-	int i;
+	char	*key;
+	char	*value;
+	int		i;
 
-	i = 0;
 	if (!cmd->args[1])
-		return (print_export(cmd ,shell));
+		return (print_export(cmd, shell));
+	i = 0;
 	while (cmd->args[++i])
 	{
 		key = get_key(cmd->args[i]);
 		if (!is_valid_key(key))
-			export_error_msg(cmd->args[i]);
+		{
+			write(2, "minishell: export: '", 20);
+			write(2, cmd->args, ft_strlen(*cmd->args));
+			write(2, "': not a valid identifier\n", 26);
+		}
 		else
 		{
 			value = get_value(cmd->args[i]);
-			node = find_env(shell, key);
-			if (node)
-				update_env(node, value);
-			else
-				addback_env(&shell->env, get_env(cmd->args[i]));
+			export_add(shell, key, value);
 			free(value);
 		}
 		free(key);
