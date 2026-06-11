@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/10 20:57:11 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/11 17:38:03 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	main(int argc, char **argv, char **envp)
 		if (is_builtin(cmds->args[0]))
 			run_builtin(cmds, &shell);
 		else
-			ft_execute(cmds, envp);
+			ft_execute(cmds, &shell);
 		free_cmd(&cmds);
 		ft_free_tokens(&tokenaya);
 		free(input);

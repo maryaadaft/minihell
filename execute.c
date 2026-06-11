@@ -6,27 +6,41 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 15:53:11 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/10 21:06:19 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/11 17:42:57 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_execute(t_cmd *cmd, char **envp)
+void	ft_execute(t_cmd *cmd, t_shell *shell)
 {
+	char *valid_path;
+	char **envp;
 	pid_t	pid;
 	int		status;
 
-	if (!cmd || !cmd->args || !cmd->args[0])
+	if (cmd->args[0][0] == '/')
+    	valid_path = ft_strdup(cmd->args[0]);
+	else
+		valid_path = get_path(cmd, shell);
+	if (!valid_path)
+	{
+		write(2, "minishell: command not found\n", 29);
+		shell->exit_status = 127;
 		return ;
+	}
+	envp = env_to_array(shell);
 	pid = fork();
 	if (pid == 0)
 	{
-		execvp(cmd->args[0], cmd->args);
-		perror("execvp");
-		exit(1);
+		execve(valid_path, cmd->args, envp);
+		perror("execve");
+		exit(127);
 	}
 	waitpid(pid, &status, 0);
+	free (valid_path);
+	free_args(envp);
+	shell->exit_status = WEXITSTATUS(status);
 }
 
 char **env_to_array(t_shell *shell)
@@ -39,7 +53,7 @@ char **env_to_array(t_shell *shell)
 
 	i = 0;
 	temp = shell->env;
-	len = ft_lstsize(shell->env);
+	len = env_len(shell);
 	envp = malloc(sizeof(char *) * (len + 1));
 	if (!envp)
 		return (NULL);
@@ -48,9 +62,7 @@ char **env_to_array(t_shell *shell)
 		temp_str = ft_strjoin(temp->key, "=");
 		if (!temp_str)
 			return (NULL);
-		printf("before: %s\n", temp_str);
 		envp[i] = ft_strjoin(temp_str, temp->value);
-		printf("After : %s\n", envp[i]);
 		free(temp_str);
 		if (!envp[i])
 			return (NULL);
@@ -76,21 +88,31 @@ int env_len(t_shell *shell)
 	return (i);
 }
 
-char	*get_path(t_shell *shell, t_cmd *cmd)
+char	*get_path(t_cmd *cmd, t_shell *shell)
 {
-	char *full_path;
-	char **folder;
-	int i;
-	char *temp;
+	t_env	*path_node;
+	char	**folder;
+	char	*full_path;
+	int		i;
+	char	*temp;
 
-	i = 0;
-	full_path = find_env(shell, "PATH");
-	folder = ft_split(full_path, ':');
-	while (folder[i])
+	i = -1;
+	path_node = find_env(shell, "PATH");
+	if (!path_node)
+		return (NULL);
+	folder = ft_split(path_node->value, ':');
+	while (folder[++i])
 	{
 		temp = ft_strjoin(folder[i], "/");
 		full_path = ft_strjoin(temp, cmd->args[0]);
 		free(temp);
-		
+		if (access(full_path, X_OK) == 0)
+		{
+			free_args(folder);
+			return (full_path);
+		}
+		free (full_path);
 	}
+	free_args(folder);
+	return (NULL);
 }
