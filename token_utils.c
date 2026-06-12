@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 10:31:04 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/04 16:42:33 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/12 12:48:02 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int is_delimiter(char c)
+int	is_delimiter(char c)
 {
-	return (c == ' ' || c == '\t' || c == '|' || c == '>' || c == '<' || c == '\'' || c == '"' || c == '\n');
+	return (c == ' ' || c == '\t' || c == '|' || c == '>'
+		|| c == '<' || c == '\'' || c == '"' || c == '\n');
 }

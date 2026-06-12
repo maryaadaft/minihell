@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/12 12:10:59 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/06/12 12:59:56 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void	ft_export(t_cmd *cmd, t_shell *shell)
 		if (!is_valid_key(key))
 		{
 			write(2, "minishell: export: '", 20);
-			write(2, cmd->args, ft_strlen(*cmd->args)); //TEST THIS!!  bug 4 on claude lol
+			write(2, cmd->args[i], ft_strlen(cmd->args[i]));
 			write(2, "': not a valid identifier\n", 26);
 		}
 		else

@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/12 12:08:23 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/06/12 12:51:50 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ int	main(int argc, char **argv, char **envp)
 	env_init(&shell, envp);
 	while (1)
 	{
-		printf("\033[32m");
+		printf("\033[1;36m");
 		input = readline("minishell$ ");
-		// printf("\033[0m");
+		printf("\033[0m");
 		if (!input)
 		{
 			rl_clear_history();
