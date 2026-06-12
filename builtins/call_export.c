@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/10 16:15:39 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/12 12:10:59 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 // if key=value doesn't exist -> we add a new entry ---- DONE
 // if key only without a value -> we add an entry with no value ---- DONE
 
-static void print_export(t_cmd *cmd, t_shell *shell)
+static void print_export(t_shell *shell)
 {
 	t_env *temp;
 	temp = shell->env;
@@ -91,9 +91,24 @@ static void	export_add(t_shell *shell, char *key, char *value)
 	else
 	{
 		new = ft_calloc(1, sizeof(t_env));
+		if (!new)
+			return ;
 		new->key = ft_strdup(key);
+		if (!new->key)
+		{
+			free (new);
+			return ;
+		}
 		if (value)
+		{
 			new->value = ft_strdup(value);
+			if (!new->value)
+			{
+				free(new->key);
+				free(new);
+				return ;
+			}
+		}
 		addback_env(&shell->env, new);
 	}
 }
@@ -105,7 +120,7 @@ void	ft_export(t_cmd *cmd, t_shell *shell)
 	int		i;
 
 	if (!cmd->args[1])
-		return (print_export(cmd, shell));
+		return (print_export(shell));
 	i = 0;
 	while (cmd->args[++i])
 	{
@@ -113,7 +128,7 @@ void	ft_export(t_cmd *cmd, t_shell *shell)
 		if (!is_valid_key(key))
 		{
 			write(2, "minishell: export: '", 20);
-			write(2, cmd->args, ft_strlen(*cmd->args));
+			write(2, cmd->args, ft_strlen(*cmd->args)); //TEST THIS!!  bug 4 on claude lol
 			write(2, "': not a valid identifier\n", 26);
 		}
 		else

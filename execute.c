@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 15:53:11 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/11 17:42:57 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/12 11:52:12 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	ft_execute(t_cmd *cmd, t_shell *shell)
 	{
 		execve(valid_path, cmd->args, envp);
 		perror("execve");
+		free(valid_path);
+		free_args(envp);
 		exit(127);
 	}
 	waitpid(pid, &status, 0);
@@ -61,11 +63,18 @@ char **env_to_array(t_shell *shell)
 	{
 		temp_str = ft_strjoin(temp->key, "=");
 		if (!temp_str)
+		{
+			free_args(envp);
 			return (NULL);
+		}
 		envp[i] = ft_strjoin(temp_str, temp->value);
 		free(temp_str);
 		if (!envp[i])
+		{
+			free(temp_str);
+			free_args(envp);
 			return (NULL);
+		}
 		i++;
 		temp = temp->next;
 	}

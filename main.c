@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/11 17:38:03 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/12 12:08:23 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@ int	main(int argc, char **argv, char **envp)
 	shell.env = NULL;
 	shell.exit_status = 0;
 	env_init(&shell, envp);
-	if (!env_to_array(&shell))
-		free_env(&shell.env);
 	while (1)
 	{
 		printf("\033[32m");
