@@ -20,17 +20,27 @@
 static void print_export(t_shell *shell)
 {
 	t_env *temp;
+	t_env **sorted_env;
 	temp = shell->env;
-	while (temp)
+	int len = env_len(shell);
+	sorted_env = sort_env(temp, len);
+	if(!sorted_env)
+		return ;
+	int i = 0;
+	while(sorted_env[i])
 	{
-		if (temp->value && temp->value[0] != '\0')
-			printf("declare -x %s=\"%s\"\n", temp->key, temp->value);
-		else if (temp->value && temp->value[0] == '\0')
-			printf("declare -x %s=\"\"\n", temp->key);
-		else
-			printf("declare -x %s\n", temp->key);
-		temp = temp->next;
+		if(sorted_env[i])
 	}
+	// while (temp)
+	// {
+	// 	if (temp->value && temp->value[0] != '\0')
+	// 		printf("declare -x %s=\"%s\"\n", temp->key, temp->value);
+	// 	else if (temp->value && temp->value[0] == '\0')
+	// 		printf("declare -x %s=\"\"\n", temp->key);
+	// 	else
+	// 		printf("declare -x %s\n", temp->key);
+	// 	temp = temp->next;
+	// }
 }
 
 static char *get_key(char *arg)
@@ -140,3 +150,44 @@ void	ft_export(t_cmd *cmd, t_shell *shell)
 		free(key);
 	}
 }
+
+t_env **sort_env(t_shell *shell)
+{
+	t_env **arr;
+	t_env **temp;
+
+	len = env_len(shell);
+	arr = malloc(sizeof(t_env *) * (len + 1));
+	if (!arr)
+		return(NULL);
+	temp = shell->env;
+	int i = 0;
+
+	while(temp)
+	{
+		arr[i] = temp;
+		i++;
+		temp = temp->next;
+	}
+	arr[i] = NULL;
+	
+
+	t_env *swap;
+	i = 0;
+	while (i < (len - 1))
+	{
+		j = 0;
+		while(j < (len - i - 1))
+		{
+			if (ft_strncmp(arr[j]->key, arr[j+ 1]->key, ft_strlen(arr[j]->key) + 1) > 0)
+			{
+				swap = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = swap;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+

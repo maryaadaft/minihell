@@ -56,10 +56,10 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		shell.commands = &cmds;
-		printf("=== COMMANDS ===\n");
-		print_cmds(cmds);
-		
-		printf("======\n");
+		// printf("=== COMMANDS ===\n");
+		// print_cmds(cmds);
+		//
+		// printf("======\n");
 		if (is_builtin(cmds->args[0]))
 			run_builtin(cmds, &shell);
 		else
