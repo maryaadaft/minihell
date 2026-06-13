@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/12 12:59:56 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/06/13 17:04:29 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,68 @@
 // if key=value doesn't exist -> we add a new entry ---- DONE
 // if key only without a value -> we add an entry with no value ---- DONE
 
+
+//we have to sort the env before we print it, so we copy to temp and sort there. maybe split into 2 functions
+t_env **sort_env(t_shell *shell, int len)
+{
+	t_env **copy_env;
+	t_env *temp;
+	t_env *swap;
+	int i;
+	int j;
+
+	len = env_len(shell);
+	copy_env = malloc(sizeof(t_env *) * (len + 1));
+	if (!copy_env)
+		return(NULL);
+	temp = shell->env;
+	i = 0;
+	while(temp)
+	{
+		copy_env[i] = temp;
+		i++;
+		temp = temp->next;
+	}
+	copy_env[i] = NULL;
+	i = 0;
+	while (i < (len - 1))
+	{
+		j = 0;
+		while(j < (len - i - 1))
+		{
+			if (ft_strncmp(copy_env[j]->key, copy_env[j+ 1]->key, ft_strlen(copy_env[j]->key) + 1) > 0)
+			{
+				swap = copy_env[j];
+				copy_env[j] = copy_env[j + 1];
+				copy_env[j + 1] = swap;
+			}
+			j++;
+		}
+		i++;
+	}
+	return (copy_env);
+}
+
 static void print_export(t_shell *shell)
 {
-	t_env *temp;
+	int len;
 	t_env **sorted_env;
-	temp = shell->env;
-	int len = env_len(shell);
-	sorted_env = sort_env(temp, len);
+	len = env_len(shell);
+	sorted_env = sort_env(shell, len);
 	if(!sorted_env)
 		return ;
 	int i = 0;
 	while(sorted_env[i])
 	{
-		if(sorted_env[i])
+		if (sorted_env[i]->value && sorted_env[i]->value[0] != '\0')
+			printf("declare -x %s=\"%s\"\n", sorted_env[i]->key, sorted_env[i]->value);
+		else if (sorted_env[i]->value && sorted_env[i]->value[0] == '\0')
+			printf("declare -x %s=\"\"\n", sorted_env[i]->key);
+		else
+			printf("declare -x %s\n", sorted_env[i]->key);
+		i++;
 	}
+	free(sorted_env);
 	// while (temp)
 	// {
 	// 	if (temp->value && temp->value[0] != '\0')
@@ -151,43 +199,43 @@ void	ft_export(t_cmd *cmd, t_shell *shell)
 	}
 }
 
-t_env **sort_env(t_shell *shell)
-{
-	t_env **arr;
-	t_env **temp;
+// t_env **sort_env(t_shell *shell)
+// {
+// 	t_env **arr;
+// 	t_env **temp;
 
-	len = env_len(shell);
-	arr = malloc(sizeof(t_env *) * (len + 1));
-	if (!arr)
-		return(NULL);
-	temp = shell->env;
-	int i = 0;
+// 	int len = env_len(shell);
+// 	arr = malloc(sizeof(t_env *) * (len + 1));
+// 	if (!arr)
+// 		return(NULL);
+// 	temp = shell->env;
+// 	int i = 0;
 
-	while(temp)
-	{
-		arr[i] = temp;
-		i++;
-		temp = temp->next;
-	}
-	arr[i] = NULL;
+// 	while(temp)
+// 	{
+// 		arr[i] = temp;
+// 		i++;
+// 		temp = temp->next;
+// 	}
+// 	arr[i] = NULL;
 	
 
-	t_env *swap;
-	i = 0;
-	while (i < (len - 1))
-	{
-		j = 0;
-		while(j < (len - i - 1))
-		{
-			if (ft_strncmp(arr[j]->key, arr[j+ 1]->key, ft_strlen(arr[j]->key) + 1) > 0)
-			{
-				swap = arr[j];
-				arr[j] = arr[j + 1];
-				arr[j + 1] = swap;
-			}
-			j++;
-		}
-		i++;
-	}
-}
+// 	t_env *swap;
+// 	i = 0;
+// 	while (i < (len - 1))
+// 	{
+// 		j = 0;
+// 		while(j < (len - i - 1))
+// 		{
+// 			if (ft_strncmp(arr[j]->key, arr[j+ 1]->key, ft_strlen(arr[j]->key) + 1) > 0)
+// 			{
+// 				swap = arr[j];
+// 				arr[j] = arr[j + 1];
+// 				arr[j + 1] = swap;
+// 			}
+// 			j++;
+// 		}
+// 		i++;
+// 	}
+// }
 
