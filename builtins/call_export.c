@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/13 17:04:29 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/06/13 17:16:31 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 
 //we have to sort the env before we print it, so we copy to temp and sort there. maybe split into 2 functions
-t_env **sort_env(t_shell *shell, int len)
+static	t_env **sort_env(t_shell *shell, int len)
 {
 	t_env **copy_env;
 	t_env *temp;
@@ -27,7 +27,6 @@ t_env **sort_env(t_shell *shell, int len)
 	int i;
 	int j;
 
-	len = env_len(shell);
 	copy_env = malloc(sizeof(t_env *) * (len + 1));
 	if (!copy_env)
 		return(NULL);
@@ -46,7 +45,7 @@ t_env **sort_env(t_shell *shell, int len)
 		j = 0;
 		while(j < (len - i - 1))
 		{
-			if (ft_strncmp(copy_env[j]->key, copy_env[j+ 1]->key, ft_strlen(copy_env[j]->key) + 1) > 0)
+			if (ft_strncmp(copy_env[j]->key, copy_env[j + 1]->key, ft_strlen(copy_env[j]->key) + 1) > 0)
 			{
 				swap = copy_env[j];
 				copy_env[j] = copy_env[j + 1];
@@ -198,44 +197,3 @@ void	ft_export(t_cmd *cmd, t_shell *shell)
 		free(key);
 	}
 }
-
-// t_env **sort_env(t_shell *shell)
-// {
-// 	t_env **arr;
-// 	t_env **temp;
-
-// 	int len = env_len(shell);
-// 	arr = malloc(sizeof(t_env *) * (len + 1));
-// 	if (!arr)
-// 		return(NULL);
-// 	temp = shell->env;
-// 	int i = 0;
-
-// 	while(temp)
-// 	{
-// 		arr[i] = temp;
-// 		i++;
-// 		temp = temp->next;
-// 	}
-// 	arr[i] = NULL;
-	
-
-// 	t_env *swap;
-// 	i = 0;
-// 	while (i < (len - 1))
-// 	{
-// 		j = 0;
-// 		while(j < (len - i - 1))
-// 		{
-// 			if (ft_strncmp(arr[j]->key, arr[j+ 1]->key, ft_strlen(arr[j]->key) + 1) > 0)
-// 			{
-// 				swap = arr[j];
-// 				arr[j] = arr[j + 1];
-// 				arr[j + 1] = swap;
-// 			}
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
-
