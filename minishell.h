@@ -5,6 +5,7 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <stdint.h>
+# include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
@@ -122,6 +123,9 @@ int		ft_exit(t_shell *shell, t_cmd *cmds);
 void	ft_env(t_shell *shell);
 void	ft_unset(t_cmd *cmd, t_shell *shell);
 void	ft_export(t_cmd *cmd, t_shell *shell);
+
+// Redirs
+int		apply_redirs(t_redir *redirs);
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
 // void	test_print(char *input);

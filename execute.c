@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 15:53:11 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/12 11:52:12 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/06/15 14:26:05 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	ft_execute(t_cmd *cmd, t_shell *shell)
 	pid = fork();
 	if (pid == 0)
 	{
+		if (apply_redirs(cmd->redirs) == -1)
+			exit(1);
 		execve(valid_path, cmd->args, envp);
 		perror("execve");
 		free(valid_path);
