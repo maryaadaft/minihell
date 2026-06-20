@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/12 12:51:50 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/06/20 16:28:10 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ int	main(int argc, char **argv, char **envp)
 	while (1)
 	{
 		printf("\033[1;36m");
-		input = readline("minishell$ ");
-		printf("\033[0m");
+		input = readline("minishell$ \033[0m");
 		if (!input)
 		{
 			rl_clear_history();
@@ -61,14 +60,14 @@ int	main(int argc, char **argv, char **envp)
 		//
 		// printf("======\n");
 		if (is_builtin(cmds->args[0]))
-			run_builtin(cmds, &shell);
+			run_builtin_with_redir(cmds, &shell);
 		else
 			ft_execute(cmds, &shell);
 		free_cmd(&cmds);
 		ft_free_tokens(&tokenaya);
 		free(input);
 	}
-	printf("\n\n\n\n");
-	print_env(shell.env);
+	// printf("\n\n\n\n");
+	// print_env(shell.env);
 	free_env(&shell.env);
 }

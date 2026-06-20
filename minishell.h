@@ -126,6 +126,7 @@ void	ft_export(t_cmd *cmd, t_shell *shell);
 
 // Redirs
 int		apply_redirs(t_redir *redirs);
+void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell);
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
 // void	test_print(char *input);
