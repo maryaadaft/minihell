@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/20 16:28:10 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/21 22:00:37 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ int	main(int argc, char **argv, char **envp)
 		// print_cmds(cmds);
 		//
 		// printf("======\n");
-		if (is_builtin(cmds->args[0]))
+		if (cmds->next)
+			ft_pipe(cmds, &shell);
+		else if (is_builtin(cmds->args[0]))
 			run_builtin_with_redir(cmds, &shell);
 		else
 			ft_execute(cmds, &shell);

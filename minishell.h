@@ -139,4 +139,9 @@ void	ft_execute(t_cmd *cmd, t_shell *shell);
 char	**env_to_array(t_shell *shell);
 char	*get_path(t_cmd *cmd, t_shell *shell);
 
+// Pipes
+void ft_pipe(t_cmd *cmds, t_shell *shell);
+void pipe_child(t_cmd *cmd, int *prev_pipe, int *curr_pipe, t_shell *shell);
+void	execute_child(t_cmd *cmd, t_shell *shell);
+
 #endif
