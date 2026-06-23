@@ -14,8 +14,10 @@ SRCs = main.c \
 	mylib/ft_strchr.c \
 	mylib/ft_memset.c \
 	mylib/ft_strncmp.c \
+	mylib/ft_itoa.c \
+	mylib/ft_isalnum.c \
 	mylib/is_valid_number.c \
-	token.c token_utils.c error.c test_utils.c parsing.c parsing_utils.c free.c redirs.c env.c execute.c read_token.c pipe.c\
+	token.c token_utils.c error.c test_utils.c parsing.c parsing_utils.c free.c redirs.c env.c execute.c read_token.c expansion.c pipe.c\
 	builtins/call_cd.c \
 	builtins/call_echo.c \
 	builtins/call_pwd.c \

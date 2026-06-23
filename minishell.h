@@ -68,6 +68,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		is_valid_number(char *str);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
+int		ft_isalnum(int c);
+char	*ft_itoa(int n);
 
 //token fns
 t_token	*make_token(t_shell	*shell, t_type type, char *value);
@@ -143,5 +145,11 @@ char	*get_path(t_cmd *cmd, t_shell *shell);
 void ft_pipe(t_cmd *cmds, t_shell *shell);
 void pipe_child(t_cmd *cmd, int *prev_pipe, int *curr_pipe, t_shell *shell);
 void	execute_child(t_cmd *cmd, t_shell *shell);
+
+void ft_expand(t_token *tokens, t_shell *shell);
+char *expand_str(char *str, t_shell *shell);
+char *get_var(char *str, int *pos);
+char    *get_env_value(t_shell *shell, char *key);
+char    *ft_strjoin_free(char *s1, char *s2);
 
 #endif

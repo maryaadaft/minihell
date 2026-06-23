@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 14:07:13 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/10 14:35:10 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/06/23 23:02:48 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,10 +88,12 @@ t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
 	char	*result;
 	char	*temp;
 	t_token	*chunk_token;
+	t_type	final_type;
 
 	result = ft_strdup("");
 	if (!result)
 		malloc_exit(shell);
+	final_type = Ty_WORD;
 	while (input[*pos] && input[*pos] != ' ' && input[*pos] != '\t'
 		&& input[*pos] != '\n' && input[*pos] != '|'
 		&& input[*pos] != '<' && input[*pos] != '>')
@@ -102,6 +104,11 @@ t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
 			free(result);
 			return (NULL);
 		}
+		if (chunk_token->token_type == Ty_Single_Q)
+			final_type = Ty_Single_Q;
+		else if (chunk_token->token_type == Ty_Double_Q
+			&& final_type != Ty_Single_Q)
+			final_type = Ty_Double_Q; 
 		temp = ft_strjoin(result, chunk_token->value);
 		free(result);
 		free(chunk_token->value);
@@ -110,5 +117,73 @@ t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
 			malloc_exit(shell);
 		result = temp;
 	}
-	return (make_token(shell, Ty_WORD, result));
+	return (make_token(shell, final_type, result));
 }
+
+
+// our old fns
+// t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
+// {
+// 	char	*result;
+// 	char	*temp;
+// 	t_token	*chunk_token;
+
+// 	result = ft_strdup("");
+// 	if (!result)
+// 		malloc_exit(shell);
+// 	while (input[*pos] && input[*pos] != ' ' && input[*pos] != '\t'
+// 		&& input[*pos] != '\n' && input[*pos] != '|'
+// 		&& input[*pos] != '<' && input[*pos] != '>')
+// 	{
+// 		chunk_token = create_next_token(shell, input, pos);
+// 		if (!chunk_token)
+// 		{
+// 			free(result);
+// 			return (NULL);
+// 		}
+// 		temp = ft_strjoin(result, chunk_token->value);
+// 		free(result);
+// 		free(chunk_token->value);
+// 		free(chunk_token);
+// 		if (!temp)
+// 			malloc_exit(shell);
+// 		result = temp;
+// 	}
+// 	return (make_token(shell, Ty_WORD, result));
+// }
+
+// // new one ig ours wasn't working -> this expand per chunck so the expansion functions are auto called!
+// t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
+// {
+// 	char	*result;
+// 	char	*temp;
+// 	char	*expanded;
+// 	t_token	*chunk;
+
+// 	result = ft_strdup("");
+// 	if (!result)
+// 		malloc_exit(shell);
+// 	while (input[*pos] && input[*pos] != ' ' && input[*pos] != '\t'
+// 		&& input[*pos] != '\n' && input[*pos] != '|'
+// 		&& input[*pos] != '<' && input[*pos] != '>')
+// 	{
+// 		chunk = create_next_token(shell, input, pos);
+// 		if (!chunk)
+// 			return (free(result), NULL);
+// 		if (chunk->token_type == Ty_WORD || chunk->token_type == Ty_Double_Q)
+// 			expanded = expand_str(chunk->value, shell);
+// 		else
+// 			expanded = ft_strdup(chunk->value);
+// 		free(chunk->value);
+// 		free(chunk);
+// 		if (!expanded)
+// 			return (free(result), NULL);
+// 		temp = ft_strjoin(result, expanded);
+// 		free(result);
+// 		free(expanded);
+// 		if (!temp)
+// 			malloc_exit(shell);
+// 		result = temp;
+// 	}
+// 	return (make_token(shell, Ty_WORD, result));
+// }

@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/21 22:00:37 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/23 23:02:52 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,9 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		shell.tokens = &tokenaya;
-		// printf("=== TOKENS ===\n");
-		// print_tokens(tokenaya);
+		printf("=== TOKENS ===\n");
+		print_tokens(tokenaya);
+		ft_expand(tokenaya, &shell);
 		cmds = ft_parse(tokenaya);
 		if (!cmds)
 		{
