@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 17:52:47 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/23 23:07:50 by walneama         ###   ########.fr       */
+/*   Updated: 2026/06/24 21:06:44 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static char *handle_dollar(char *str, int *i, t_shell *shell)
 	char *piece;
 
 	(*i)++;
+	if (str[*i] == '\0') // $ only
+		return (ft_strdup("$"));
 	if (str[*i] == '?')  // $?
 	{
 		(*i)++;
@@ -86,7 +88,6 @@ char *expand_str(char *str, t_shell *shell)
 	char	*final_str;
 
 	i = 0;
-	printf("DEBUG expand_str input: '%s'\n", str); 
 	final_str = ft_strdup("");
 	if (!final_str)
 		return (NULL);
@@ -99,7 +100,6 @@ char *expand_str(char *str, t_shell *shell)
 		if (append_piece(&final_str, piece) == -1)
 			return (NULL);
 	}
-	printf("DEBUG expand_str output: '%s'\n", final_str); 
 	return (final_str);
 }
 
@@ -110,7 +110,6 @@ char *get_var(char *str, int *pos)
 	start = *pos;
 	while (str[*pos] && (ft_isalnum(str[*pos]) || str[*pos] == '_'))
 		(*pos)++;
-	printf("DEBUG get_var extracted: '%.*s'\n", *pos - start, str + start);
 	return (ft_substr(str, start, (*pos - start)));
 }
 
