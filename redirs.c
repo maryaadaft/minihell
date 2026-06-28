@@ -28,7 +28,7 @@ int	apply_redirs(t_redir *redirs)
 	temp = redirs;
 	while (temp)
 	{
-		if (temp->type == Ty_RE_IN)
+		if (temp->type == Ty_RE_IN || temp->type == Ty_HEREDOC)
 			fd = open(temp->file, O_RDONLY);
 		else if (temp->type == Ty_RE_OUT)
 			fd = open(temp->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -41,7 +41,7 @@ int	apply_redirs(t_redir *redirs)
 		}
 		if (temp->type == Ty_RE_OUT || temp->type == Ty_APPEND)
 			dup2(fd, STDOUT_FILENO);
-		else if (temp->type == Ty_RE_IN)
+		else if (temp->type == Ty_RE_IN || temp->type == Ty_HEREDOC)
 			dup2(fd, STDIN_FILENO);
 		close (fd);
 		temp = temp->next;

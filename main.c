@@ -27,10 +27,18 @@ int	main(int argc, char **argv, char **envp)
 	shell.env = NULL;
 	shell.exit_status = 0;
 	env_init(&shell, envp);
+	setup_signals();
 	while (1)
 	{
+		reset_sigint();
 		printf("\033[1;36m");
 		input = readline("minishell$ \033[0m");
+		if (g_sigint) // Ctrl+C at the prompt: drop partial input, fresh prompt
+		{
+			if (input)
+				free(input);
+			continue ;
+		}
 		if (!input)
 		{
 			rl_clear_history();
@@ -60,12 +68,21 @@ int	main(int argc, char **argv, char **envp)
 		// print_cmds(cmds);
 		//
 		// printf("======\n");
+		if (handle_heredocs(cmds, &shell) == -1)
+		{
+			cleanup_heredocs(cmds);
+			free_cmd(&cmds);
+			ft_free_tokens(&tokenaya);
+			free(input);
+			continue ;
+		}
 		if (cmds->next)
 			ft_pipe(cmds, &shell);
 		else if (is_builtin(cmds->args[0]))
 			run_builtin_with_redir(cmds, &shell);
 		else
 			ft_execute(cmds, &shell);
+		cleanup_heredocs(cmds);
 		free_cmd(&cmds);
 		ft_free_tokens(&tokenaya);
 		free(input);

@@ -117,6 +117,7 @@ t_redir     *ft_parse_redir(t_token **tok)
 		free(redi);
 		return (NULL);
 	}
+	redi->quoted = (*tok)->quoted; // remember if delimiter was quoted
 	redi->file = ft_strdup((*tok)->value);
 	if (!redi->file)
 	{

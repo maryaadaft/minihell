@@ -33,6 +33,7 @@ void	ft_execute(t_cmd *cmd, t_shell *shell)
 	pid = fork();
 	if (pid == 0)
 	{
+		reset_signals_child();
 		if (apply_redirs(cmd->redirs) == -1)
 			exit(1);
 		execve(valid_path, cmd->args, envp);

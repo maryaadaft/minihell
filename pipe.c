@@ -27,7 +27,10 @@ void ft_pipe(t_cmd *cmds, t_shell *shell)
 			pipe(current_pipe);
 		pid = fork();
 		if (pid == 0)
+		{
+			reset_signals_child();
 			pipe_child(cmds, prev_pipe, current_pipe, shell);
+		}
 		if (prev_pipe[0] != -1)
 		{
 			close(prev_pipe[0]);

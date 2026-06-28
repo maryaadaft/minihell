@@ -89,10 +89,14 @@ t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
 	char	*temp;
 	char	*expanded;
 	t_token	*chunk;
+	t_token	*token;
+	int		quoted;
 
+	quoted = 0;
 	result = ft_strdup("");
 	if (!result)
 		malloc_exit(shell);
+	token = NULL;
 	while (input[*pos] && input[*pos] != ' ' && input[*pos] != '\t'
 		&& input[*pos] != '\n' && input[*pos] != '|'
 		&& input[*pos] != '<' && input[*pos] != '>')
@@ -100,6 +104,8 @@ t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
 		chunk = create_next_token(shell, input, pos);
 		if (!chunk)
 			return (free(result), NULL);
+		if (chunk->token_type == Ty_Single_Q || chunk->token_type == Ty_Double_Q)
+			quoted = 1;
 		if (chunk->token_type == Ty_WORD || chunk->token_type == Ty_Double_Q)
 			expanded = expand_str(chunk->value, shell);
 		else
@@ -115,5 +121,8 @@ t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
 			malloc_exit(shell);
 		result = temp;
 	}
-	return (make_token(shell, Ty_WORD, result));
+	token = make_token(shell, Ty_WORD, result);
+	if (token)
+		token->quoted = quoted;
+	return (token);
 }

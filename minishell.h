@@ -8,6 +8,7 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <limits.h> //the one below doesnt work for normal INT_MAX wtf linux.........
@@ -27,12 +28,14 @@ typedef enum e_type {
 typedef struct s_token {
 	t_type			token_type;
 	char			*value;
+	int				quoted; // any chunk came from quotes (heredoc delim -> no body expand)
 	struct s_token	*next;
 }	t_token;
 
 typedef struct s_redir {
     t_type			type;
     char			*file;
+    int				quoted; // delimiter was quoted -> suppress heredoc body expansion
     struct s_redir	*next;
 }   t_redir;
 
@@ -129,6 +132,16 @@ void	ft_export(t_cmd *cmd, t_shell *shell);
 // Redirs
 int		apply_redirs(t_redir *redirs);
 void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell);
+
+// Heredoc
+int		handle_heredocs(t_cmd *cmds, t_shell *shell);
+void	cleanup_heredocs(t_cmd *cmds);
+
+// Signals
+extern volatile sig_atomic_t	g_sigint;
+void	setup_signals(void);
+void	reset_sigint(void);
+void	reset_signals_child(void);
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
 // void	test_print(char *input);
