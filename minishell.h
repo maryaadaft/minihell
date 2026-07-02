@@ -33,12 +33,14 @@ typedef struct s_token {
 typedef struct s_redir {
     t_type			type;
     char			*file;
+	int				heredoc_fd;
     struct s_redir	*next;
 }   t_redir;
 
 typedef struct s_cmd {
 	char			**args;
 	t_redir			*redirs;
+	struct s_cmd	*prev;
 	struct s_cmd	*next;
 }	t_cmd;
 
