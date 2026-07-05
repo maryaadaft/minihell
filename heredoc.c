@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 15:37:31 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/05 11:18:37 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/05 18:56:34 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_heredoc(t_redir *redir)
+int	ft_heredoc(t_redir *redir, t_shell *shell)
 {
     int     fd[2];
     char    *line;
+	char	*to_write;
 
     if (pipe(fd) == -1)
     {
@@ -35,16 +36,23 @@ int	ft_heredoc(t_redir *redir)
             free(line);
             break ;
         }
-        write(fd[1], line, ft_strlen(line));
+		if (redir->expand)
+        {
+            to_write = expand_str(line, shell);
+            free(line);
+        }
+		else
+			to_write = line;
+        write(fd[1], to_write, ft_strlen(to_write));
         write(fd[1], "\n", 1);
-        free(line);
+        free(to_write);
     }
     close(fd[1]);
     redir->heredoc_fd = fd[0];
 	return (0);
 }
 
-int prep_heredocs(t_cmd *cmd)
+int prep_heredocs(t_cmd *cmd, t_shell *shell)
 {
     t_redir *curr;
 
@@ -53,7 +61,7 @@ int prep_heredocs(t_cmd *cmd)
     {
         if (curr->type == Ty_HEREDOC)
         {
-            if (ft_heredoc(curr) == -1)
+            if (ft_heredoc(curr, shell) == -1)
                 return (-1);
         }
         curr = curr->next;

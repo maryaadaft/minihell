@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 17:50:30 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/10 14:09:25 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/05 18:32:45 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,3 @@ t_token	*tokeniser(t_shell	*shell, const char *input)
 	}
 	return (head);
 }
-

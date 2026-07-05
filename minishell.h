@@ -27,6 +27,7 @@ typedef enum e_type {
 typedef struct s_token {
 	t_type			token_type;
 	char			*value;
+	int				quoted;
 	struct s_token	*next;
 }	t_token;
 
@@ -34,6 +35,7 @@ typedef struct s_redir {
     t_type			type;
     char			*file;
 	int				heredoc_fd;
+	int				expand; 
     struct s_redir	*next;
 }   t_redir;
 
@@ -133,8 +135,8 @@ int		apply_redirs(t_redir *redirs);
 void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell);
 
 //heredoc
-int	ft_heredoc(t_redir *redir);
-int	prep_heredocs(t_cmd *cmd);
+int	ft_heredoc(t_redir *redir, t_shell *shell);
+int	prep_heredocs(t_cmd *cmd, t_shell *shell);
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
 // void	test_print(char *input);

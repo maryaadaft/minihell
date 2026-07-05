@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 15:53:11 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/05 12:55:51 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/05 18:52:25 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_execute(t_cmd *cmd, t_shell *shell)
 	pid_t	pid;
 	int		status;
 
-	if (prep_heredocs(cmd) == -1)
+	if (prep_heredocs(cmd, shell) == -1)
 		return ;
 	if (cmd->args[0][0] == '/')
     	valid_path = ft_strdup(cmd->args[0]);

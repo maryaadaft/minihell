@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 14:07:13 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/24 21:05:57 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/05 19:10:44 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,10 @@ t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
 	char	*temp;
 	char	*expanded;
 	t_token	*chunk;
+	t_token	*tok;
+	int		was_quoted;
 
+	was_quoted = 0;
 	result = ft_strdup("");
 	if (!result)
 		malloc_exit(shell);
@@ -100,6 +103,8 @@ t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
 		chunk = create_next_token(shell, input, pos);
 		if (!chunk)
 			return (free(result), NULL);
+		if (chunk->token_type == Ty_Single_Q || chunk->token_type == Ty_Double_Q)
+			was_quoted = 1;
 		if (chunk->token_type == Ty_WORD || chunk->token_type == Ty_Double_Q)
 			expanded = expand_str(chunk->value, shell);
 		else
@@ -115,5 +120,8 @@ t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
 			malloc_exit(shell);
 		result = temp;
 	}
-	return (make_token(shell, Ty_WORD, result));
+	tok = make_token(shell, Ty_WORD, result);
+	if (tok)
+		tok->quoted = was_quoted;
+	return (tok);
 }

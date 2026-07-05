@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 16:28:15 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/05 11:16:19 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/05 19:10:04 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ t_redir     *ft_parse_redir(t_token **tok)
 	redi->heredoc_fd = -1;
 	redi->type = (*tok)->token_type;
 	*tok = (*tok)->next;
+	if (redi->type == Ty_HEREDOC)
+ 		redi->expand = !((*tok)->quoted);
 	if (!*tok || (*tok)->token_type != Ty_WORD)
 	{
 		free(redi);

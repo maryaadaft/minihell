@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/21 18:14:09 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/05 11:34:31 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/05 18:52:37 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void ft_pipe(t_cmd *cmds, t_shell *shell)
 	temp = cmds;
 	while(temp)
 	{
-		if (prep_heredocs(temp) == -1)
+		if (prep_heredocs(temp, shell) == -1)
 			return ;
 		temp = temp->next;
 	}
