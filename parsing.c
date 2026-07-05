@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 16:28:15 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/12 12:49:31 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/05 11:16:19 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ t_redir     *ft_parse_redir(t_token **tok)
 	redi = ft_calloc(1, sizeof(t_redir)); // This function owns redi
 	if (!redi)
 		return (NULL);
+	redi->heredoc_fd = -1;
 	redi->type = (*tok)->token_type;
 	*tok = (*tok)->next;
 	if (!*tok || (*tok)->token_type != Ty_WORD)

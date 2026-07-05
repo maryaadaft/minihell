@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/21 18:14:09 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/23 17:53:04 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/05 11:34:31 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,15 @@ void ft_pipe(t_cmd *cmds, t_shell *shell)
 	pid_t reaped; // interesting!!
 	int status;
 
+	//prep_heredocs for all cmds before looping through them
+	t_cmd *temp;
+	temp = cmds;
+	while(temp)
+	{
+		if (prep_heredocs(temp) == -1)
+			return ;
+		temp = temp->next;
+	}
 	while(cmds)
 	{
 		if (cmds->next)
@@ -45,7 +54,12 @@ void ft_pipe(t_cmd *cmds, t_shell *shell)
 	while ((reaped = waitpid(-1, &status, 0)) > 0)
 	{
 		if (reaped == last_pid)
-			shell->exit_status = WEXITSTATUS(status);
+		{
+			if (WIFEXITED(status))
+				shell->exit_status = WEXITSTATUS(status);
+			else if(WIFSIGNALED(status))
+				shell->exit_status = 128 + WTERMSIG(status);
+		}
 	}
 }
 

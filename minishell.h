@@ -132,6 +132,10 @@ void	ft_export(t_cmd *cmd, t_shell *shell);
 int		apply_redirs(t_redir *redirs);
 void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell);
 
+//heredoc
+int	ft_heredoc(t_redir *redir);
+int	prep_heredocs(t_cmd *cmd);
+
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
 // void	test_print(char *input);
 void	print_tokens(t_token *tok);

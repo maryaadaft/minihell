@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/24 20:51:27 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/05 12:55:42 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -29,8 +28,8 @@ int	main(int argc, char **argv, char **envp)
 	env_init(&shell, envp);
 	while (1)
 	{
-		printf("\033[1;36m");
-		input = readline("minishell$ \033[0m");
+		// printf("\033[1;36m");
+		input = readline("\001\033[1;36m\002minishell$ \001\033[0m\002");
 		if (!input)
 		{
 			rl_clear_history();
@@ -45,8 +44,8 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		}
 		shell.tokens = &tokenaya;
-		printf("=== TOKENS ===\n");
-		print_tokens(tokenaya);
+		// printf("=== TOKENS ===\n");
+		// print_tokens(tokenaya);
 		// ft_expand(tokenaya, &shell);
 		cmds = ft_parse(tokenaya);
 		if (!cmds)
@@ -62,9 +61,9 @@ int	main(int argc, char **argv, char **envp)
 		// printf("======\n");
 		if (cmds->next)
 			ft_pipe(cmds, &shell);
-		else if (is_builtin(cmds->args[0]))
+		else if (cmds->args && cmds->args[0] && is_builtin(cmds->args[0]))
 			run_builtin_with_redir(cmds, &shell);
-		else
+		else if (cmds->args && cmds->args[0])
 			ft_execute(cmds, &shell);
 		free_cmd(&cmds);
 		ft_free_tokens(&tokenaya);

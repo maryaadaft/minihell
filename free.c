@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 21:35:18 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/07 21:35:23 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/05 11:26:24 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ void free_redir(t_redir **redir_list)
 			free(head->file);
 			head->file = NULL;
 		}
+		if (head->heredoc_fd != -1)
+			close(head->heredoc_fd);
 		free(head);
 		head = next;
 	}

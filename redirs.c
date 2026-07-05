@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 13:45:32 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/20 15:19:47 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/05 12:46:16 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,24 @@ int	apply_redirs(t_redir *redirs)
 	temp = redirs;
 	while (temp)
 	{
+		fd = -1;
 		if (temp->type == Ty_RE_IN)
 			fd = open(temp->file, O_RDONLY);
 		else if (temp->type == Ty_RE_OUT)
 			fd = open(temp->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		else if (temp->type == Ty_APPEND)
 			fd = open(temp->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+		else if (temp->type == Ty_HEREDOC)
+		{
+			if (temp->heredoc_fd != -1)
+			{
+				dup2(temp->heredoc_fd, STDIN_FILENO);
+				close(temp->heredoc_fd);
+				temp->heredoc_fd = -1;
+			}
+			temp = temp->next;
+			continue ;
+		}
 		if (fd < 0)
 		{
 			redir_error(temp->file);

@@ -6,13 +6,13 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 15:37:31 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/02 16:21:58 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/05 11:18:37 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    ft_heredoc(t_redir *redir)
+int	ft_heredoc(t_redir *redir)
 {
     int     fd[2];
     char    *line;
@@ -20,7 +20,7 @@ void    ft_heredoc(t_redir *redir)
     if (pipe(fd) == -1)
     {
         perror("pipe");
-        return ;
+        return (1);
     }
     while (1)
     {
@@ -41,4 +41,22 @@ void    ft_heredoc(t_redir *redir)
     }
     close(fd[1]);
     redir->heredoc_fd = fd[0];
+	return (0);
+}
+
+int prep_heredocs(t_cmd *cmd)
+{
+    t_redir *curr;
+
+    curr = cmd->redirs;
+    while (curr)
+    {
+        if (curr->type == Ty_HEREDOC)
+        {
+            if (ft_heredoc(curr) == -1)
+                return (-1);
+        }
+        curr = curr->next;
+    }
+    return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 15:53:11 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/15 14:26:05 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/05 12:55:51 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	ft_execute(t_cmd *cmd, t_shell *shell)
 	pid_t	pid;
 	int		status;
 
+	if (prep_heredocs(cmd) == -1)
+		return ;
 	if (cmd->args[0][0] == '/')
     	valid_path = ft_strdup(cmd->args[0]);
 	else
@@ -44,7 +46,10 @@ void	ft_execute(t_cmd *cmd, t_shell *shell)
 	waitpid(pid, &status, 0);
 	free (valid_path);
 	free_args(envp);
-	shell->exit_status = WEXITSTATUS(status);
+	if (WIFEXITED(status))
+		shell->exit_status = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		shell->exit_status = 128 + WTERMSIG(status);
 }
 
 char **env_to_array(t_shell *shell)
