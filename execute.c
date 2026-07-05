@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 15:53:11 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/05 18:52:25 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/05 23:06:09 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	ft_execute(t_cmd *cmd, t_shell *shell)
 		return ;
 	}
 	envp = env_to_array(shell);
+	sig_child(); 
 	pid = fork();
 	if (pid == 0)
 	{
@@ -44,6 +45,7 @@ void	ft_execute(t_cmd *cmd, t_shell *shell)
 		exit(127);
 	}
 	waitpid(pid, &status, 0);
+	// sig_interactive();
 	free (valid_path);
 	free_args(envp);
 	if (WIFEXITED(status))

@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 15:37:31 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/05 18:56:34 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/05 22:54:22 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	ft_heredoc(t_redir *redir, t_shell *shell)
         perror("pipe");
         return (1);
     }
+	sig_heredoc();
     while (1)
     {
         line = readline("> ");
@@ -47,6 +48,7 @@ int	ft_heredoc(t_redir *redir, t_shell *shell)
         write(fd[1], "\n", 1);
         free(to_write);
     }
+	sig_interactive();
     close(fd[1]);
     redir->heredoc_fd = fd[0];
 	return (0);

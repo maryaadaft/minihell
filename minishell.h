@@ -6,12 +6,15 @@
 # include <stdlib.h>
 # include <stdint.h>
 # include <fcntl.h>
+# include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <limits.h> //the one below doesnt work for normal INT_MAX wtf linux.........
 # include <linux/limits.h> //doesnt work without "linux/" on mimzi's computer lol for PATH_MAX
+
+extern int g_signal;
 
 typedef enum e_type {
 	Ty_WORD,
@@ -159,5 +162,13 @@ char *expand_str(char *str, t_shell *shell);
 char *get_var(char *str, int *pos);
 char    *get_env_value(t_shell *shell, char *key);
 char    *ft_strjoin_free(char *s1, char *s2);
+
+// Signals
+void handle_sigint(int signal);
+void sig_interactive();
+void sig_child();
+void sig_heredoc();
+void handle_sigint_heredoc(int signal);
+void handle_sigint_child(int sig);
 
 #endif
