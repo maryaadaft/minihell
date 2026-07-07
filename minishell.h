@@ -170,5 +170,6 @@ void sig_child();
 void sig_heredoc();
 void handle_sigint_heredoc(int signal);
 void handle_sigint_child(int sig);
+int	check_sigint(void);
 
 #endif

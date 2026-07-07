@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 15:37:31 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/05 22:54:22 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/07 17:44:08 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,22 @@ int	ft_heredoc(t_redir *redir, t_shell *shell)
         return (1);
     }
 	sig_heredoc();
+	rl_event_hook = check_sigint;
     while (1)
     {
         line = readline("> ");
+		if (g_signal == SIGINT)
+		{
+			free(line);
+            close(fd[1]);
+            close(fd[0]);
+            sig_interactive();
+            return (-1);
+		}
         if (!line)
         {
-            write(2, "minishell: warning: here-document delimited by end-of-file\n", 60);
-            break ;
+			write(2, "minishell: warning: here-document delimited by end-of-file\n", 60);
+			break ;
         }
         if (ft_strncmp(line, redir->file, ft_strlen(redir->file) + 1) == 0)
         {
@@ -48,6 +57,7 @@ int	ft_heredoc(t_redir *redir, t_shell *shell)
         write(fd[1], "\n", 1);
         free(to_write);
     }
+	rl_event_hook = NULL;
 	sig_interactive();
     close(fd[1]);
     redir->heredoc_fd = fd[0];

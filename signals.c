@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/05 22:24:06 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/05 23:04:18 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/07 17:57:51 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,22 +52,32 @@ void handle_sigint_child(int sig)
 void sig_child()
 {
 	signal(SIGINT, handle_sigint_child);
-	signal(SIGQUIT, SIG_DFL);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 void handle_sigint_heredoc(int signal)
 {
 	(void)signal;
-
-	g_signal = SIGINT;
-	 write(1, "\n", 1);
+    g_signal = SIGINT;
+    write(1, "\n", 1);
+    rl_done = 1;
     rl_on_new_line();
     rl_replace_line("", 0);
-    close(STDIN_FILENO);
 }
 
 void sig_heredoc()
 {
-	signal(SIGINT, handle_sigint_heredoc);
-	signal(SIGQUIT, SIG_IGN);
+	 struct sigaction sa;
+
+    sa.sa_handler = handle_sigint_heredoc;
+    sigemptyset(&sa.sa_mask);
+    sa.sa_flags = 0;  // NO SA_RESTART → syscalls won't restart after signal
+    sigaction(SIGINT, &sa, NULL);
+    signal(SIGQUIT, SIG_IGN);
+}
+int	check_sigint(void)
+{
+    if (g_signal == SIGINT)
+        rl_done = 1;
+    return (0);
 }

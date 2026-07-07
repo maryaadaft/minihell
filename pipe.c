@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/21 18:14:09 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/05 22:53:22 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/07 15:53:32 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void ft_pipe(t_cmd *cmds, t_shell *shell)
 			return ;
 		temp = temp->next;
 	}
+	sig_child(); 
 	while(cmds)
 	{
 		if (cmds->next)
@@ -65,7 +66,6 @@ void ft_pipe(t_cmd *cmds, t_shell *shell)
 
 void pipe_child(t_cmd *cmd, int *prev_pipe, int *curr_pipe, t_shell *shell)
 {
-	sig_child(); 
 	if (prev_pipe[0] != -1)
 	{
 		dup2(prev_pipe[0], STDIN_FILENO);

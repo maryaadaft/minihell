@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/05 22:52:05 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/07 17:49:39 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	main(int argc, char **argv, char **envp)
 	env_init(&shell, envp);
 	while (1)
 	{
+		g_signal = 0;
 		sig_interactive();
 		// printf("\033[1;36m");
 		input = readline("\001\033[1;36m\002minishell$ \001\033[0m\002");
