@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/05 22:24:06 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/07 17:57:51 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/08 13:01:52 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ void handle_sigint_child(int sig)
     (void)sig;
     g_signal = SIGINT;
     write(1, "\n", 1);
-    rl_on_new_line();
-    rl_replace_line("", 0);
 }
 
 // default handeling
@@ -67,7 +65,7 @@ void handle_sigint_heredoc(int signal)
 
 void sig_heredoc()
 {
-	 struct sigaction sa;
+	struct sigaction sa;
 
     sa.sa_handler = handle_sigint_heredoc;
     sigemptyset(&sa.sa_mask);

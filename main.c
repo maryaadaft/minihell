@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/07 17:49:39 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/08 13:35:32 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	main(int argc, char **argv, char **envp)
 		sig_interactive();
 		// printf("\033[1;36m");
 		input = readline("\001\033[1;36m\002minishell$ \001\033[0m\002");
+		if (g_signal == SIGINT)
+   			shell.exit_status = 130;
 		if (!input)
 		{
 			rl_clear_history();

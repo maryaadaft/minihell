@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 13:45:32 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/05 12:46:16 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/08 13:32:43 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ void run_builtin_with_redir(t_cmd *cmd, t_shell *shell)
 
 	old_stdin = dup(STDIN_FILENO);
 	old_stdout = dup(STDOUT_FILENO);
-	if (apply_redirs(cmd->redirs) == 0)
+	if (prep_heredocs(cmd, shell) == -1)
+		shell->exit_status = 130;
+	else if (apply_redirs(cmd->redirs) == 0)
 		run_builtin(cmd, shell);
 	dup2(old_stdin, STDIN_FILENO);
 	dup2(old_stdout, STDOUT_FILENO);

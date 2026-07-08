@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/02 15:37:31 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/07 17:44:08 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/08 13:24:16 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	ft_heredoc(t_redir *redir, t_shell *shell)
         return (1);
     }
 	sig_heredoc();
+	g_signal = 0; 
 	rl_event_hook = check_sigint;
     while (1)
     {
@@ -31,10 +32,12 @@ int	ft_heredoc(t_redir *redir, t_shell *shell)
 		if (g_signal == SIGINT)
 		{
 			free(line);
-            close(fd[1]);
-            close(fd[0]);
-            sig_interactive();
-            return (-1);
+			close(fd[1]);
+			close(fd[0]);
+			rl_event_hook = NULL;  // ← reset
+			g_signal = 0;           // ← reset
+			sig_interactive();      // ← restore
+			return (-1);
 		}
         if (!line)
         {

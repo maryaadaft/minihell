@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/21 18:14:09 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/07 15:53:32 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/08 13:42:44 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ void ft_pipe(t_cmd *cmds, t_shell *shell)
 	while(temp)
 	{
 		if (prep_heredocs(temp, shell) == -1)
+		{
+			shell->exit_status = 130;
 			return ;
+		}
 		temp = temp->next;
 	}
 	sig_child(); 
@@ -56,9 +59,11 @@ void ft_pipe(t_cmd *cmds, t_shell *shell)
 	{
 		if (reaped == last_pid)
 		{
+			if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+				write(2, "Quit (core dumped)\n", 19);
 			if (WIFEXITED(status))
 				shell->exit_status = WEXITSTATUS(status);
-			else if(WIFSIGNALED(status))
+			else if (WIFSIGNALED(status))
 				shell->exit_status = 128 + WTERMSIG(status);
 		}
 	}

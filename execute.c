@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 15:53:11 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/07 15:52:50 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/08 13:40:35 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ void	ft_execute(t_cmd *cmd, t_shell *shell)
 	int		status;
 
 	if (prep_heredocs(cmd, shell) == -1)
+	{
+		shell->exit_status = 130;	
 		return ;
+	}
 	if (cmd->args[0][0] == '/')
     	valid_path = ft_strdup(cmd->args[0]);
 	else
@@ -36,6 +39,7 @@ void	ft_execute(t_cmd *cmd, t_shell *shell)
 	pid = fork();
 	if (pid == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		if (apply_redirs(cmd->redirs) == -1)
 			exit(1);
 		execve(valid_path, cmd->args, envp);
@@ -45,6 +49,8 @@ void	ft_execute(t_cmd *cmd, t_shell *shell)
 		exit(127);
 	}
 	waitpid(pid, &status, 0);
+	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGQUIT)
+    	write(2, "Quit (core dumped)\n", 19);
 	free (valid_path);
 	free_args(envp);
 	if (WIFEXITED(status))
