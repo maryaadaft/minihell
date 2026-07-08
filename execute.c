@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 15:53:11 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/08 13:40:35 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/08 14:30:39 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,11 @@ void	ft_execute(t_cmd *cmd, t_shell *shell)
 		shell->exit_status = 130;	
 		return ;
 	}
+	 if (!cmd->args || !cmd->args[0]) //for empty command with redir
+    {
+        apply_redir_only(cmd->redirs, shell);
+        return ;
+    }
 	if (cmd->args[0][0] == '/')
     	valid_path = ft_strdup(cmd->args[0]);
 	else

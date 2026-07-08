@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_cd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 18:55:50 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/20 16:52:33 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/08 16:00:22 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void ft_cd(t_cmd *cmd, t_shell **shell)
 		if (last_pwd)
 			path = ft_strdup(last_pwd->value);
 	}
-	else if (cmd->args[1])
+	else if (cmd->args[1] && ft_strncmp(cmd->args[1], "~", 2) != 0)
 		path = ft_strdup(cmd->args[1]);
 	else
 		path = ft_strdup(get_home(*shell));
@@ -34,7 +34,7 @@ void ft_cd(t_cmd *cmd, t_shell **shell)
 	getcwd(cwd, sizeof(cwd));
 	update_pwds(*shell, cwd, 0);
 	if (chdir(path) == -1)
-		return(perror("chdir"));
+		fd_error(cmd->args[1], *shell, "cd: ");
 	getcwd(cwd, sizeof(cwd));
 	update_pwds(*shell, cwd, 1);
 	free(path);

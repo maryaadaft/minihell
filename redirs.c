@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 13:45:32 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/08 13:32:43 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/08 15:57:53 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,40 @@ int	apply_redirs(t_redir *redirs)
 		temp = temp->next;
 	}
 	return (0);
+}
+
+void	apply_redir_only(t_redir *redirs, t_shell *shell)
+{
+	t_redir	*temp;
+	int		fd;
+
+	temp = redirs;
+	while (temp)
+	{
+		if (temp->type == Ty_RE_OUT)
+		{
+			fd = open(temp->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (fd == -1)
+				return(fd_error(temp->file, shell, NULL));
+			close(fd);
+		}
+		else if (temp->type == Ty_APPEND)
+		{
+			fd = open(temp->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (fd == -1)
+				return(fd_error(temp->file, shell, NULL));
+			close(fd);
+		}
+		else if (temp->type == Ty_RE_IN)
+		{
+			fd = open(temp->file, O_RDONLY);
+			if (fd == -1)
+				return(fd_error(temp->file, shell, NULL));
+			close(fd);
+		}
+		temp = temp->next;
+	}
+	shell->exit_status = 0;
 }
 
 void run_builtin_with_redir(t_cmd *cmd, t_shell *shell)

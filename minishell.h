@@ -111,6 +111,7 @@ int		check_syntax(t_token *tokenaya);
 void	free_env_node(t_env *node);
 void	free_env(t_env **env_list);
 void	free_shell(t_shell *shell);
+void	fd_error(char *file_name, t_shell *shell, char *extra_str);
 
 // Envp
 void	env_init(t_shell *shell, char **envp);
@@ -136,6 +137,8 @@ void	ft_export(t_cmd *cmd, t_shell *shell);
 // Redirs
 int		apply_redirs(t_redir *redirs);
 void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell);
+// for redir only without a command "> file.txt"
+void    apply_redir_only(t_redir *redirs, t_shell *shell);
 
 //heredoc
 int	ft_heredoc(t_redir *redir, t_shell *shell);

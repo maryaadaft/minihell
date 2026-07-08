@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/08 13:35:32 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/08 15:34:03 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	main(int argc, char **argv, char **envp)
    			shell.exit_status = 130;
 		if (!input)
 		{
+			write(1, "exit\n", 5);
 			rl_clear_history();
 			break ;
 		}
@@ -71,6 +72,8 @@ int	main(int argc, char **argv, char **envp)
 			run_builtin_with_redir(cmds, &shell);
 		else if (cmds->args && cmds->args[0])
 			ft_execute(cmds, &shell);
+		else if (cmds->redirs)
+    		ft_execute(cmds, &shell);       // when no cmds exist but redir is there > >> < 
 		free_cmd(&cmds);
 		ft_free_tokens(&tokenaya);
 		free(input);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 10:39:03 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/01 21:35:42 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/08 16:05:56 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,23 @@ void	*null_err_msg(char *str)
 	write(2, str, ft_strlen(str));
 	printf("\033[0m\n");
 	return (NULL);
+}
+
+void	fd_error(char *file_name, t_shell *shell, char *extra_str)
+{
+	char *join_perror;
+	char *first;
+	if (extra_str)
+	{
+		first = ft_strjoin("minishell: ", extra_str);
+		join_perror = ft_strjoin(first, file_name);
+	}
+	else
+		join_perror = ft_strjoin("minishell: ", file_name);
+		
+	shell->exit_status = 1;
+	perror(join_perror);
+	if(extra_str)
+		free(first);
+	free(join_perror);
 }
