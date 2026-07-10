@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 21:35:18 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/05 11:26:24 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/10 15:38:06 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ void free_shell(t_shell *shell)
 {
     free_env(&shell->env);
     if (shell->commands)
-        free_cmd(shell->commands);
+        free_cmd(&shell->commands);
     if (shell->tokens)
-        ft_free_tokens(shell->tokens);
+        ft_free_tokens(&shell->tokens);
 }

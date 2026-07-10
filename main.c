@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/08 15:34:03 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/10 15:40:06 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ int g_signal = 0;
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell shell;
-	t_token	*tokenaya;
-	t_cmd	*cmds;
-	char *input;
+	char	*input;
 
 	(void)argc;
 	(void)argv;
@@ -44,41 +42,38 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (*input)
 			add_history(input);
-		tokenaya = tokeniser(&shell, input);
-		if (!tokenaya)
+		shell.tokens = tokeniser(&shell, input);
+		if (!shell.tokens)
 		{
 			free(input);
 			continue ;
 		}
-		shell.tokens = &tokenaya;
 		// printf("=== TOKENS ===\n");
-		// print_tokens(tokenaya);
-		// ft_expand(tokenaya, &shell);
-		cmds = ft_parse(tokenaya);
-		if (!cmds)
+		// print_tokens(shell.tokens);
+		shell.commands = ft_parse(shell.tokens);
+		if (!shell.commands)
 		{
-			ft_free_tokens(&tokenaya);
+			ft_free_tokens(&shell.tokens);
 			free(input);
 			continue ;
 		}
-		shell.commands = &cmds;
 		// printf("=== COMMANDS ===\n");
-		// print_cmds(cmds);
-		//
+		// print_cmds(shell.commands);
 		// printf("======\n");
-		if (cmds->next)
-			ft_pipe(cmds, &shell);
-		else if (cmds->args && cmds->args[0] && is_builtin(cmds->args[0]))
-			run_builtin_with_redir(cmds, &shell);
-		else if (cmds->args && cmds->args[0])
-			ft_execute(cmds, &shell);
-		else if (cmds->redirs)
-    		ft_execute(cmds, &shell);       // when no cmds exist but redir is there > >> < 
-		free_cmd(&cmds);
-		ft_free_tokens(&tokenaya);
+		if (shell.commands->next)
+			ft_pipe(shell.commands, &shell);
+		else if (shell.commands->args && shell.commands->args[0] && is_builtin(shell.commands->args[0]))
+			run_builtin_with_redir(shell.commands, &shell);
+		else if (shell.commands->args && shell.commands->args[0])
+			ft_execute(shell.commands, &shell);
+		else if (shell.commands->redirs)
+    		ft_execute(shell.commands, &shell);       // when no cmds exist but redir is there > >> < 
+		free_cmd(&shell.commands);
+		ft_free_tokens(&shell.tokens);
 		free(input);
 	}
 	// printf("\n\n\n\n");
 	// print_env(shell.env);
 	free_env(&shell.env);
+	return(shell.exit_status);
 }

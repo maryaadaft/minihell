@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 10:39:03 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/08 16:05:56 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/10 15:35:46 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void error_message(char *str, int exit_code)
 void malloc_exit(t_shell *shell)
 {
 	write(2, "minishell: malloc failure\n", 26);
-	ft_free_tokens(shell->tokens);
-	free_cmd(shell->commands);
+	ft_free_tokens(&shell->tokens);
+	free_cmd(&shell->commands);
 	exit(1);
 }
 

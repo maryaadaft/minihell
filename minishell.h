@@ -56,8 +56,8 @@ typedef struct s_env {
 }   t_env;
 
 typedef	struct	s_shell {
-	t_token		**tokens;
-	t_cmd		**commands;
+	t_token		*tokens;
+	t_cmd		*commands;
     t_env       *env;
     int         exit_status;
 }	t_shell;
