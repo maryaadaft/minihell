@@ -133,6 +133,9 @@ int		ft_exit(t_shell *shell, t_cmd *cmds);
 void	ft_env(t_shell *shell);
 void	ft_unset(t_cmd *cmd, t_shell *shell);
 void	ft_export(t_cmd *cmd, t_shell *shell);
+void	print_export(t_shell *shell);
+t_env	*create_env_node(char *key, char *value);
+void    update_env_value(t_env *node, char *value);
 
 // Redirs
 int		apply_redirs(t_redir *redirs);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/13 17:16:31 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/10 16:05:38 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,79 +16,6 @@
 // if the key=value exist -> we update ----- DONE
 // if key=value doesn't exist -> we add a new entry ---- DONE
 // if key only without a value -> we add an entry with no value ---- DONE
-
-
-//we have to sort the env before we print it, so we copy to temp and sort there. maybe split into 2 functions
-static	t_env **sort_env(t_shell *shell, int len)
-{
-	t_env **copy_env;
-	t_env *temp;
-	t_env *swap;
-	int i;
-	int j;
-
-	copy_env = malloc(sizeof(t_env *) * (len + 1));
-	if (!copy_env)
-		return(NULL);
-	temp = shell->env;
-	i = 0;
-	while(temp)
-	{
-		copy_env[i] = temp;
-		i++;
-		temp = temp->next;
-	}
-	copy_env[i] = NULL;
-	i = 0;
-	while (i < (len - 1))
-	{
-		j = 0;
-		while(j < (len - i - 1))
-		{
-			if (ft_strncmp(copy_env[j]->key, copy_env[j + 1]->key, ft_strlen(copy_env[j]->key) + 1) > 0)
-			{
-				swap = copy_env[j];
-				copy_env[j] = copy_env[j + 1];
-				copy_env[j + 1] = swap;
-			}
-			j++;
-		}
-		i++;
-	}
-	return (copy_env);
-}
-
-static void print_export(t_shell *shell)
-{
-	int len;
-	t_env **sorted_env;
-	len = env_len(shell);
-	sorted_env = sort_env(shell, len);
-	if(!sorted_env)
-		return ;
-	int i = 0;
-	while(sorted_env[i])
-	{
-		if (sorted_env[i]->value && sorted_env[i]->value[0] != '\0')
-			printf("declare -x %s=\"%s\"\n", sorted_env[i]->key, sorted_env[i]->value);
-		else if (sorted_env[i]->value && sorted_env[i]->value[0] == '\0')
-			printf("declare -x %s=\"\"\n", sorted_env[i]->key);
-		else
-			printf("declare -x %s\n", sorted_env[i]->key);
-		i++;
-	}
-	free(sorted_env);
-	// while (temp)
-	// {
-	// 	if (temp->value && temp->value[0] != '\0')
-	// 		printf("declare -x %s=\"%s\"\n", temp->key, temp->value);
-	// 	else if (temp->value && temp->value[0] == '\0')
-	// 		printf("declare -x %s=\"\"\n", temp->key);
-	// 	else
-	// 		printf("declare -x %s\n", temp->key);
-	// 	temp = temp->next;
-	// }
-}
 
 static char *get_key(char *arg)
 {
@@ -110,15 +37,6 @@ static char *get_value(char *arg)
 	if (!equal_sign)
 		return (NULL);
 	return (ft_strdup(equal_sign + 1));
-}
-
-static void    update_env(t_env *node, char *value)
-{
-	if (node->value)
-		free(node->value);
-	if (!value)
-		return ;
-	node->value = ft_strdup(value);
 }
 
 static int is_valid_key(char *str)
@@ -144,28 +62,12 @@ static void	export_add(t_shell *shell, char *key, char *value)
 
 	node = find_env(shell, key);
 	if (node)
-		update_env(node, value);
+		update_env_value(node, value);
 	else
 	{
-		new = ft_calloc(1, sizeof(t_env));
+		new = create_env_node(key, value);
 		if (!new)
 			return ;
-		new->key = ft_strdup(key);
-		if (!new->key)
-		{
-			free (new);
-			return ;
-		}
-		if (value)
-		{
-			new->value = ft_strdup(value);
-			if (!new->value)
-			{
-				free(new->key);
-				free(new);
-				return ;
-			}
-		}
 		addback_env(&shell->env, new);
 	}
 }
