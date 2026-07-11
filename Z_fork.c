@@ -66,3 +66,20 @@
 // 	free (input);
 //     return (0);
 // }
+
+
+// // I don't think we need this it is never used:
+// int	all_space(char *value)
+// {
+// 	int i;
+
+// 	i = 0;
+// 	while (value[i])
+// 	{
+// 		if (value[i] <= 32)
+// 			i++;
+// 		else
+// 			return (0); 
+// 	}
+// 	return (1);
+// }

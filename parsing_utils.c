@@ -5,62 +5,110 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/25 15:29:03 by maryaada          #+#    #+#             */
-/*   Updated: 2026/06/05 13:39:07 by walneama         ###   ########.fr       */
+/*   Created: 2026/07/11 18:11:37 by walneama          #+#    #+#             */
+/*   Updated: 2026/07/11 18:37:57 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_is_redir(t_type	type)
+static void	copy_args(char **temp_arr, char **args)
 {
-	return (type == Ty_RE_IN || type == Ty_RE_OUT
-		|| type == 	Ty_HEREDOC || type == Ty_APPEND);
-}
-
-int	ft_is_word(t_type	type)
-{
-	return (type == Ty_WORD || type == Ty_Single_Q || type == Ty_Double_Q);
-
-}
-int	all_space(char *value)
-{
-	int i;
+	int	i;
 
 	i = 0;
-	while (value[i])
+	if (args)
 	{
-		if (value[i] <= 32)
+		while (args[i])
+		{
+			temp_arr[i] = args[i];
 			i++;
-		else
-			return(0); 
+		}
 	}
-	return (1);
 }
 
-int	check_syntax(t_token *tokenaya)
+int	ft_args_append(char ***args, char *new_arg)
 {
-	if (!tokenaya)
-		return (0);
-	if (tokenaya->token_type == Ty_PIPE)
-		return (num_err_msg("minishell: syntax error near unexpected token `|'"));
-	while (tokenaya)
+	char	**temp_arr;
+	int		i;
+
+	i = 0;
+	if (*args)
+		while ((*args)[i])
+			i++;
+	temp_arr = malloc(sizeof(char *) * (i + 2));
+	if (!temp_arr)
+		return (-1);
+	copy_args(temp_arr, *args);
+	temp_arr[i] = ft_strdup(new_arg);
+	if (!temp_arr[i])
 	{
-		if (tokenaya->token_type == Ty_PIPE
-			&& !tokenaya->next)
-			return (num_err_msg("minishell: syntax error near unexpected token `|'"));
-		else if (tokenaya->token_type == Ty_PIPE
-			&& tokenaya->next->token_type == Ty_PIPE)
-			return (num_err_msg("minishell: syntax error near unexpected token `||'"));
-		else if (tokenaya->token_type == Ty_PIPE
-			&& ft_is_redir(tokenaya->next->token_type))
-            return (num_err_msg("minishell: syntax error near unexpected token `|'")); // we still don't know if we need this or not!
-		else if (ft_is_redir(tokenaya->token_type)
-			&& (!tokenaya->next
-				|| tokenaya->next->token_type == Ty_PIPE
-				|| ft_is_redir(tokenaya->next->token_type)))
-			return (num_err_msg("minishell: syntax error near unexpected token"));
-		tokenaya = tokenaya->next;
+		free(temp_arr);
+		return (-1);
 	}
+	temp_arr[i + 1] = NULL;
+	free(*args);
+	*args = temp_arr;
 	return (0);
+}
+
+t_redir	*ft_parse_redir(t_token **tok)
+{
+	t_redir	*redi;
+
+	redi = ft_calloc(1, sizeof(t_redir));
+	if (!redi)
+		return (NULL);
+	redi->heredoc_fd = -1;
+	redi->type = (*tok)->token_type;
+	*tok = (*tok)->next;
+	if (redi->type == Ty_HEREDOC)
+		redi->expand = !((*tok)->quoted);
+	if (!*tok || (*tok)->token_type != Ty_WORD)
+	{
+		free(redi);
+		return (NULL);
+	}
+	redi->file = ft_strdup((*tok)->value);
+	if (!redi->file)
+	{
+		free(redi);
+		return (NULL);
+	}
+	*tok = (*tok)->next;
+	return (redi);
+}
+
+void	ft_redir_addback(t_redir **head, t_redir *new_redir)
+{
+	t_redir	*temp;
+
+	if (!new_redir)
+		return ;
+	if (!*head)
+	{
+		*head = new_redir;
+		return ;
+	}
+	temp = *head;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = new_redir;
+}
+
+void	ft_addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd)
+{
+	t_cmd	*temp;
+
+	if (!next_cmd)
+		return ;
+	if (!*cmd_head)
+	{
+		*cmd_head = next_cmd;
+		return ;
+	}
+	temp = *cmd_head;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = next_cmd;
 }
