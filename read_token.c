@@ -86,7 +86,8 @@ t_token	*ft_read_redir(t_shell	*shell, const char *input, int *pos)
 	return (NULL);
 }
 
-t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
+t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos,
+		int expand)
 {
 	char	*result;
 	char	*temp;
@@ -108,7 +109,8 @@ t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
 			return (free(result), NULL);
 		if (chunk->token_type == Ty_Single_Q || chunk->token_type == Ty_Double_Q)
 			was_quoted = 1;
-		if (chunk->token_type == Ty_WORD || chunk->token_type == Ty_Double_Q)
+		if (expand && (chunk->token_type == Ty_WORD
+				|| chunk->token_type == Ty_Double_Q))
 			expanded = expand_str(chunk->value, shell);
 		else
 			expanded = ft_strdup(chunk->value);

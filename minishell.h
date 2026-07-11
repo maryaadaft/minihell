@@ -86,7 +86,8 @@ char	*ft_read_quoted(t_shell	*shell, const char *input, int *pos, char quote);
 t_token	*ft_read_redir(t_shell	*shell, const char *input, int *pos);
 t_token	*tokeniser(t_shell	*shell, const char *input);
 t_token *create_next_token(t_shell	*shell, const char *input, int *pos);
-t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos);
+t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos,
+			int expand);
 
 //parsing fns
 t_cmd		*ft_parse(t_token *tokens);

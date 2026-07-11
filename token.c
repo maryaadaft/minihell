@@ -67,11 +67,13 @@ t_token	*tokeniser(t_shell	*shell, const char *input)
 {
 	t_token	*head;
 	t_token	*token;
-	int	pos;
+	t_token	*last;
+	int		pos;
 
 	if (!input)
 		return (NULL);
 	head = NULL;
+	last = NULL;
 	pos = 0;
 	while (input[pos])
 	{
@@ -82,13 +84,12 @@ t_token	*tokeniser(t_shell	*shell, const char *input)
 		if (input[pos] == '|' || input[pos] == '<' || input[pos] == '>')
 			token = create_next_token(shell, input, &pos);
 		else
-			token = ft_read_word_token(shell, input, &pos);
+			token = ft_read_word_token(shell, input, &pos,
+					!last || last->token_type != Ty_HEREDOC);
 		if (!token)
-		{
-			ft_free_tokens(&head);
-			return (NULL);
-		}
+			return (ft_free_tokens(&head), NULL);
 		addback_token(&head, token);
+		last = token;
 	}
 	return (head);
 }
