@@ -51,7 +51,7 @@ static int	heredoc_loop(t_redir *redir, t_shell *shell, int fd[2])
 		if (!line)
 		{
 			write(2, "minishell: warning: here-document "
-				"delimited by end-of-file\n", 60);
+				"delimited by end-of-file\n", 59);
 			break ;
 		}
 		if (ft_strncmp(line, redir->file, ft_strlen(redir->file) + 1) == 0)
