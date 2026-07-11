@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGs = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g
 
 SRCs = main.c \
 	mylib/ft_isalpha.c \
@@ -36,7 +36,7 @@ Name = minishell
 all : $(Name)
 
 $(Name) : $(OBJs)
-	$(CC) $(CFLAGs) -o $(Name) $(OBJs) -lreadline
+	$(CC) $(CFLAGS) -o $(Name) $(OBJs) -lreadline
 
 clean :
 	rm -f $(OBJs)
