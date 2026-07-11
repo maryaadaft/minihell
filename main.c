@@ -53,6 +53,7 @@ int	main(int argc, char **argv, char **envp)
 		shell.commands = ft_parse(shell.tokens);
 		if (!shell.commands)
 		{
+			shell.exit_status = 2;
 			ft_free_tokens(&shell.tokens);
 			free(input);
 			continue ;

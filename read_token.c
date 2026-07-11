@@ -49,7 +49,10 @@ char	*ft_read_quoted(t_shell	*shell, const char *input, int *pos, char quote)
 		(*pos)++;
 	// No closing quote -> error
 	if (input[*pos] == '\0')
+	{
+		shell->exit_status = 2;
 		return (null_err_msg("minishell: syntax error: unclosed quote"));
+	}
 	len = *pos - start;
 	(*pos)++;
 	q_word = ft_substr(input, start, len);

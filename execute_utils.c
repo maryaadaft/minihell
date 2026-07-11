@@ -33,6 +33,7 @@ int	is_builtin(char *cmd_name)
 
 void	run_builtin(t_cmd *cmd, t_shell *shell)
 {
+	shell->exit_status = 0;
 	if (ft_strncmp(cmd->args[0], "echo", 5) == 0)
 		ft_echo(cmd);
 	else if (ft_strncmp(cmd->args[0], "cd", 3) == 0)
@@ -40,7 +41,7 @@ void	run_builtin(t_cmd *cmd, t_shell *shell)
 	else if (ft_strncmp(cmd->args[0], "pwd", 4) == 0)
 		ft_pwd(cmd);
 	else if (ft_strncmp(cmd->args[0], "exit", 5) == 0)
-		ft_exit(shell, cmd);
+		shell->exit_status = ft_exit(shell, cmd);
 	else if (ft_strncmp(cmd->args[0], "env", 4) == 0)
 		ft_env(shell);
 	else if (ft_strncmp(cmd->args[0], "unset", 6) == 0)
@@ -60,6 +61,8 @@ void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell)
 		shell->exit_status = 130;
 	else if (apply_redirs(cmd->redirs) == 0)
 		run_builtin(cmd, shell);
+	else
+		shell->exit_status = 1;
 	dup2(old_stdin, STDIN_FILENO);
 	dup2(old_stdout, STDOUT_FILENO);
 	close(old_stdin);

@@ -89,6 +89,7 @@ void	ft_export(t_cmd *cmd, t_shell *shell)
 			write(2, "minishell: export: '", 20);
 			write(2, cmd->args[i], ft_strlen(cmd->args[i]));
 			write(2, "': not a valid identifier\n", 26);
+			shell->exit_status = 1;
 		}
 		else
 		{
