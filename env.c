@@ -34,8 +34,7 @@ t_env	*get_env(char *envp)
 	t_env	*node;
 	char	*equal_sign;
 
-	node = malloc(sizeof(t_env));
-	ft_memset(node, 0, sizeof(t_env));
+	node = ft_calloc(1, sizeof(t_env));
 	if (!node)
 		return (NULL);
 	equal_sign = ft_strchr(envp, '=');
