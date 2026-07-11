@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 21:35:18 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/10 15:38:06 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/11 16:45:18 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,29 +118,23 @@ void	free_env(t_env **env_list)
 
 	if (!env_list || !*env_list)
 		return ;
-
 	head = *env_list;
-
 	while (head)
 	{
 		next = head->next;
-
 		if (head->key)
 		{
 			free(head->key);
 			head->key = NULL;
 		}
-
 		if (head->value)
 		{
 			free(head->value);
 			head->value = NULL;
 		}
-
 		free(head);
 		head = next;
 	}
-
 	*env_list = NULL;
 }
 
