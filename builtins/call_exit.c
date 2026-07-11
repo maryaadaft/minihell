@@ -14,8 +14,8 @@
 
 int	convert_to_int(const char *s)
 {
-	long	n;
-	int		sign;
+	unsigned long long	n;
+	int					sign;
 
 	n = 0;
 	sign = 1;
@@ -25,15 +25,30 @@ int	convert_to_int(const char *s)
 		if (*s++ == '-')
 			sign = -1;
 	while (*s >= '0' && *s <= '9')
-	{
-		if (n > INT_MAX / 10
-			|| (n == INT_MAX / 10 && *s - '0' > INT_MAX % 10))
-		{
-			return (0);
-		}
 		n = n * 10 + (*s++ - '0');
-	}
-	return ((int)(n * sign));
+	if (sign < 0)
+		return ((int)((256 - (n % 256)) % 256));
+	return ((int)(n % 256));
+}
+
+static int	exit_arg_overflows(const char *s)
+{
+	int		neg;
+	size_t	len;
+
+	neg = 0;
+	if (*s == '+' || *s == '-')
+		neg = (*s++ == '-');
+	while (*s == '0' && s[1])
+		s++;
+	len = ft_strlen(s);
+	if (len < 19)
+		return (0);
+	if (len > 19)
+		return (1);
+	if (neg)
+		return (ft_strncmp(s, "9223372036854775808", 19) > 0);
+	return (ft_strncmp(s, "9223372036854775807", 19) > 0);
 }
 
 // only exit -> print exit + last exit_status
@@ -55,7 +70,8 @@ int	ft_exit(t_shell *shell, t_cmd *cmds)
 	}
 	if (!cmds->args[1])
 		exit_code = shell->exit_status;
-	else if (!is_valid_number(cmds->args[1]))
+	else if (!is_valid_number(cmds->args[1])
+		|| exit_arg_overflows(cmds->args[1]))
 	{
 		write(2, "minishell: exit: ", 17);
 		write(2, cmds->args[1], ft_strlen(cmds->args[1]));
