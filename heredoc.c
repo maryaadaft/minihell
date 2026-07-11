@@ -76,7 +76,8 @@ int	ft_heredoc(t_redir *redir, t_shell *shell)
 	}
 	sig_heredoc();
 	g_signal = 0;
-	rl_event_hook = check_sigint;
+	if (isatty(STDIN_FILENO))
+		rl_event_hook = check_sigint;
 	ret = heredoc_loop(redir, shell, fd);
 	if (ret == -1)
 		return (-1);
