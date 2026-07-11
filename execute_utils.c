@@ -69,6 +69,34 @@ void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell)
 	close(old_stdout);
 }
 
+void	pipe_child(t_cmd *cmd, int *prev_pipe, int *curr_pipe, t_shell *shell)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
+	if (prev_pipe[0] != -1)
+	{
+		dup2(prev_pipe[0], STDIN_FILENO);
+		close(prev_pipe[0]);
+		close(prev_pipe[1]);
+	}
+	if (cmd->next)
+	{
+		dup2(curr_pipe[1], STDOUT_FILENO);
+		close(curr_pipe[0]);
+		close(curr_pipe[1]);
+	}
+	if (apply_redirs(cmd->redirs) == -1)
+		exit(1);
+	if (!cmd->args || !cmd->args[0])
+		exit(0);
+	if (is_builtin(cmd->args[0]))
+	{
+		run_builtin(cmd, shell);
+		exit(shell->exit_status);
+	}
+	execute_child(cmd, shell);
+}
+
 char	*get_path(t_cmd *cmd, t_shell *shell)
 {
 	t_env	*path_node;

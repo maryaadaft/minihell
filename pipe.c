@@ -18,12 +18,22 @@ static void	manage_pipes(int *prev_pipe, int *current_pipe, t_cmd *cmds)
 	{
 		close(prev_pipe[0]);
 		close(prev_pipe[1]);
+		prev_pipe[0] = -1;
+		prev_pipe[1] = -1;
 	}
-	if (cmds->next)
+	if (cmds && cmds->next)
 	{
 		prev_pipe[0] = current_pipe[0];
 		prev_pipe[1] = current_pipe[1];
 	}
+}
+
+static pid_t	run_fail(int *prev, int *curr, t_cmd *cmds, char *what)
+{
+	perror(what);
+	manage_pipes(prev, curr, cmds);
+	manage_pipes(prev, curr, NULL);
+	return (-1);
 }
 
 static pid_t	run_pipe(t_cmd *cmds, t_shell *shell)
@@ -35,11 +45,16 @@ static pid_t	run_pipe(t_cmd *cmds, t_shell *shell)
 
 	prev_pipe[0] = -1;
 	prev_pipe[1] = -1;
+	last_pid = -1;
 	while (cmds)
 	{
-		if (cmds->next)
-			pipe(current_pipe);
+		if (cmds->next && pipe(current_pipe) == -1)
+			return (run_fail(prev_pipe, current_pipe,
+					NULL, "minishell: pipe"));
 		pid = fork();
+		if (pid == -1)
+			return (run_fail(prev_pipe, current_pipe,
+					cmds, "minishell: fork"));
 		if (pid == 0)
 			pipe_child(cmds, prev_pipe, current_pipe, shell);
 		manage_pipes(prev_pipe, current_pipe, cmds);
@@ -89,32 +104,6 @@ void	ft_pipe(t_cmd *cmds, t_shell *shell)
 	sig_child();
 	last_pid = run_pipe(cmds, shell);
 	wait_for_all(last_pid, shell);
-}
-
-void	pipe_child(t_cmd *cmd, int *prev_pipe, int *curr_pipe, t_shell *shell)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
-	if (prev_pipe[0] != -1)
-	{
-		dup2(prev_pipe[0], STDIN_FILENO);
-		close(prev_pipe[0]);
-		close(prev_pipe[1]);
-	}
-	if (cmd->next)
-	{
-		dup2(curr_pipe[1], STDOUT_FILENO);
-		close(curr_pipe[0]);
-		close(curr_pipe[1]);
-	}
-	if (apply_redirs(cmd->redirs) == -1)
-		exit(1);
-	if (!cmd->args || !cmd->args[0])
-		exit(0);
-	if (is_builtin(cmd->args[0]))
-	{
-		run_builtin(cmd, shell);
-		exit(shell->exit_status);
-	}
-	execute_child(cmd, shell);
+	if (last_pid == -1)
+		shell->exit_status = 1;
 }
