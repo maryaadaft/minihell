@@ -38,12 +38,12 @@ t_env	*create_env_node(char *key, char *value)
 	return (new);
 }
 
-void    update_env_value(t_env *node, char *value)
+void	update_env_value(t_env *node, char *value)
 {
-	if (node->value)
-		free(node->value);
 	if (!value)
 		return ;
+	if (node->value)
+		free(node->value);
 	node->value = ft_strdup(value);
 }
 
