@@ -37,7 +37,7 @@ static void	wait_child(pid_t pid, t_shell *shell)
 }
 static int setup_execute(t_cmd *cmd, t_shell *shell, char **path, char ***envp)
 {
-	if (cmd->args[0][0] == '/')
+	if (ft_strchr(cmd->args[0], '/'))
 		*path = ft_strdup(cmd->args[0]);
 	else
 		*path = get_path(cmd, shell);
@@ -89,8 +89,8 @@ void	execute_child(t_cmd *cmd, t_shell *shell)
 	char	*valid_path;
 	char	**envp;
 
-	if (cmd->args[0][0] == '/')
-    	valid_path = ft_strdup(cmd->args[0]);
+	if (ft_strchr(cmd->args[0], '/'))
+		valid_path = ft_strdup(cmd->args[0]);
 	else
 		valid_path = get_path(cmd, shell);
 	if (!valid_path)

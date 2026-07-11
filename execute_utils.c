@@ -75,6 +75,8 @@ char	*get_path(t_cmd *cmd, t_shell *shell)
 	char	*temp;
 
 	i = -1;
+	if (!cmd->args[0][0])
+		return (NULL);
 	path_node = find_env(shell, "PATH");
 	if (!path_node)
 		return (NULL);
