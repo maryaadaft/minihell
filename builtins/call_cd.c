@@ -12,25 +12,37 @@
 
 #include "../minishell.h"
 
-void ft_cd(t_cmd *cmd, t_shell **shell)
+static char	*get_cd_path(t_cmd *cmd, t_shell *shell)
 {
-	char cwd[PATH_MAX];  // current working directory
-	char *path;
-	t_env *last_pwd;
-	
-	path = NULL;
+	t_env	*last_pwd;
+	char	*home;
+
 	if (cmd->args[1] && ft_strncmp(cmd->args[1], "-", 2) == 0)
 	{
-		last_pwd = find_env(*shell, "OLDPWD");
-		if (last_pwd)
-			path = ft_strdup(last_pwd->value);
+		last_pwd = find_env(shell, "OLDPWD");
+		if (!last_pwd || !last_pwd->value)
+			return (null_err_msg("minishell: cd: OLDPWD not set"));
+		return (ft_strdup(last_pwd->value));
 	}
-	else if (cmd->args[1] && ft_strncmp(cmd->args[1], "~", 2) != 0)
-		path = ft_strdup(cmd->args[1]);
-	else
-		path = ft_strdup(get_home(*shell));
+	if (cmd->args[1] && ft_strncmp(cmd->args[1], "~", 2) != 0)
+		return (ft_strdup(cmd->args[1]));
+	home = get_home(shell);
+	if (!home)
+		return (null_err_msg("minishell: cd: HOME not set"));
+	return (ft_strdup(home));
+}
+
+void	ft_cd(t_cmd *cmd, t_shell **shell)
+{
+	char	cwd[PATH_MAX];
+	char	*path;
+
+	path = get_cd_path(cmd, *shell);
 	if (!path)
-		return ((void)num_err_msg("minishell: cd: OLDPWD not set"));
+	{
+		(*shell)->exit_status = 1;
+		return ;
+	}
 	getcwd(cwd, sizeof(cwd));
 	update_pwds(*shell, cwd, 0);
 	if (chdir(path) == -1)
