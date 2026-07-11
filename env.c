@@ -6,17 +6,17 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:11:23 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/11 19:42:25 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/11 20:51:07 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void env_init(t_shell *shell, char **envp)
+void	env_init(t_shell *shell, char **envp)
 {
-	t_env *env_node;
-	int i;
-	
+	t_env	*env_node;
+	int		i;
+
 	i = 0;
 	shell->env = NULL;
 	while (envp[i] != NULL)
@@ -29,11 +29,11 @@ void env_init(t_shell *shell, char **envp)
 	}
 }
 
-t_env *get_env(char *envp)
+t_env	*get_env(char *envp)
 {
 	t_env	*node;
 	char	*equal_sign;
-	
+
 	node = malloc(sizeof(t_env));
 	ft_memset(node, 0, sizeof(t_env));
 	if (!node)
@@ -58,7 +58,7 @@ t_env *get_env(char *envp)
 	return (node);
 }
 
-void addback_env(t_env **env_list, t_env *new_env)
+void	addback_env(t_env **env_list, t_env *new_env)
 {
 	t_env	*temp;
 
@@ -75,10 +75,10 @@ void addback_env(t_env **env_list, t_env *new_env)
 	temp->next = new_env;
 }
 
-t_env *find_env(t_shell *shell, char *target)
+t_env	*find_env(t_shell *shell, char *target)
 {
 	t_env	*temp;
-	
+
 	temp = shell->env;
 	while (temp)
 	{
@@ -89,8 +89,7 @@ t_env *find_env(t_shell *shell, char *target)
 	return (NULL);
 }
 
-// Claude wrote this!!!
-void remove_env(t_env **env_list, const char *old_key)
+void	remove_env(t_env **env_list, const char *old_key)
 {
 	t_env	*temp;
 	t_env	*prev;

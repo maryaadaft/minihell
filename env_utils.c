@@ -6,17 +6,17 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/10 18:20:34 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/10 18:20:54 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/11 20:49:36 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static char *env_to_str(t_env *node)
+static char	*env_to_str(t_env *node)
 {
-	char *temp;
-	char *result;
-	
+	char	*temp;
+	char	*result;
+
 	temp = ft_strjoin(node->key, "=");
 	if (!temp)
 		return (NULL);
@@ -54,7 +54,7 @@ char	**env_to_array(t_shell *shell)
 	return (envp);
 }
 
-int env_len(t_shell *shell)
+int	env_len(t_shell *shell)
 {
 	int		i;
 	t_env	*temp;
