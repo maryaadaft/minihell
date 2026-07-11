@@ -93,6 +93,8 @@ void	ft_pipe(t_cmd *cmds, t_shell *shell)
 
 void	pipe_child(t_cmd *cmd, int *prev_pipe, int *curr_pipe, t_shell *shell)
 {
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	if (prev_pipe[0] != -1)
 	{
 		dup2(prev_pipe[0], STDIN_FILENO);
