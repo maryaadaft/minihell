@@ -55,6 +55,8 @@ void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell)
 	int	old_stdin;
 	int	old_stdout;
 
+	if (!cmd->redirs)
+		return (run_builtin(cmd, shell));
 	old_stdin = dup(STDIN_FILENO);
 	old_stdout = dup(STDOUT_FILENO);
 	if (prep_heredocs(cmd, shell) == -1)
