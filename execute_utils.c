@@ -6,47 +6,64 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 19:36:29 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/11 19:43:25 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/11 20:26:06 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int is_builtin(char *cmd_name)
+int	is_builtin(char *cmd_name)
 {
-    if (ft_strncmp(cmd_name, "echo", 5) == 0)
-        return (1);
-    if (ft_strncmp(cmd_name, "cd", 3) == 0)
-        return (1);
-    if (ft_strncmp(cmd_name, "pwd", 4) == 0)
-        return (1);
-    if (ft_strncmp(cmd_name, "env", 4) == 0)
-        return (1);
-    if (ft_strncmp(cmd_name, "export", 7) == 0)
-        return (1);
-    if (ft_strncmp(cmd_name, "unset", 6) == 0)
-        return (1);
-    if (ft_strncmp(cmd_name, "exit", 5) == 0)
-        return (1);
-    return (0);
+	if (ft_strncmp(cmd_name, "echo", 5) == 0)
+		return (1);
+	if (ft_strncmp(cmd_name, "cd", 3) == 0)
+		return (1);
+	if (ft_strncmp(cmd_name, "pwd", 4) == 0)
+		return (1);
+	if (ft_strncmp(cmd_name, "env", 4) == 0)
+		return (1);
+	if (ft_strncmp(cmd_name, "export", 7) == 0)
+		return (1);
+	if (ft_strncmp(cmd_name, "unset", 6) == 0)
+		return (1);
+	if (ft_strncmp(cmd_name, "exit", 5) == 0)
+		return (1);
+	return (0);
 }
 
-void run_builtin(t_cmd *cmd, t_shell *shell)
+void	run_builtin(t_cmd *cmd, t_shell *shell)
 {
-    if (ft_strncmp(cmd->args[0], "echo", 5) == 0)
-        ft_echo(cmd);
-    else if (ft_strncmp(cmd->args[0], "cd", 3) == 0)
-        ft_cd(cmd, &shell);
-	else if(ft_strncmp(cmd->args[0], "pwd", 4) == 0)
+	if (ft_strncmp(cmd->args[0], "echo", 5) == 0)
+		ft_echo(cmd);
+	else if (ft_strncmp(cmd->args[0], "cd", 3) == 0)
+		ft_cd(cmd, &shell);
+	else if (ft_strncmp(cmd->args[0], "pwd", 4) == 0)
 		ft_pwd(cmd);
 	else if (ft_strncmp(cmd->args[0], "exit", 5) == 0)
-        ft_exit(shell, cmd);
+		ft_exit(shell, cmd);
 	else if (ft_strncmp(cmd->args[0], "env", 4) == 0)
-        ft_env(shell);
+		ft_env(shell);
 	else if (ft_strncmp(cmd->args[0], "unset", 6) == 0)
-        ft_unset(cmd, shell);
+		ft_unset(cmd, shell);
 	else if (ft_strncmp(cmd->args[0], "export", 7) == 0)
-        ft_export(cmd, shell);
+		ft_export(cmd, shell);
+}
+
+void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell)
+{
+	int	old_stdin;
+	int	old_stdout;
+
+	old_stdin = dup(STDIN_FILENO);
+	old_stdout = dup(STDOUT_FILENO);
+	if (prep_heredocs(cmd, shell) == -1)
+		shell->exit_status = 130;
+	else if (apply_redirs(cmd->redirs) == 0)
+		run_builtin(cmd, shell);
+	dup2(old_stdin, STDIN_FILENO);
+	dup2(old_stdout, STDOUT_FILENO);
+	close(old_stdin);
+	close(old_stdout);
 }
 
 char	*get_path(t_cmd *cmd, t_shell *shell)
