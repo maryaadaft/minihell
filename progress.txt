@@ -1,4 +1,0 @@
-There is an issue with:
-
-	echo helll^c mid typing
-	it prints minishell twice (double redisplay)

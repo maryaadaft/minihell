@@ -6,56 +6,57 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/21 18:14:09 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/08 13:42:44 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/11 20:09:11 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_pipe(t_cmd *cmds, t_shell *shell)
+static void	manage_pipes(int *prev_pipe, int *current_pipe, t_cmd *cmds)
 {
-	int prev_pipe[2] = {-1, -1};
-	int current_pipe[2];
-	pid_t pid;
-	pid_t last_pid;
-	pid_t reaped; // interesting!!
-	int status;
-
-	//prep_heredocs for all cmds before looping through them
-	t_cmd *temp;
-	temp = cmds;
-	while(temp)
+	if (prev_pipe[0] != -1)
 	{
-		if (prep_heredocs(temp, shell) == -1)
-		{
-			shell->exit_status = 130;
-			return ;
-		}
-		temp = temp->next;
+		close(prev_pipe[0]);
+		close(prev_pipe[1]);
 	}
-	sig_child(); 
-	while(cmds)
+	if (cmds->next)
+	{
+		prev_pipe[0] = current_pipe[0];
+		prev_pipe[1] = current_pipe[1];
+	}
+}
+
+static pid_t	run_pipe(t_cmd *cmds, t_shell *shell)
+{
+	int		prev_pipe[2];
+	int		current_pipe[2];
+	pid_t	pid;
+	pid_t	last_pid;
+
+	prev_pipe[0] = -1;
+	prev_pipe[1] = -1;
+	while (cmds)
 	{
 		if (cmds->next)
 			pipe(current_pipe);
 		pid = fork();
 		if (pid == 0)
 			pipe_child(cmds, prev_pipe, current_pipe, shell);
-		if (prev_pipe[0] != -1)
-		{
-			close(prev_pipe[0]);
-			close(prev_pipe[1]);
-		}
-		if (cmds->next)
-		{
-			prev_pipe[0] = current_pipe[0];
-			prev_pipe[1] = current_pipe[1];
-		}
+		manage_pipes(prev_pipe, current_pipe, cmds);
 		if (!cmds->next)
 			last_pid = pid;
 		cmds = cmds->next;
 	}
-	while ((reaped = waitpid(-1, &status, 0)) > 0)
+	return (last_pid);
+}
+
+static void	wait_for_all(pid_t last_pid, t_shell *shell)
+{
+	pid_t	reaped;
+	int		status;
+
+	reaped = waitpid(-1, &status, 0);
+	while (reaped > 0)
 	{
 		if (reaped == last_pid)
 		{
@@ -66,10 +67,31 @@ void ft_pipe(t_cmd *cmds, t_shell *shell)
 			else if (WIFSIGNALED(status))
 				shell->exit_status = 128 + WTERMSIG(status);
 		}
+		reaped = waitpid(-1, &status, 0);
 	}
 }
 
-void pipe_child(t_cmd *cmd, int *prev_pipe, int *curr_pipe, t_shell *shell)
+void	ft_pipe(t_cmd *cmds, t_shell *shell)
+{
+	t_cmd	*temp;
+	pid_t	last_pid;
+
+	temp = cmds;
+	while (temp)
+	{
+		if (prep_heredocs(temp, shell) == -1)
+		{
+			shell->exit_status = 130;
+			return ;
+		}
+		temp = temp->next;
+	}
+	sig_child();
+	last_pid = run_pipe(cmds, shell);
+	wait_for_all(last_pid, shell);
+}
+
+void	pipe_child(t_cmd *cmd, int *prev_pipe, int *curr_pipe, t_shell *shell)
 {
 	if (prev_pipe[0] != -1)
 	{
@@ -91,27 +113,4 @@ void pipe_child(t_cmd *cmd, int *prev_pipe, int *curr_pipe, t_shell *shell)
 		exit(shell->exit_status);
 	}
 	execute_child(cmd, shell);
-}
-
-void	execute_child(t_cmd *cmd, t_shell *shell)
-{
-	// execute_child? 💀💀💀💀 what a name!
-	char	*valid_path;
-	char	**envp;
-
-	if (cmd->args[0][0] == '/')
-    	valid_path = ft_strdup(cmd->args[0]);
-	else
-		valid_path = get_path(cmd, shell);
-	if (!valid_path)
-	{
-		write(2, "minishell: command not found\n", 29);
-		exit(127);
-	}
-	envp = env_to_array(shell);
-	execve(valid_path, cmd->args, envp);
-	perror("execve");
-	free(valid_path);
-	free_args(envp);
-	exit(126);
 }

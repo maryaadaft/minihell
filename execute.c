@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 15:53:11 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/10 18:20:52 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/11 19:42:43 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,31 +83,25 @@ void	ft_execute(t_cmd *cmd, t_shell *shell)
 	free_args(envp);
 }
 
-char	*get_path(t_cmd *cmd, t_shell *shell)
+void	execute_child(t_cmd *cmd, t_shell *shell)
 {
-	t_env	*path_node;
-	char	**folder;
-	char	*full_path;
-	int		i;
-	char	*temp;
+	// execute_child? 💀💀💀💀 what a name!
+	char	*valid_path;
+	char	**envp;
 
-	i = -1;
-	path_node = find_env(shell, "PATH");
-	if (!path_node)
-		return (NULL);
-	folder = ft_split(path_node->value, ':');
-	while (folder[++i])
+	if (cmd->args[0][0] == '/')
+    	valid_path = ft_strdup(cmd->args[0]);
+	else
+		valid_path = get_path(cmd, shell);
+	if (!valid_path)
 	{
-		temp = ft_strjoin(folder[i], "/");
-		full_path = ft_strjoin(temp, cmd->args[0]);
-		free(temp);
-		if (access(full_path, X_OK) == 0)
-		{
-			free_args(folder);
-			return (full_path);
-		}
-		free (full_path);
+		write(2, "minishell: command not found\n", 29);
+		exit(127);
 	}
-	free_args(folder);
-	return (NULL);
+	envp = env_to_array(shell);
+	execve(valid_path, cmd->args, envp);
+	perror("execve");
+	free(valid_path);
+	free_args(envp);
+	exit(126);
 }
