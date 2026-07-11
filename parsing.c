@@ -35,6 +35,11 @@ t_cmd	*ft_parse(t_token *tokens)
 
 static int	handle_word(t_cmd *cmd, t_token **tok)
 {
+	if ((*tok)->value[0] == '\0' && !(*tok)->quoted)
+	{
+		*tok = (*tok)->next;
+		return (0);
+	}
 	if (ft_args_append(&cmd->args, (*tok)->value) == -1)
 	{
 		free_cmd(&cmd);
