@@ -107,6 +107,8 @@ void	pipe_child(t_cmd *cmd, int *prev_pipe, int *curr_pipe, t_shell *shell)
 	}
 	if (apply_redirs(cmd->redirs) == -1)
 		exit(1);
+	if (!cmd->args || !cmd->args[0])
+		exit(0);
 	if (is_builtin(cmd->args[0]))
 	{
 		run_builtin(cmd, shell);
