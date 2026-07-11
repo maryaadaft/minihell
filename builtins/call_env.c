@@ -16,10 +16,11 @@ void ft_env(t_shell *shell)
 {
     t_env *temp;
 
-    temp = shell->env;
-    while (temp)
-    {
-        printf("%s=%s\n", temp->key, temp->value);
-        temp = temp->next;
-    }
+	temp = shell->env;
+	while (temp)
+	{
+		if (temp->value)
+			printf("%s=%s\n", temp->key, temp->value);
+		temp = temp->next;
+	}
 }
