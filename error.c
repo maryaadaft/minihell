@@ -36,17 +36,17 @@ void malloc_exit(t_shell *shell)
 
 int num_err_msg(char *str)
 {
-	printf("\033[31m");
+	write(2, "\033[31m", 5);
 	write(2, str, ft_strlen(str));
-	printf("\033[0m\n");
+	write(2, "\033[0m\n", 5);
 	return(1);
 }
 //error fn for returning null
 void	*null_err_msg(char *str)
 {
-	printf("\033[31m");   
+	write(2, "\033[31m", 5);
 	write(2, str, ft_strlen(str));
-	printf("\033[0m\n");
+	write(2, "\033[0m\n", 5);
 	return (NULL);
 }
 
