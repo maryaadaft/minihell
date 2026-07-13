@@ -39,7 +39,7 @@ void	run_builtin(t_cmd *cmd, t_shell *shell)
 	else if (ft_strncmp(cmd->args[0], "cd", 3) == 0)
 		ft_cd(cmd, &shell);
 	else if (ft_strncmp(cmd->args[0], "pwd", 4) == 0)
-		ft_pwd(cmd);
+		ft_pwd(cmd, shell);
 	else if (ft_strncmp(cmd->args[0], "exit", 5) == 0)
 		shell->exit_status = ft_exit(shell, cmd);
 	else if (ft_strncmp(cmd->args[0], "env", 4) == 0)

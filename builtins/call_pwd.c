@@ -12,18 +12,20 @@
 
 #include "../minishell.h"
 
-void ft_pwd(t_cmd *cmd)
+void ft_pwd(t_cmd *cmd, t_shell *shell)
 {
     char cwd[PATH_MAX];
-	
+
 	if (cmd->args[1] && cmd->args[1][0] == '-')
 	{
 		num_err_msg("minishell: Usage: pwd (no options)");
+        shell->exit_status = 2;
         return ;
 	}
     if (!getcwd(cwd, sizeof(cwd)))
     {
         num_err_msg("minishell: pwd");
+        shell->exit_status = 1;
         return ;
     }
     printf("%s\n", cwd);
