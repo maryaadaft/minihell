@@ -18,6 +18,13 @@
 | 14 | `env` printed `VAR=(null)` for value-less exports | `1301a4c` |
 | 15 | Heredoc EOF warning wrote one stray byte | `736021d` |
 | 16 | `exit` leaked 2 `dup()` backup fds | `3df0d7e` |
+| 17 | `exit > file` still leaked its 2 backup fds | `177e2ab` |
+| 18 | `cd` updated `PWD`/`OLDPWD` even when `chdir` failed | `e58b2c7` |
+| 19 | `cd a b` (too many args) accepted silently | `37f2cf6` |
+| 20 | `echo -nnn hi` didn't collapse combined `-n` flags | `943f805` |
+| 21 | `pwd -x` printed an error but left `$?` at 0 | `c10f1fc` |
+| 22 | Syntax-error color codes went to stdout, text to stderr | `d1fb27e` |
+| 23 | `$$` used `getpid()`, not on the allowed-function list | `93fbc3e` |
 
 ### Repro commands
 
@@ -107,49 +114,4 @@ printf 'echo hi\nexit\n' | valgrind --track-fds=yes ./minishell
 
 | # | Bug                                                                    |
 |---|------------------------------------------------------------------------|
-| A | `exit > file` still leaks its 2 backup fds                             |
-| B | `cd` updates `OLDPWD`/`PWD` even when `chdir` fails                    |
-| C | `cd a b` (too many args) not bash-exact                                |
-| D | `echo -nnn hi` doesn't collapse combined `-n` flags                    |
-| E | `pwd -x` doesn't error (`$?` stays 0)                                  |
-| F | Syntax-error color codes go to stdout, text to stderr                  |
-| G | `$$` uses `getpid()`, not on subject's allowed-function list           |
-| H | Norminette not done :skull: |
-
-### Repro commands
-
-**A** fds 3/4 still open
-```sh
-printf 'echo hi\nexit > /tmp/f\n' | valgrind --track-fds=yes ./minishell
-```
-
-**B** `$PWD`/`$OLDPWD` change despite failed `chdir`
-```sh
-./minishell <<< 'cd /no/such/dir; echo $PWD $OLDPWD'
-```
-
-**C** extra args accepted instead of "too many arguments"
-```sh
-./minishell <<< 'cd a b'
-```
-
-**D** combined flags printed literally instead of collapsed
-```sh
-./minishell <<< 'echo -nnn hi'
-```
-
-**E** no error, `$?` stays 0
-```sh
-./minishell <<< 'pwd -x; echo $?'
-```
-
-**F** colors leak into stdout, text goes to stderr
-```sh
-./minishell <<< '||' 1>out 2>err; cat out; cat err
-```
-
-**G** no functional repro (compliance check only)
-```sh
-./minishell <<< 'echo $$'
-```
-
+| H | Norminette not done :skull: (style compliance, not a runtime bug)     |
