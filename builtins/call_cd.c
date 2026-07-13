@@ -34,7 +34,8 @@ static char	*get_cd_path(t_cmd *cmd, t_shell *shell)
 
 void	ft_cd(t_cmd *cmd, t_shell **shell)
 {
-	char	cwd[PATH_MAX];
+	char	oldcwd[PATH_MAX];
+	char	newcwd[PATH_MAX];
 	char	*path;
 
 	path = get_cd_path(cmd, *shell);
@@ -43,13 +44,18 @@ void	ft_cd(t_cmd *cmd, t_shell **shell)
 		(*shell)->exit_status = 1;
 		return ;
 	}
-	getcwd(cwd, sizeof(cwd));
-	update_pwds(*shell, cwd, 0);
+	getcwd(oldcwd, sizeof(oldcwd));
 	if (chdir(path) == -1)
+	{
 		fd_error(cmd->args[1], *shell, "cd: ");
-	getcwd(cwd, sizeof(cwd));
-	update_pwds(*shell, cwd, 1);
+		free(path);
+		return ;
+	}
+	update_pwds(*shell, oldcwd, 0);
+	getcwd(newcwd, sizeof(newcwd));
+	update_pwds(*shell, newcwd, 1);
 	free(path);
+	(*shell)->exit_status = 0;
 }
 
 char *get_home(t_shell *shell)
