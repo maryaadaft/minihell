@@ -38,6 +38,12 @@ void	ft_cd(t_cmd *cmd, t_shell **shell)
 	char	newcwd[PATH_MAX];
 	char	*path;
 
+	if (cmd->args[1] && cmd->args[2])
+	{
+		write(2, "minishell: cd: too many arguments\n", 34);
+		(*shell)->exit_status = 1;
+		return ;
+	}
 	path = get_cd_path(cmd, *shell);
 	if (!path)
 	{
