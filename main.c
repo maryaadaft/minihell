@@ -25,6 +25,8 @@ int	main(int argc, char **argv, char **envp)
 	shell.commands = NULL;
 	shell.env = NULL;
 	shell.exit_status = 0;
+	shell.saved_in = -1;
+	shell.saved_out = -1;
 	env_init(&shell, envp);
 	while (1)
 	{

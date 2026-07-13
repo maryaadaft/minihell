@@ -140,6 +140,10 @@ void	free_env(t_env **env_list)
 
 void free_shell(t_shell *shell)
 {
+    if (shell->saved_in >= 0)
+        close(shell->saved_in);
+    if (shell->saved_out >= 0)
+        close(shell->saved_out);
     free_env(&shell->env);
     if (shell->commands)
         free_cmd(&shell->commands);

@@ -59,6 +59,8 @@ void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell)
 		return (run_builtin(cmd, shell));
 	old_stdin = dup(STDIN_FILENO);
 	old_stdout = dup(STDOUT_FILENO);
+	shell->saved_in = old_stdin;
+	shell->saved_out = old_stdout;
 	if (prep_heredocs(cmd, shell) == -1)
 		shell->exit_status = 130;
 	else if (apply_redirs(cmd->redirs) == 0)
@@ -69,6 +71,8 @@ void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell)
 	dup2(old_stdout, STDOUT_FILENO);
 	close(old_stdin);
 	close(old_stdout);
+	shell->saved_in = -1;
+	shell->saved_out = -1;
 }
 
 void	pipe_child(t_cmd *cmd, int *prev_pipe, int *curr_pipe, t_shell *shell)

@@ -60,6 +60,8 @@ typedef	struct	s_shell {
 	t_cmd		*commands;
     t_env       *env;
     int         exit_status;
+    int         saved_in;
+    int         saved_out;
 }	t_shell;
 
 //library fns
