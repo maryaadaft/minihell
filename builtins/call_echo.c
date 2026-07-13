@@ -12,6 +12,18 @@
 
 #include "../minishell.h"
 
+static int	is_n_flag(char *s)
+{
+    int j;
+
+    if (s[0] != '-' || s[1] != 'n')
+        return (0);
+    j = 1;
+    while (s[j] == 'n')
+        j++;
+    return (s[j] == '\0');
+}
+
 void ft_echo(t_cmd *cmd)
 {
     int i;
@@ -19,10 +31,10 @@ void ft_echo(t_cmd *cmd)
 
     i = 1;
     newline = 1;
-    if (cmd->args[1] && ft_strncmp(cmd->args[1], "-n", 3) == 0)
+    while (cmd->args[i] && is_n_flag(cmd->args[i]))
     {
         newline = 0;
-        i = 2;
+        i++;
     }
     while (cmd->args[i])
     {
