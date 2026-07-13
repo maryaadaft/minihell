@@ -44,11 +44,6 @@ static char *handle_dollar(char *str, int *i, t_shell *shell)
 		(*i)++;
 		return (ft_itoa(shell->exit_status));
 	}
-	if (str[*i] == '$')  //$$ -> PID
-	{
-		(*i)++;
-		return (ft_itoa(getpid()));
-	}
 	key = get_var(str, i);
 	if (!key)
 		return (NULL);
