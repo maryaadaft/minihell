@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_export_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/10 15:57:01 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/10 16:07:53 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/16 19:02:51 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_env	*create_env_node(char *key, char *value)
 	return (new);
 }
 
-void    update_env_value(t_env *node, char *value)
+void	update_env_value(t_env *node, char *value)
 {
 	if (node->value)
 		free(node->value);
@@ -46,8 +46,6 @@ void    update_env_value(t_env *node, char *value)
 		return ;
 	node->value = ft_strdup(value);
 }
-
-//we have to sort the env before we print it, so we copy to temp and sort there. maybe split into 2 functions
 
 static t_env	**build_env_array(t_shell *shell, int len)
 {
@@ -99,23 +97,23 @@ void	print_export(t_shell *shell)
 {
 	int		len;
 	int		i;
-	t_env	**sorted_env;
+	t_env	**s_env;
 
 	len = env_len(shell);
-	sorted_env = build_env_array(shell, len);
-	if (!sorted_env)
+	s_env = build_env_array(shell, len);
+	if (!s_env)
 		return ;
-	sort_env(sorted_env, len);
+	sort_env(s_env, len);
 	i = 0;
-	while (sorted_env[i])
+	while (s_env[i])
 	{
-		if (sorted_env[i]->value && sorted_env[i]->value[0] != '\0')
-			printf("declare -x %s=\"%s\"\n", sorted_env[i]->key, sorted_env[i]->value);
-		else if (sorted_env[i]->value && sorted_env[i]->value[0] == '\0')
-			printf("declare -x %s=\"\"\n", sorted_env[i]->key);
+		if (s_env[i]->value && s_env[i]->value[0] != '\0')
+			printf("declare -x %s=\"%s\"\n", s_env[i]->key, s_env[i]->value);
+		else if (s_env[i]->value && s_env[i]->value[0] == '\0')
+			printf("declare -x %s=\"\"\n", s_env[i]->key);
 		else
-			printf("declare -x %s\n", sorted_env[i]->key);
+			printf("declare -x %s\n", s_env[i]->key);
 		i++;
 	}
-	free(sorted_env);
+	free(s_env);
 }

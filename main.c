@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/10 15:40:06 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/16 17:53:23 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	main(int argc, char **argv, char **envp)
 		if (!input)
 		{
 			write(1, "exit\n", 5);
+			free_cmd(&shell.commands);
+			ft_free_tokens(&shell.tokens);
 			rl_clear_history();
 			break ;
 		}

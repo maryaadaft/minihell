@@ -6,7 +6,7 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 19:10:41 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/10 14:40:56 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/16 19:00:21 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,9 @@ int	convert_to_int(const char *s)
 	return ((int)(n * sign));
 }
 
-// only exit -> print exit + last exit_status
-// EXIT + CODE -> PRINT EXIT + THAT CODE
-// exit + invalid code (string) -> 
-//      print exit + minishell: exit: wisswiss: numeric argument required + 	  set exit code to 2
-// exit + too many numbers ->
-//      print exit + minishell: exit: too many arguments  + doesn't exit 	+ 		set exit code = 1 
-
 int	ft_exit(t_shell *shell, t_cmd *cmds)
 {
-	int exit_code;   // we have to intialize shell->exit_status in main
+	int	exit_code;
 
 	write(2, "exit\n", 5);
 	if (cmds->args[1] && cmds->args[2])
@@ -60,10 +53,10 @@ int	ft_exit(t_shell *shell, t_cmd *cmds)
 		write(2, "minishell: exit: ", 17);
 		write(2, cmds->args[1], ft_strlen(cmds->args[1]));
 		write(2, ": numeric argument required\n", 28);
-		exit_code = 2;	
+		exit_code = 2;
 	}
 	else
 		exit_code = convert_to_int(cmds->args[1]);
- 	free_shell(shell);
+	free_shell(shell);
 	exit(exit_code);
 }

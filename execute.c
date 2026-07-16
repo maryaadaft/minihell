@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 15:53:11 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/11 19:42:43 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/16 18:38:45 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void child_process(t_cmd *cmd, char *valid_path, char **envp)
+static void	child_process(t_cmd *cmd, char *valid_path, char **envp)
 {
 	signal(SIGQUIT, SIG_DFL);
 	if (apply_redirs(cmd->redirs) == -1)
@@ -23,6 +23,7 @@ static void child_process(t_cmd *cmd, char *valid_path, char **envp)
 	free_args(envp);
 	exit(127);
 }
+
 static void	wait_child(pid_t pid, t_shell *shell)
 {
 	int	status;
@@ -35,7 +36,8 @@ static void	wait_child(pid_t pid, t_shell *shell)
 	else if (WIFSIGNALED(status))
 		shell->exit_status = 128 + WTERMSIG(status);
 }
-static int setup_execute(t_cmd *cmd, t_shell *shell, char **path, char ***envp)
+
+static int	setup_execute(t_cmd *cmd, t_shell *shell, char **path, char ***envp)
 {
 	if (cmd->args[0][0] == '/')
 		*path = ft_strdup(cmd->args[0]);
@@ -58,23 +60,23 @@ static int setup_execute(t_cmd *cmd, t_shell *shell, char **path, char ***envp)
 
 void	ft_execute(t_cmd *cmd, t_shell *shell)
 {
-	char *valid_path;
-	char **envp;
+	char	*valid_path;
+	char	**envp;
 	pid_t	pid;
 
 	if (prep_heredocs(cmd, shell) == -1)
 	{
-		shell->exit_status = 130;	
+		shell->exit_status = 130;
 		return ;
 	}
-	if (!cmd->args || !cmd->args[0]) //for empty command with redir
-    {
-        apply_redir_only(cmd->redirs, shell);
-        return ;
-    }
+	if (!cmd->args || !cmd->args[0])
+	{
+		apply_redir_only(cmd->redirs, shell);
+		return ;
+	}
 	if (!setup_execute(cmd, shell, &valid_path, &envp))
 		return ;
-	sig_child(); 
+	sig_child();
 	pid = fork();
 	if (pid == 0)
 		child_process(cmd, valid_path, envp);
@@ -85,12 +87,11 @@ void	ft_execute(t_cmd *cmd, t_shell *shell)
 
 void	execute_child(t_cmd *cmd, t_shell *shell)
 {
-	// execute_child? 💀💀💀💀 what a name!
 	char	*valid_path;
 	char	**envp;
 
 	if (cmd->args[0][0] == '/')
-    	valid_path = ft_strdup(cmd->args[0]);
+		valid_path = ft_strdup(cmd->args[0]);
 	else
 		valid_path = get_path(cmd, shell);
 	if (!valid_path)

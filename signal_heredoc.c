@@ -1,36 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   call_echo.c                                        :+:      :+:    :+:   */
+/*   signal_heredoc.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/06 18:56:33 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/16 18:56:14 by maryaada         ###   ########.fr       */
+/*   Created: 2026/07/16 18:50:15 by maryaada          #+#    #+#             */
+/*   Updated: 2026/07/16 18:51:04 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
-void	ft_echo(t_cmd *cmd)
+void	handle_sigint_heredoc(int signal)
 {
-	int	i;
-	int	newline;
+	(void)signal;
+	g_signal = SIGINT;
+	write(1, "\n", 1);
+	rl_done = 1;
+	rl_on_new_line();
+	rl_replace_line("", 0);
+}
 
-	i = 1;
-	newline = 1;
-	if (cmd->args[1] && ft_strncmp(cmd->args[1], "-n", 3) == 0)
-	{
-		newline = 0;
-		i = 2;
-	}
-	while (cmd->args[i])
-	{
-		printf("%s", cmd->args[i]);
-		if (cmd->args[i + 1])
-			printf(" ");
-		i++;
-	}
-	if (newline)
-		printf("\n");
+void	sig_heredoc(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = handle_sigint_heredoc;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }

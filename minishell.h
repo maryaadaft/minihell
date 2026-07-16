@@ -87,6 +87,7 @@ t_token	*ft_read_redir(t_shell	*shell, const char *input, int *pos);
 t_token	*tokeniser(t_shell	*shell, const char *input);
 t_token *create_next_token(t_shell	*shell, const char *input, int *pos);
 t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos);
+t_token	*build_word_token(t_shell *shell, char *result, int was_quoted);
 
 //parsing fns
 t_cmd		*ft_parse(t_token *tokens);
@@ -98,6 +99,7 @@ void		ft_redir_addback(t_redir **head, t_redir *new_redir);
 void		ft_addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd);
 
 int		is_delimiter(char c);
+int		check_token_delimiter(char c);
 void	error_message(char *str, int exit_code);
 void	*null_err_msg(char *str);
 int		num_err_msg(char *str);
@@ -112,6 +114,7 @@ void	free_env_node(t_env *node);
 void	free_env(t_env **env_list);
 void	free_shell(t_shell *shell);
 void	fd_error(char *file_name, t_shell *shell, char *extra_str);
+void	redir_error(char *file);
 
 // Envp
 void	env_init(t_shell *shell, char **envp);
@@ -171,9 +174,9 @@ char    *ft_strjoin_free(char *s1, char *s2);
 
 // Signals
 void handle_sigint(int signal);
-void sig_interactive();
-void sig_child();
-void sig_heredoc();
+void sig_interactive(void);
+void sig_child(void);
+void sig_heredoc(void);
 void handle_sigint_heredoc(int signal);
 void handle_sigint_child(int sig);
 int	check_sigint(void);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/17 17:50:30 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/05 18:32:45 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/16 18:52:16 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,8 @@
 
 t_token	*make_token(t_shell	*shell, t_type type, char *value)
 {
-	// 1. Allocate
-	// 2. Fill valuee
-	// 3. Return
-	t_token *token;
-	
+	t_token	*token;
+
 	if (!value)
 		return (NULL);
 	token = ft_calloc(1, sizeof(t_token));
@@ -31,10 +28,8 @@ t_token	*make_token(t_shell	*shell, t_type type, char *value)
 
 void	addback_token(t_token **head, t_token *new_token)
 {
-	// If its empty add the new token as first node
-	// else: loop until we reach the end and then we add the new token to the end of list
 	t_token	*temp;
-	
+
 	if (!new_token)
 		return ;
 	if (*head == NULL)
@@ -48,24 +43,32 @@ void	addback_token(t_token **head, t_token *new_token)
 	temp->next = new_token;
 }
 
-t_token *create_next_token(t_shell	*shell, const char *input, int *pos)
+t_token	*create_next_token(t_shell	*shell, const char *input, int *pos)
 {
-    if (input[*pos] == '|')
-        return ((*pos)++, make_token(shell, Ty_PIPE, ft_strdup("|")));
-    if (input[*pos] == '<' || input[*pos] == '>')
-        return (ft_read_redir(shell, input, pos));
-    if (input[*pos] == '\'')
-        return (make_token(shell, Ty_Single_Q, ft_read_quoted(shell, input, pos, input[*pos])));
+	if (input[*pos] == '|')
+		return ((*pos)++, make_token(shell, Ty_PIPE, ft_strdup("|")));
+	if (input[*pos] == '<' || input[*pos] == '>')
+		return (ft_read_redir(shell, input, pos));
+	if (input[*pos] == '\'')
+		return (make_token(shell, Ty_Single_Q,
+				ft_read_quoted(shell, input, pos, input[*pos])));
 	if (input[*pos] == '"')
-        return (make_token(shell, Ty_Double_Q, ft_read_quoted(shell, input, pos, input[*pos])));
-    return (make_token(shell, Ty_WORD, ft_read_word(shell, input, pos)));
+		return (make_token(shell, Ty_Double_Q,
+				ft_read_quoted(shell, input, pos, input[*pos])));
+	return (make_token(shell, Ty_WORD, ft_read_word(shell, input, pos)));
+}
+
+static	void	token_delim_skip(const	char *input, int *pos)
+{
+	while (input[*pos] == ' ' || input[*pos] == '\t' || input[*pos] == '\n')
+		(*pos)++;
 }
 
 t_token	*tokeniser(t_shell	*shell, const char *input)
 {
 	t_token	*head;
 	t_token	*token;
-	int	pos;
+	int		pos;
 
 	if (!input)
 		return (NULL);
@@ -73,8 +76,7 @@ t_token	*tokeniser(t_shell	*shell, const char *input)
 	pos = 0;
 	while (input[pos])
 	{
-		while (input[pos] == ' ' || input[pos] == '\t' || input[pos] == '\n')
-			pos++;
+		token_delim_skip(input, &pos);
 		if (!input[pos])
 			break ;
 		if (input[pos] == '|' || input[pos] == '<' || input[pos] == '>')

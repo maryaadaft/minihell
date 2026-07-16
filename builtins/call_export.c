@@ -3,23 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   call_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/10 16:05:38 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/16 19:04:28 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// if export only -> we write all the env in specific format ----- DONE
-// if the key=value exist -> we update ----- DONE
-// if key=value doesn't exist -> we add a new entry ---- DONE
-// if key only without a value -> we add an entry with no value ---- DONE
-
-static char *get_key(char *arg)
+static char	*get_key(char *arg)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (arg[i] && arg[i] != '=')
@@ -27,9 +22,9 @@ static char *get_key(char *arg)
 	return (ft_substr(arg, 0, i));
 }
 
-static char *get_value(char *arg)
+static char	*get_value(char *arg)
 {
-	char *equal_sign;
+	char	*equal_sign;
 
 	equal_sign = ft_strchr(arg, '=');
 	if ((equal_sign && *(equal_sign + 1) == '\0'))
@@ -39,20 +34,20 @@ static char *get_value(char *arg)
 	return (ft_strdup(equal_sign + 1));
 }
 
-static int is_valid_key(char *str)
+static int	is_valid_key(char *str)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
-        return (0);
-    while (str[i] && str[i] != '=')
-    {
-        if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
-            return (0);
-        i++;
-    }
-    return (1);
+	i = 0;
+	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
+		return (0);
+	while (str[i] && str[i] != '=')
+	{
+		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 static void	export_add(t_shell *shell, char *key, char *value)

@@ -6,18 +6,18 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 18:55:50 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/08 16:00:22 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/16 18:55:06 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void ft_cd(t_cmd *cmd, t_shell **shell)
+void	ft_cd(t_cmd *cmd, t_shell **shell)
 {
-	char cwd[PATH_MAX];  // current working directory
-	char *path;
-	t_env *last_pwd;
-	
+	char	cwd[PATH_MAX];
+	char	*path;
+	t_env	*last_pwd;
+
 	path = NULL;
 	if (cmd->args[1] && ft_strncmp(cmd->args[1], "-", 2) == 0)
 	{
@@ -40,10 +40,10 @@ void ft_cd(t_cmd *cmd, t_shell **shell)
 	free(path);
 }
 
-char *get_home(t_shell *shell)
+char	*get_home(t_shell *shell)
 {
-	t_env *head_env;
-	char *path;
+	t_env	*head_env;
+	char	*path;
 
 	head_env = shell->env;
 	path = NULL;
@@ -52,32 +52,28 @@ char *get_home(t_shell *shell)
 		if (ft_strncmp(head_env->key, "HOME", 5) == 0)
 		{
 			path = head_env->value;
-			// printf("\nhome path is :- %s\n", path);
 		}
 		head_env = head_env->next;
 	}
 	return (path);
 }
 
-void	update_pwds(t_shell *shell, char *cwd, int	flag_path)
+void	update_pwds(t_shell *shell, char *cwd, int flag_path)
 {
-	t_env *head_env;
-	
+	t_env	*head_env;
+
 	head_env = shell->env;
 	while (head_env)
 	{
-		//old pwd is 0
 		if (flag_path == 0 && ft_strncmp(head_env->key, "OLDPWD", 7) == 0)
 		{
-			free(head_env->value); //need to free the old value before it breaks.
+			free(head_env->value);
 			head_env->value = ft_strdup(cwd);
-			// printf("\n oldpwd is :- %s\n", head_env->value);
 		}
 		else if (flag_path == 1 && ft_strncmp(head_env->key, "PWD", 4) == 0)
 		{
-			free(head_env->value); //need to free the old value before it breaks.
+			free(head_env->value);
 			head_env->value = ft_strdup(cwd);
-			// printf("\n pwd is :- %s\n", head_env->value);
 		}
 		head_env = head_env->next;
 	}

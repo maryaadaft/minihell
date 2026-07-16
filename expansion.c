@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 17:52:47 by walneama          #+#    #+#             */
-/*   Updated: 2026/06/24 21:06:44 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/16 18:42:07 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void ft_expand(t_token *tokens, t_shell *shell)
+void	ft_expand(t_token *tokens, t_shell *shell)
 {
-	char *new_value;
+	char	*new_value;
 
 	while (tokens)
 	{
@@ -31,20 +31,20 @@ void ft_expand(t_token *tokens, t_shell *shell)
 	}
 }
 
-static char *handle_dollar(char *str, int *i, t_shell *shell)
+static char	*handle_dollar(char *str, int *i, t_shell *shell)
 {
-	char *key;
-	char *piece;
+	char	*key;
+	char	*piece;
 
 	(*i)++;
-	if (str[*i] == '\0') // $ only
+	if (str[*i] == '\0')// $ only
 		return (ft_strdup("$"));
-	if (str[*i] == '?')  // $?
+	if (str[*i] == '?')// $?
 	{
 		(*i)++;
 		return (ft_itoa(shell->exit_status));
 	}
-	if (str[*i] == '$')  //$$ -> PID
+	if (str[*i] == '$')//$$ -> PID
 	{
 		(*i)++;
 		return (ft_itoa(getpid()));
@@ -57,7 +57,7 @@ static char *handle_dollar(char *str, int *i, t_shell *shell)
 	return (piece);
 }
 
-static char *handle_literal(char *str, int *i)
+static char	*handle_literal(char *str, int *i)
 {
 	int start;
 
@@ -81,7 +81,7 @@ static int	append_piece(char **final_str, char *piece)
 	return (0);
 }
 
-char *expand_str(char *str, t_shell *shell)
+char	*expand_str(char *str, t_shell *shell)
 {
 	int		i;
 	char	*piece;
@@ -103,7 +103,7 @@ char *expand_str(char *str, t_shell *shell)
 	return (final_str);
 }
 
-char *get_var(char *str, int *pos)
+char	*get_var(char *str, int *pos)
 {
 	int start;
 
@@ -113,7 +113,7 @@ char *get_var(char *str, int *pos)
 	return (ft_substr(str, start, (*pos - start)));
 }
 
-char    *get_env_value(t_shell *shell, char *key)
+char	*get_env_value(t_shell *shell, char *key)
 {
 	t_env *node;
 
@@ -123,7 +123,7 @@ char    *get_env_value(t_shell *shell, char *key)
 	return(ft_strdup(""));
 }
 
-char    *ft_strjoin_free(char *s1, char *s2)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
 	char *final_str;
 

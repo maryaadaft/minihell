@@ -1,5 +1,5 @@
 #include "minishell.h"
-
+//save file in readme / elsewhere
 void	print_tokens(t_token *tok)
 {
 	while (tok)
