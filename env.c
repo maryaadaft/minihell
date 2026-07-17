@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 16:11:23 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/11 20:51:07 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/17 15:51:32 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ t_env	*get_env(char *envp)
 	char	*equal_sign;
 
 	node = malloc(sizeof(t_env));
-	ft_memset(node, 0, sizeof(t_env));
 	if (!node)
 		return (NULL);
+	ft_memset(node, 0, sizeof(t_env));
 	equal_sign = ft_strchr(envp, '=');
 	if (!equal_sign)
 	{

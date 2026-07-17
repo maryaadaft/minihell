@@ -127,12 +127,13 @@ void	run_builtin(t_cmd *cmd, t_shell *shell);
 int		env_len(t_shell *shell);
 
 // Builtins
-void	ft_echo(t_cmd *cmd);
+void	ft_echo(t_cmd *cmd, t_shell *shell);
 void	ft_cd(t_cmd *cmd, t_shell **shell);
 char	*get_home(t_shell *shell);
 void	update_pwds(t_shell *shell, char *cwd, int	flag_path);
-void	ft_pwd(t_cmd *cmd);
+void	ft_pwd(t_cmd *cmd, t_shell *shell);
 int		ft_exit(t_shell *shell, t_cmd *cmds);
+void	exit_error(t_cmd *cmds, int *exit_code);
 void	ft_env(t_shell *shell);
 void	ft_unset(t_cmd *cmd, t_shell *shell);
 void	ft_export(t_cmd *cmd, t_shell *shell);
@@ -157,6 +158,7 @@ void	print_redirs(t_redir *redir);
 void	print_cmds(t_cmd *cmd);
 void	print_env(t_env *env);
 
+// NEW CAT	
 void	ft_execute(t_cmd *cmd, t_shell *shell);
 char	**env_to_array(t_shell *shell);
 char	*get_path(t_cmd *cmd, t_shell *shell);

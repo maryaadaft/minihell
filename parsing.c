@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 16:28:15 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/11 18:25:05 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/17 15:57:08 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,11 @@ t_cmd	*ft_parse(t_token *tokens)
 
 static int	handle_word(t_cmd *cmd, t_token **tok)
 {
+	if ((*tok)->value[0] == '\0' && !(*tok)->quoted)
+	{
+		*tok = (*tok)->next;
+		return (0);
+	}
 	if (ft_args_append(&cmd->args, (*tok)->value) == -1)
 	{
 		free_cmd(&cmd);

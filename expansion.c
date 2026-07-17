@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 17:52:47 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/16 18:42:07 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/17 21:38:01 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static char	*handle_dollar(char *str, int *i, t_shell *shell)
 	if (str[*i] == '$')//$$ -> PID
 	{
 		(*i)++;
-		return (ft_itoa(getpid()));
+		return (ft_strdup("$"));
 	}
 	key = get_var(str, i);
 	if (!key)

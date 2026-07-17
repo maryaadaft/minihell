@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   call_echo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 18:56:33 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/16 18:56:14 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/17 22:11:06 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_echo(t_cmd *cmd)
+void	ft_echo(t_cmd *cmd, t_shell *shell)
 {
 	int	i;
 	int	newline;
@@ -33,4 +33,5 @@ void	ft_echo(t_cmd *cmd)
 	}
 	if (newline)
 		printf("\n");
+	shell->exit_status = 0;
 }

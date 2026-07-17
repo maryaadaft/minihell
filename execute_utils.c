@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 19:36:29 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/11 20:26:06 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/17 22:11:22 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ int	is_builtin(char *cmd_name)
 void	run_builtin(t_cmd *cmd, t_shell *shell)
 {
 	if (ft_strncmp(cmd->args[0], "echo", 5) == 0)
-		ft_echo(cmd);
+		ft_echo(cmd, shell);
 	else if (ft_strncmp(cmd->args[0], "cd", 3) == 0)
 		ft_cd(cmd, &shell);
 	else if (ft_strncmp(cmd->args[0], "pwd", 4) == 0)
-		ft_pwd(cmd);
+		ft_pwd(cmd, shell);
 	else if (ft_strncmp(cmd->args[0], "exit", 5) == 0)
 		ft_exit(shell, cmd);
 	else if (ft_strncmp(cmd->args[0], "env", 4) == 0)
