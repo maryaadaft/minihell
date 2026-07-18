@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/16 19:04:28 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/18 12:57:24 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,30 +67,44 @@ static void	export_add(t_shell *shell, char *key, char *value)
 	}
 }
 
-void	ft_export(t_cmd *cmd, t_shell *shell)
+static int	export_arg(t_shell *shell, char *arg)
 {
 	char	*key;
 	char	*value;
+
+	key = get_key(arg);
+	if (!is_valid_key(key))
+	{
+		write(2, "minishell: export: '", 20);
+		write(2, arg, ft_strlen(arg));
+		write(2, "': not a valid identifier\n", 26);
+		free(key);
+		return (1);
+	}
+	value = get_value(arg);
+	export_add(shell, key, value);
+	free(value);
+	free(key);
+	return (0);
+}
+
+void	ft_export(t_cmd *cmd, t_shell *shell)
+{
 	int		i;
+	int		had_error;
 
 	if (!cmd->args[1])
-		return (print_export(shell));
+	{
+		print_export(shell);
+		shell->exit_status = 0;
+		return ;
+	}
+	had_error = 0;
 	i = 0;
 	while (cmd->args[++i])
 	{
-		key = get_key(cmd->args[i]);
-		if (!is_valid_key(key))
-		{
-			write(2, "minishell: export: '", 20);
-			write(2, cmd->args[i], ft_strlen(cmd->args[i]));
-			write(2, "': not a valid identifier\n", 26);
-		}
-		else
-		{
-			value = get_value(cmd->args[i]);
-			export_add(shell, key, value);
-			free(value);
-		}
-		free(key);
+		if(export_arg(shell, cmd->args[i]))
+			had_error = 1;
 	}
+	shell->exit_status = had_error;
 }

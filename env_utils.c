@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/10 18:20:34 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/11 20:49:36 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/18 12:51:11 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,13 @@ int	env_len(t_shell *shell)
 		temp = temp->next;
 	}
 	return (i);
+}
+
+void	update_env_value(t_env *node, char *value)
+{
+	if (node->value)
+		free(node->value);
+	if (!value)
+		return ;
+	node->value = ft_strdup(value);
 }

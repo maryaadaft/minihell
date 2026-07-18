@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_export_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/10 15:57:01 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/16 19:02:51 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/18 12:51:01 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,7 @@ t_env	*create_env_node(char *key, char *value)
 	return (new);
 }
 
-void	update_env_value(t_env *node, char *value)
-{
-	if (node->value)
-		free(node->value);
-	if (!value)
-		return ;
-	node->value = ft_strdup(value);
-}
+
 
 static t_env	**build_env_array(t_shell *shell, int len)
 {
