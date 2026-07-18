@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/18 12:57:24 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/18 15:49:59 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,22 +32,6 @@ static char	*get_value(char *arg)
 	if (!equal_sign)
 		return (NULL);
 	return (ft_strdup(equal_sign + 1));
-}
-
-static int	is_valid_key(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
-		return (0);
-	while (str[i] && str[i] != '=')
-	{
-		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
-			return (0);
-		i++;
-	}
-	return (1);
 }
 
 static void	export_add(t_shell *shell, char *key, char *value)

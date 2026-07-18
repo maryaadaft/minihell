@@ -3,25 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 15:53:11 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/16 18:38:45 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/18 17:10:47 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	child_process(t_cmd *cmd, char *valid_path, char **envp)
+static void	child_process(t_cmd *cmd, char *valid_path, char **envp, t_shell *shell)
 {
 	signal(SIGQUIT, SIG_DFL);
 	if (apply_redirs(cmd->redirs) == -1)
 		exit(1);
 	execve(valid_path, cmd->args, envp);
-	perror("execve");
+	fd_error(cmd->args[0], shell, NULL);
+	// perror("execve here is wiss");
 	free(valid_path);
 	free_args(envp);
-	exit(127);
+	exit(126);
 }
 
 static void	wait_child(pid_t pid, t_shell *shell)
@@ -39,13 +40,9 @@ static void	wait_child(pid_t pid, t_shell *shell)
 
 static int	setup_execute(t_cmd *cmd, t_shell *shell, char **path, char ***envp)
 {
-	if (cmd->args[0][0] == '/')
-		*path = ft_strdup(cmd->args[0]);
-	else
-		*path = get_path(cmd, shell);
+	*path = resolve_cmd_path(cmd, shell);
 	if (!*path)
 	{
-		write(2, "minishell: command not found\n", 29);
 		shell->exit_status = 127;
 		return (0);
 	}
@@ -79,7 +76,7 @@ void	ft_execute(t_cmd *cmd, t_shell *shell)
 	sig_child();
 	pid = fork();
 	if (pid == 0)
-		child_process(cmd, valid_path, envp);
+		child_process(cmd, valid_path, envp, shell);
 	wait_child(pid, shell);
 	free (valid_path);
 	free_args(envp);
@@ -90,18 +87,12 @@ void	execute_child(t_cmd *cmd, t_shell *shell)
 	char	*valid_path;
 	char	**envp;
 
-	if (cmd->args[0][0] == '/')
-		valid_path = ft_strdup(cmd->args[0]);
-	else
-		valid_path = get_path(cmd, shell);
+	valid_path = resolve_cmd_path(cmd, shell);
 	if (!valid_path)
-	{
-		write(2, "minishell: command not found\n", 29);
 		exit(127);
-	}
 	envp = env_to_array(shell);
 	execve(valid_path, cmd->args, envp);
-	perror("execve");
+	fd_error(cmd->args[0], shell, NULL);
 	free(valid_path);
 	free_args(envp);
 	exit(126);

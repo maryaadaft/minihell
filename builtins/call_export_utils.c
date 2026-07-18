@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/10 15:57:01 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/18 12:51:01 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/18 15:50:04 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,21 @@ t_env	*create_env_node(char *key, char *value)
 	return (new);
 }
 
+int	is_valid_key(char *str)
+{
+	int	i;
 
+	i = 0;
+	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
+		return (0);
+	while (str[i] && str[i] != '=')
+	{
+		if (!ft_isalpha(str[i]) && !ft_isdigit(str[i]) && str[i] != '_')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 static t_env	**build_env_array(t_shell *shell, int len)
 {

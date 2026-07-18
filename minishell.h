@@ -99,6 +99,7 @@ void		ft_redir_addback(t_redir **head, t_redir *new_redir);
 void		ft_addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd);
 
 int		is_delimiter(char c);
+int		is_valid_key(char *str);
 int		check_token_delimiter(char c);
 void	error_message(char *str, int exit_code);
 void	*null_err_msg(char *str);
@@ -140,6 +141,8 @@ void	ft_export(t_cmd *cmd, t_shell *shell);
 void	print_export(t_shell *shell);
 t_env	*create_env_node(char *key, char *value);
 void    update_env_value(t_env *node, char *value);
+
+char	*resolve_cmd_path(t_cmd *cmd, t_shell *shell);
 
 // Redirs
 int		apply_redirs(t_redir *redirs);

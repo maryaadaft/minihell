@@ -6,11 +6,23 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 18:56:33 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/17 22:11:06 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/18 15:44:10 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static int is_n(char *s)
+{
+	int i;
+
+	if (s[i] != '-' || s[1] != 'n')
+		return (0);
+	i = 1;
+	while (s[i] == 'n')
+		i++;
+	return (s[i] == '\0');
+}
 
 void	ft_echo(t_cmd *cmd, t_shell *shell)
 {
@@ -19,10 +31,10 @@ void	ft_echo(t_cmd *cmd, t_shell *shell)
 
 	i = 1;
 	newline = 1;
-	if (cmd->args[1] && ft_strncmp(cmd->args[1], "-n", 3) == 0)
+	while (cmd->args[i] && is_n(cmd->args[i]))
 	{
 		newline = 0;
-		i = 2;
+		i++;
 	}
 	while (cmd->args[i])
 	{
