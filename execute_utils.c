@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 19:36:29 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/18 17:00:57 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/18 18:46:43 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,9 @@ char	*resolve_cmd_path(t_cmd *cmd, t_shell *shell)
 	else
 		path = get_path(cmd, shell);
 	if (!path)
-		write(2, "minishell: command not found\n", 29);
+	{
+		write(2, cmd->args[0], ft_strlen(cmd->args[0]));
+		write(2, ": command not found\n", 21);
+	}
 	return (path);
 }
