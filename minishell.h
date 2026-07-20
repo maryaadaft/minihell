@@ -30,6 +30,7 @@ typedef enum e_type {
 typedef struct s_token {
 	t_type			token_type;
 	char			*value;
+	char			*raw_value;
 	int				quoted;
 	struct s_token	*next;
 }	t_token;
@@ -87,7 +88,8 @@ t_token	*ft_read_redir(t_shell	*shell, const char *input, int *pos);
 t_token	*tokeniser(t_shell	*shell, const char *input);
 t_token *create_next_token(t_shell	*shell, const char *input, int *pos);
 t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos);
-t_token	*build_word_token(t_shell *shell, char *result, int was_quoted);
+t_token	*build_word_token(t_shell *shell, char *result, char *raw, int was_quoted);
+// t_token	*build_word_token(t_shell *shell, char *result, int was_quoted);
 
 //parsing fns
 t_cmd		*ft_parse(t_token *tokens);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 10:31:04 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/16 18:14:34 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/20 19:27:42 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,17 @@ int	check_token_delimiter(char c)
 		|| c == '<' || c == '\n');
 }
 
-t_token	*build_word_token(t_shell *shell, char *result, int was_quoted)
+t_token	*build_word_token(t_shell *shell, char *result, char *raw, int was_quoted)
 {
 	t_token	*tok;
 
 	tok = make_token(shell, Ty_WORD, result);
 	if (tok)
+	{
 		tok->quoted = was_quoted;
+		tok->raw_value = raw;
+	}
+	else
+		free(raw);
 	return (tok);
 }

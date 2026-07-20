@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_token.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 14:07:13 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/16 18:45:03 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/20 19:26:40 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,16 +81,20 @@ t_token	*ft_read_redir(t_shell	*shell, const char *input, int *pos)
 }
 
 static char	*process_chunk(t_shell *shell, const char *input,
-							int *pos, int *was_quoted)
+							int *pos, int *was_quoted, char **raw)
 {
 	t_token	*chunk;
 	char	*expanded;
+	char	*raw_temp;
 
 	chunk = create_next_token(shell, input, pos);
 	if (!chunk)
 		return (NULL);
 	if (chunk->token_type == Ty_Single_Q || chunk->token_type == Ty_Double_Q)
 		*was_quoted = 1;
+	raw_temp = ft_strjoin(*raw, chunk->value);
+	free(*raw);
+	*raw = raw_temp;
 	if (chunk->token_type == Ty_WORD || chunk->token_type == Ty_Double_Q)
 		expanded = expand_str(chunk->value, shell);
 	else
@@ -105,18 +109,19 @@ t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
 	char	*result;
 	char	*expanded;
 	char	*temp;
-	t_token	*tok;
+	char	*raw;
 	int		was_quoted;
 
 	was_quoted = 0;
 	result = ft_strdup("");
-	if (!result)
+	raw = ft_strdup("");
+	if (!result || !raw)
 		malloc_exit(shell);
 	while (input[*pos] && !check_token_delimiter(input[*pos]))
 	{
-		expanded = process_chunk(shell, input, pos, &was_quoted);
+		expanded = process_chunk(shell, input, pos, &was_quoted, &raw);
 		if (!expanded)
-			return (free(result), NULL);
+			return (free(result), free(raw), NULL);
 		temp = ft_strjoin(result, expanded);
 		free(result);
 		free(expanded);
@@ -124,5 +129,5 @@ t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos)
 			malloc_exit(shell);
 		result = temp;
 	}
-	return (build_word_token(shell, result, was_quoted));
+	return (build_word_token(shell, result, raw, was_quoted));
 }

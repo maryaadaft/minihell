@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 18:11:37 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/11 18:37:57 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/20 19:29:15 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	ft_args_append(char ***args, char *new_arg)
 	*args = temp_arr;
 	return (0);
 }
-
 t_redir	*ft_parse_redir(t_token **tok)
 {
 	t_redir	*redi;
@@ -69,7 +68,10 @@ t_redir	*ft_parse_redir(t_token **tok)
 		free(redi);
 		return (NULL);
 	}
-	redi->file = ft_strdup((*tok)->value);
+	if (redi->type == Ty_HEREDOC && (*tok)->raw_value)
+		redi->file = ft_strdup((*tok)->raw_value);
+	else
+		redi->file = ft_strdup((*tok)->value);
 	if (!redi->file)
 	{
 		free(redi);

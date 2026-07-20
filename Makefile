@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGs = -Wall -Wextra -Werror -g3
+CFLAGs = -Wall -Wextra -Werror -g -fsanitize=address
 
 SRCs = main.c \
 	mylib/ft_isalpha.c \

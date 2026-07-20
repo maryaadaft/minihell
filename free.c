@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 21:35:18 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/11 16:45:18 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/20 21:28:36 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	ft_free_tokens(t_token **token_list)
 {
 	t_token *head;
 	t_token *next;
-	
+
 	if	(!token_list || !*token_list)
 		return ;
 	head = *token_list;
@@ -25,10 +25,9 @@ void	ft_free_tokens(t_token **token_list)
 	{
 		next = head->next;
 		if (head->value)
-		{
 			free(head->value);
-			head->value = NULL;
-		}
+		if (head->raw_value)
+			free(head->raw_value);
 		free(head);
 		head = next;
 	}
@@ -145,4 +144,5 @@ void free_shell(t_shell *shell)
         free_cmd(&shell->commands);
     if (shell->tokens)
         ft_free_tokens(&shell->tokens);
+	rl_clear_history();
 }

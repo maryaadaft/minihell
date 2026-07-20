@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 18:55:50 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/17 22:03:43 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/20 20:16:19 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,12 @@ void	ft_cd(t_cmd *cmd, t_shell **shell)
 	char	*path;
 
 	path = NULL;
-	if (cmd->args[2])
+	if (cmd->args[1] && cmd->args[2])
+	{
 		write(2, "minishell: cd: too many arguments\n", 34);
+		(*shell)->exit_status = 1;
+		return ;
+	}
 	path = cd_path(cmd, *shell);
 	if (!path)
 	{
