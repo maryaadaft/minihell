@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 19:36:29 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/18 18:46:43 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/21 19:01:02 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,22 +49,74 @@ void	run_builtin(t_cmd *cmd, t_shell *shell)
 		ft_export(cmd, shell);
 }
 
+// void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell)
+// {
+// 	int	old_stdin;
+// 	int	old_stdout;
+// 	int	is_exit;
+// 	int	redir_ok;
+
+// 	is_exit = (cmd->args && cmd->args[0]
+// 			&& ft_strncmp(cmd->args[0], "exit", 5) == 0);
+// 	old_stdin = dup(STDIN_FILENO);
+// 	old_stdout = dup(STDOUT_FILENO);
+// 	redir_ok = 0;
+// 	if (prep_heredocs(cmd, shell) == -1)
+// 		shell->exit_status = 130;
+// 	else if (apply_redirs(cmd->redirs) == 0)
+// 	{
+// 		redir_ok = 1;
+// 		run_builtin(cmd, shell);
+// 	}
+// 	if (is_exit)
+// 	{
+// 		close(old_stdin);
+// 		close(old_stdout);
+// 		if (redir_ok)
+// 			run_builtin(cmd, shell);
+// 		return ;
+// 	}
+// 	if (redir_ok)
+// 		run_builtin(cmd, shell);
+// 	dup2(old_stdin, STDIN_FILENO);
+// 	dup2(old_stdout, STDOUT_FILENO);
+// 	close(old_stdin);
+// 	close(old_stdout);
+// }
+
+
 void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell)
 {
 	int	old_stdin;
 	int	old_stdout;
+	int	is_exit;
+	int	redir_ok;
 
+	is_exit = (cmd->args && cmd->args[0]
+			&& ft_strncmp(cmd->args[0], "exit", 5) == 0);
 	old_stdin = dup(STDIN_FILENO);
 	old_stdout = dup(STDOUT_FILENO);
+	redir_ok = 0;
 	if (prep_heredocs(cmd, shell) == -1)
 		shell->exit_status = 130;
 	else if (apply_redirs(cmd->redirs) == 0)
+		redir_ok = 1;
+	if (is_exit)
+	{
+		close(old_stdin);
+		close(old_stdout);
+		if (redir_ok)
+			run_builtin(cmd, shell);
+		return ;
+	}
+	if (redir_ok)
 		run_builtin(cmd, shell);
 	dup2(old_stdin, STDIN_FILENO);
 	dup2(old_stdout, STDOUT_FILENO);
 	close(old_stdin);
 	close(old_stdout);
 }
+
 
 char	*get_path(t_cmd *cmd, t_shell *shell)
 {
