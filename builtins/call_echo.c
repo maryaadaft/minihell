@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_echo.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 18:56:33 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/18 15:44:10 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/21 17:55:13 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int is_n(char *s)
 {
 	int i;
 
-	if (s[i] != '-' || s[1] != 'n')
+	if (s[0] != '-' || s[1] != 'n')
 		return (0);
 	i = 1;
 	while (s[i] == 'n')
