@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 21:35:18 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/20 21:28:36 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/22 13:39:28 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,10 +139,10 @@ void	free_env(t_env **env_list)
 
 void free_shell(t_shell *shell)
 {
-    free_env(&shell->env);
-    if (shell->commands)
-        free_cmd(&shell->commands);
-    if (shell->tokens)
-        ft_free_tokens(&shell->tokens);
+	free_env(&shell->env);
+	if (shell->commands)
+		free_cmd(&shell->commands);
+	if (shell->tokens)
+		ft_free_tokens(&shell->tokens);
 	rl_clear_history();
 }
