@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/22 12:51:34 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/20 20:16:44 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/23 17:01:47 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	main(int argc, char **argv, char **envp)
 	shell.env = NULL;
 	shell.exit_status = 0;
 	env_init(&shell, envp);
+	init_shlvl(&shell);
 	while (1)
 	{
 		g_signal = 0;
@@ -47,6 +48,7 @@ int	main(int argc, char **argv, char **envp)
 		shell.tokens = tokeniser(&shell, input);
 		if (!shell.tokens)
 		{
+			shell.exit_status = 2;
 			free(input);
 			continue ;
 		}
@@ -55,6 +57,7 @@ int	main(int argc, char **argv, char **envp)
 		shell.commands = ft_parse(shell.tokens);
 		if (!shell.commands)
 		{
+			shell.exit_status = 2;
 			ft_free_tokens(&shell.tokens);
 			free(input);
 			continue ;

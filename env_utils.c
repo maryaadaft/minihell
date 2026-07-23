@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/10 18:20:34 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/18 12:51:11 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/23 16:12:02 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ int	env_len(t_shell *shell)
 void	update_env_value(t_env *node, char *value)
 {
 	if (node->value)
+	{
 		free(node->value);
+		node->value = NULL;
+	}
 	if (!value)
 		return ;
 	node->value = ft_strdup(value);

@@ -78,6 +78,7 @@ int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
 char	*ft_itoa(int n);
+int		ft_atoi(const char *str);
 
 //token fns
 t_token	*make_token(t_shell	*shell, t_type type, char *value);
@@ -128,6 +129,7 @@ t_env	*find_env(t_shell *shell, char *target);
 int		is_builtin(char *cmd_name);
 void	run_builtin(t_cmd *cmd, t_shell *shell);
 int		env_len(t_shell *shell);
+void	init_shlvl(t_shell *shell);
 
 // Builtins
 void	ft_echo(t_cmd *cmd, t_shell *shell);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 17:52:47 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/17 21:38:01 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/23 16:43:53 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ static char	*handle_dollar(char *str, int *i, t_shell *shell)
 		(*i)++;
 		return (ft_strdup("$"));
 	}
+	if (!ft_isalnum(str[*i]) && str[*i] != '_')   // <-- ADD THIS
+		return (ft_strdup("$"));                   // <-- ADD THIS
 	key = get_var(str, i);
 	if (!key)
 		return (NULL);

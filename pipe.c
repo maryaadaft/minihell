@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/21 18:14:09 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/11 20:09:11 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/23 17:03:03 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ void	pipe_child(t_cmd *cmd, int *prev_pipe, int *curr_pipe, t_shell *shell)
 	}
 	if (apply_redirs(cmd->redirs) == -1)
 		exit(1);
+	if (!cmd->args || !cmd->args[0])    // <-- ADD
+		exit(shell->exit_status);
 	if (is_builtin(cmd->args[0]))
 	{
 		run_builtin(cmd, shell);
