@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/07/23 20:16:29 by maryaada          #+#    #+#             */
+/*   Updated: 2026/07/23 20:35:17 by maryaada         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -11,12 +23,13 @@
 # include <sys/wait.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <limits.h> //the one below doesnt work for normal INT_MAX wtf linux.........
-# include <linux/limits.h> //doesnt work without "linux/" on mimzi's computer lol for PATH_MAX
+# include <limits.h>
+# include <linux/limits.h>
 
-extern int g_signal;
+extern int	g_signal;
 
-typedef enum e_type {
+typedef enum e_type
+{
 	Ty_WORD,
 	Ty_PIPE,
 	Ty_Single_Q,
@@ -27,7 +40,8 @@ typedef enum e_type {
 	Ty_APPEND,
 }	t_type;
 
-typedef struct s_token {
+typedef struct s_token
+{
 	t_type			token_type;
 	char			*value;
 	char			*raw_value;
@@ -35,32 +49,36 @@ typedef struct s_token {
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_redir {
-    t_type			type;
-    char			*file;
+typedef struct s_redir
+{
+	t_type			type;
+	char			*file;
 	int				heredoc_fd;
-	int				expand; 
-    struct s_redir	*next;
-}   t_redir;
+	int				expand;
+	struct s_redir	*next;
+}	t_redir;
 
-typedef struct s_cmd {
+typedef struct s_cmd
+{
 	char			**args;
 	t_redir			*redirs;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;
 }	t_cmd;
 
-typedef struct s_env {
-    char            *key;
-    char            *value;
-    struct s_env    *next;
-}   t_env;
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
 
-typedef	struct	s_shell {
+typedef struct s_shell
+{
 	t_token		*tokens;
 	t_cmd		*commands;
-    t_env       *env;
-    int         exit_status;
+	t_env		*env;
+	int			exit_status;
 }	t_shell;
 
 //library fns
@@ -87,19 +105,19 @@ char	*ft_read_word(t_shell	*shell, const char *input, int *pos);
 char	*ft_read_quoted(t_shell	*shell, const char *input, int *pos, char quote);
 t_token	*ft_read_redir(t_shell	*shell, const char *input, int *pos);
 t_token	*tokeniser(t_shell	*shell, const char *input);
-t_token *create_next_token(t_shell	*shell, const char *input, int *pos);
+t_token	*create_next_token(t_shell	*shell, const char *input, int *pos);
 t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos);
 t_token	*build_word_token(t_shell *shell, char *result, char *raw, int was_quoted);
 // t_token	*build_word_token(t_shell *shell, char *result, int was_quoted);
 
 //parsing fns
-t_cmd		*ft_parse(t_token *tokens);
-t_cmd		*ft_parse_cmd(t_token **tok);
+t_cmd	*ft_parse(t_token *tokens);
+t_cmd	*ft_parse_cmd(t_token **tok);
 // char		**ft_parse_args(t_token **tok);
-int			ft_args_append(char ***args, char *new_arg);
-t_redir		*ft_parse_redir(t_token **tok);
-void		ft_redir_addback(t_redir **head, t_redir *new_redir);
-void		ft_addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd);
+int		ft_args_append(char ***args, char *new_arg);
+t_redir	*ft_parse_redir(t_token **tok);
+void	ft_redir_addback(t_redir **head, t_redir *new_redir);
+void	ft_addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd);
 
 int		is_delimiter(char c);
 int		is_valid_key(char *str);
@@ -130,12 +148,13 @@ int		is_builtin(char *cmd_name);
 void	run_builtin(t_cmd *cmd, t_shell *shell);
 int		env_len(t_shell *shell);
 void	init_shlvl(t_shell *shell);
+void	child_process(t_cmd *cmd, char *valid_path, char **envp, t_shell *shell);
 
 // Builtins
 void	ft_echo(t_cmd *cmd, t_shell *shell);
 void	ft_cd(t_cmd *cmd, t_shell **shell);
 char	*get_home(t_shell *shell);
-void	update_pwds(t_shell *shell, char *cwd, int	flag_path);
+void	update_pwds(t_shell *shell, char *cwd, int flag_path);
 void	ft_pwd(t_cmd *cmd, t_shell *shell);
 int		ft_exit(t_shell *shell, t_cmd *cmds);
 void	exit_error(t_cmd *cmds, int *exit_code);
@@ -144,7 +163,7 @@ void	ft_unset(t_cmd *cmd, t_shell *shell);
 void	ft_export(t_cmd *cmd, t_shell *shell);
 void	print_export(t_shell *shell);
 t_env	*create_env_node(char *key, char *value);
-void    update_env_value(t_env *node, char *value);
+void	update_env_value(t_env *node, char *value);
 
 char	*resolve_cmd_path(t_cmd *cmd, t_shell *shell);
 
@@ -152,11 +171,11 @@ char	*resolve_cmd_path(t_cmd *cmd, t_shell *shell);
 int		apply_redirs(t_redir *redirs);
 void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell);
 // for redir only without a command "> file.txt"
-void    apply_redir_only(t_redir *redirs, t_shell *shell);
+void	apply_redir_only(t_redir *redirs, t_shell *shell);
 
 //heredoc
-int	ft_heredoc(t_redir *redir, t_shell *shell);
-int	prep_heredocs(t_cmd *cmd, t_shell *shell);
+int		ft_heredoc(t_redir *redir, t_shell *shell);
+int		prep_heredocs(t_cmd *cmd, t_shell *shell);
 
 //DELETE LATER -- FOR TESTING ONLY !!!!!!
 // void	test_print(char *input);
@@ -171,23 +190,23 @@ char	**env_to_array(t_shell *shell);
 char	*get_path(t_cmd *cmd, t_shell *shell);
 
 // Pipes
-void ft_pipe(t_cmd *cmds, t_shell *shell);
-void pipe_child(t_cmd *cmd, int *prev_pipe, int *curr_pipe, t_shell *shell);
+void	ft_pipe(t_cmd *cmds, t_shell *shell);
+void	pipe_child(t_cmd *cmd, int *prev_pipe, int *curr_pipe, t_shell *shell);
 void	execute_child(t_cmd *cmd, t_shell *shell);
 
-void ft_expand(t_token *tokens, t_shell *shell);
-char *expand_str(char *str, t_shell *shell);
-char *get_var(char *str, int *pos);
-char    *get_env_value(t_shell *shell, char *key);
-char    *ft_strjoin_free(char *s1, char *s2);
+void	ft_expand(t_token *tokens, t_shell *shell);
+char	*expand_str(char *str, t_shell *shell);
+char	*get_var(char *str, int *pos);
+char	*get_env_value(t_shell *shell, char *key);
+char	*ft_strjoin_free(char *s1, char *s2);
 
 // Signals
-void handle_sigint(int signal);
-void sig_interactive(void);
-void sig_child(void);
-void sig_heredoc(void);
-void handle_sigint_heredoc(int signal);
-void handle_sigint_child(int sig);
-int	check_sigint(void);
+void	handle_sigint(int signal);
+void	sig_interactive(void);
+void	sig_child(void);
+void	sig_heredoc(void);
+void	handle_sigint_heredoc(int signal);
+void	handle_sigint_child(int sig);
+int		check_sigint(void);
 
 #endif

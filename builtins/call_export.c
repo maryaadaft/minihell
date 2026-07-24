@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_export.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 14:04:58 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/18 15:49:59 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/23 19:29:08 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	ft_export(t_cmd *cmd, t_shell *shell)
 	i = 0;
 	while (cmd->args[++i])
 	{
-		if(export_arg(shell, cmd->args[i]))
+		if (export_arg(shell, cmd->args[i]))
 			had_error = 1;
 	}
 	shell->exit_status = had_error;

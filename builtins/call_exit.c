@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_exit.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 19:10:41 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/17 22:18:59 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/23 19:28:51 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	convert_to_int(const char *s, int *over)
 int	ft_exit(t_shell *shell, t_cmd *cmds)
 {
 	int	exit_code;
-	int overflow;
+	int	overflow;
 
 	write(2, "exit\n", 5);
 	if (cmds->args[1] && cmds->args[2])
@@ -64,7 +64,7 @@ int	ft_exit(t_shell *shell, t_cmd *cmds)
 	exit(exit_code);
 }
 
-void exit_error(t_cmd *cmds, int *exit_code)
+void	exit_error(t_cmd *cmds, int *exit_code)
 {
 	write(2, "minishell: exit: ", 17);
 	write(2, cmds->args[1], ft_strlen(cmds->args[1]));

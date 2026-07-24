@@ -6,19 +6,18 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 21:35:18 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/22 13:46:37 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/23 20:07:14 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//add free token();
 void	ft_free_tokens(t_token **token_list)
 {
-	t_token *head;
-	t_token *next;
+	t_token	*head;
+	t_token	*next;
 
-	if	(!token_list || !*token_list)
+	if (!token_list || !*token_list)
 		return ;
 	head = *token_list;
 	while (head)
@@ -34,10 +33,9 @@ void	ft_free_tokens(t_token **token_list)
 	*token_list = NULL;
 }
 
-//incase of malloc failure
 void	free_args(char **args)
 {
-	int w;
+	int	w;
 
 	if (!args)
 		return ;
@@ -53,11 +51,11 @@ void	free_args(char **args)
 	// error_message("Memory Freed and exited", 0);
 }
 
-void free_redir(t_redir **redir_list)
+void	free_redir(t_redir **redir_list)
 {
-	t_redir *head;
-	t_redir *next;
-	
+	t_redir	*head;
+	t_redir	*next;
+
 	if (!redir_list || !*redir_list)
 		return ;
 	head = *redir_list;
@@ -77,11 +75,11 @@ void free_redir(t_redir **redir_list)
 	*redir_list = NULL;
 }
 
-void free_cmd(t_cmd **cmd_list)
+void	free_cmd(t_cmd **cmd_list)
 {
-	t_cmd *head;
-	t_cmd *next;
-	
+	t_cmd	*head;
+	t_cmd	*next;
+
 	if (!cmd_list || !*cmd_list)
 		return ;
 	head = *cmd_list;
@@ -137,7 +135,7 @@ void	free_env(t_env **env_list)
 	*env_list = NULL;
 }
 
-void free_shell(t_shell *shell)
+void	free_shell(t_shell *shell)
 {
 	free_env(&shell->env);
 	if (shell->commands)

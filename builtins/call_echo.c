@@ -6,15 +6,15 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 18:56:33 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/21 17:55:13 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/23 19:27:47 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int is_n(char *s)
+static int	is_n(char *s)
 {
-	int i;
+	int	i;
 
 	if (s[0] != '-' || s[1] != 'n')
 		return (0);

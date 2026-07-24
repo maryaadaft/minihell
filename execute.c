@@ -3,23 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/05 15:53:11 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/18 17:10:47 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/23 20:04:35 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	child_process(t_cmd *cmd, char *valid_path, char **envp, t_shell *shell)
+void	child_process(t_cmd *cmd, char *valid_path, char **envp, t_shell *shell)
 {
 	signal(SIGQUIT, SIG_DFL);
 	if (apply_redirs(cmd->redirs) == -1)
 		exit(1);
 	execve(valid_path, cmd->args, envp);
 	fd_error(cmd->args[0], shell, NULL);
-	// perror("execve here is wiss");
 	free(valid_path);
 	free_args(envp);
 	exit(126);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 18:11:37 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/20 19:29:15 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/23 20:08:09 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	ft_args_append(char ***args, char *new_arg)
 	*args = temp_arr;
 	return (0);
 }
+
 t_redir	*ft_parse_redir(t_token **tok)
 {
 	t_redir	*redi;

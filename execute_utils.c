@@ -6,47 +6,25 @@
 /*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 19:36:29 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/23 16:44:58 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/23 20:05:26 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_builtin(char *cmd_name)
+static int	setup_builtin_redirs(t_cmd *cmd, t_shell *shell)
 {
-	if (ft_strncmp(cmd_name, "echo", 5) == 0)
-		return (1);
-	if (ft_strncmp(cmd_name, "cd", 3) == 0)
-		return (1);
-	if (ft_strncmp(cmd_name, "pwd", 4) == 0)
-		return (1);
-	if (ft_strncmp(cmd_name, "env", 4) == 0)
-		return (1);
-	if (ft_strncmp(cmd_name, "export", 7) == 0)
-		return (1);
-	if (ft_strncmp(cmd_name, "unset", 6) == 0)
-		return (1);
-	if (ft_strncmp(cmd_name, "exit", 5) == 0)
-		return (1);
-	return (0);
-}
-
-void	run_builtin(t_cmd *cmd, t_shell *shell)
-{
-	if (ft_strncmp(cmd->args[0], "echo", 5) == 0)
-		ft_echo(cmd, shell);
-	else if (ft_strncmp(cmd->args[0], "cd", 3) == 0)
-		ft_cd(cmd, &shell);
-	else if (ft_strncmp(cmd->args[0], "pwd", 4) == 0)
-		ft_pwd(cmd, shell);
-	else if (ft_strncmp(cmd->args[0], "exit", 5) == 0)
-		ft_exit(shell, cmd);
-	else if (ft_strncmp(cmd->args[0], "env", 4) == 0)
-		ft_env(shell);
-	else if (ft_strncmp(cmd->args[0], "unset", 6) == 0)
-		ft_unset(cmd, shell);
-	else if (ft_strncmp(cmd->args[0], "export", 7) == 0)
-		ft_export(cmd, shell);
+	if (prep_heredocs(cmd, shell) == -1)
+	{
+		shell->exit_status = 130;
+		return (0);
+	}
+	if (apply_redirs(cmd->redirs) == -1)
+	{
+		shell->exit_status = 1;
+		return (0);
+	}
+	return (1);
 }
 
 void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell)
@@ -60,13 +38,7 @@ void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell)
 			&& ft_strncmp(cmd->args[0], "exit", 5) == 0);
 	old_stdin = dup(STDIN_FILENO);
 	old_stdout = dup(STDOUT_FILENO);
-	redir_ok = 0;
-	if (prep_heredocs(cmd, shell) == -1)
-		shell->exit_status = 130;
-	else if (apply_redirs(cmd->redirs) == 0)
-		redir_ok = 1;
-	else
-		shell->exit_status = 1;
+	redir_ok = setup_builtin_redirs(cmd, shell);
 	if (is_exit)
 	{
 		close(old_stdin);
@@ -83,6 +55,39 @@ void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell)
 	close(old_stdout);
 }
 
+// void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell)
+// {
+// 	int	old_stdin;
+// 	int	old_stdout;
+// 	int	is_exit;
+// 	int	redir_ok;
+
+// 	is_exit = (cmd->args && cmd->args[0]
+// 			&& ft_strncmp(cmd->args[0], "exit", 5) == 0);
+// 	old_stdin = dup(STDIN_FILENO);
+// 	old_stdout = dup(STDOUT_FILENO);
+// 	redir_ok = 0;
+// 	if (prep_heredocs(cmd, shell) == -1)
+// 		shell->exit_status = 130;
+// 	else if (apply_redirs(cmd->redirs) == 0)
+// 		redir_ok = 1;
+// 	else
+// 		shell->exit_status = 1;
+// 	if (is_exit)
+// 	{
+// 		close(old_stdin);
+// 		close(old_stdout);
+// 		if (redir_ok)
+// 			run_builtin(cmd, shell);
+// 		return ;
+// 	}
+// 	if (redir_ok)
+// 		run_builtin(cmd, shell);
+// 	dup2(old_stdin, STDIN_FILENO);
+// 	dup2(old_stdout, STDOUT_FILENO);
+// 	close(old_stdin);
+// 	close(old_stdout);
+// }
 
 char	*get_path(t_cmd *cmd, t_shell *shell)
 {

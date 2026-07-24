@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   call_cd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 18:55:50 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/20 20:16:19 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/23 19:32:15 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*cd_path(t_cmd *cmd, t_shell *shell)
 	return (ft_strdup(home));
 }
 
-static int change_dir(char *path, t_shell *shell)
+static int	change_dir(char *path, t_shell *shell)
 {
 	char	cwd[PATH_MAX];
 
@@ -45,11 +45,53 @@ static int change_dir(char *path, t_shell *shell)
 	return (0);
 }
 
+// void	ft_cd(t_cmd *cmd, t_shell **shell)
+// {
+// 	char	*path;
+
+// 	path = NULL;
+// 	if (cmd->args[1] && cmd->args[2])
+// 	{
+// 		write(2, "minishell: cd: too many arguments\n", 34);
+// 		(*shell)->exit_status = 1;
+// 		return ;
+// 	}
+// 	path = cd_path(cmd, *shell);
+// 	if (!path)
+// 	{
+// 		if (cmd->args[1] && ft_strncmp(cmd->args[1], "-", 2) == 0)
+// 			num_err_msg("minishell: cd: OLDPWD not set");
+// 		else
+// 			num_err_msg("minishell: cd: HOME not set");
+// 		(*shell)->exit_status = 1;
+// 		return ;
+// 	}
+// 	if (change_dir(path, *shell))
+// 	{
+// 		if (!cmd->args[2])
+// 			fd_error(cmd->args[1], *shell, "cd: ");
+// 		(*shell)->exit_status = 1;
+// 		free(path);
+// 		return ;
+// 	}
+// 	free(path);
+// 	(*shell)->exit_status = 0;
+// }
+
+static int	cd_no_path(t_cmd *cmd, t_shell *shell)
+{
+	if (cmd->args[1] && ft_strncmp(cmd->args[1], "-", 2) == 0)
+		num_err_msg("minishell: cd: OLDPWD not set");
+	else
+		num_err_msg("minishell: cd: HOME not set");
+	shell->exit_status = 1;
+	return (1);
+}
+
 void	ft_cd(t_cmd *cmd, t_shell **shell)
 {
 	char	*path;
 
-	path = NULL;
 	if (cmd->args[1] && cmd->args[2])
 	{
 		write(2, "minishell: cd: too many arguments\n", 34);
@@ -57,15 +99,8 @@ void	ft_cd(t_cmd *cmd, t_shell **shell)
 		return ;
 	}
 	path = cd_path(cmd, *shell);
-	if (!path)
-	{
-		if (cmd->args[1] && ft_strncmp(cmd->args[1], "-", 2) == 0)
-			num_err_msg("minishell: cd: OLDPWD not set");
-		else
-			num_err_msg("minishell: cd: HOME not set");
-		(*shell)->exit_status = 1;
+	if (!path && cd_no_path(cmd, *shell))
 		return ;
-	}
 	if (change_dir(path, *shell))
 	{
 		if (!cmd->args[2])
@@ -76,43 +111,4 @@ void	ft_cd(t_cmd *cmd, t_shell **shell)
 	}
 	free(path);
 	(*shell)->exit_status = 0;
-}
-
-char	*get_home(t_shell *shell)
-{
-	t_env	*head_env;
-	char	*path;
-
-	head_env = shell->env;
-	path = NULL;
-	while (head_env)
-	{
-		if (ft_strncmp(head_env->key, "HOME", 5) == 0)
-		{
-			path = head_env->value;
-		}
-		head_env = head_env->next;
-	}
-	return (path);
-}
-
-void	update_pwds(t_shell *shell, char *cwd, int flag_path)
-{
-	t_env	*head_env;
-
-	head_env = shell->env;
-	while (head_env)
-	{
-		if (flag_path == 0 && ft_strncmp(head_env->key, "OLDPWD", 7) == 0)
-		{
-			free(head_env->value);
-			head_env->value = ft_strdup(cwd);
-		}
-		else if (flag_path == 1 && ft_strncmp(head_env->key, "PWD", 4) == 0)
-		{
-			free(head_env->value);
-			head_env->value = ft_strdup(cwd);
-		}
-		head_env = head_env->next;
-	}
 }
