@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 20:16:29 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/24 17:10:11 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/24 17:30:28 by maryaada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,12 @@ typedef struct s_shell
 	t_env		*env;
 	int			exit_status;
 }	t_shell;
+
+typedef struct s_word_state
+{
+	char	*raw;
+	int		*was_quoted;
+}	t_word_state;
 
 //library fns
 void	*ft_calloc(size_t count, size_t size);

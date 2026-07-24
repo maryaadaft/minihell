@@ -1,1 +1,4 @@
 valgrind.log
+test_utils.c
+Z_old_main.c
+valgrind.sh

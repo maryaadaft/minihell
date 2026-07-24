@@ -18,7 +18,7 @@ SRCs = main.c \
 	mylib/ft_isalnum.c \
 	mylib/is_valid_number.c \
 	mylib/ft_atoi.c \
-	token.c token_utils.c error.c test_utils.c parsing.c parsing_utils.c parsing_check.c free.c redirs.c env.c execute.c execute_utils.c read_token.c expansion.c expansion_utils.c pipe.c heredoc.c signals.c signal_heredoc.c env_utils.c shell_lvl.c run_builtin.c \
+	token.c token_utils.c error.c parsing.c parsing_utils.c parsing_check.c free.c redirs.c env.c execute.c execute_utils.c read_token.c expansion.c expansion_utils.c pipe.c heredoc.c signals.c signal_heredoc.c env_utils.c shell_lvl.c run_builtin.c \
 	builtins/call_cd.c \
 	builtins/call_cd_utils.c \
 	builtins/call_echo.c \
