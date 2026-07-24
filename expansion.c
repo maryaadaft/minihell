@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 17:52:47 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/23 16:43:53 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/24 16:54:53 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,20 +37,20 @@ static char	*handle_dollar(char *str, int *i, t_shell *shell)
 	char	*piece;
 
 	(*i)++;
-	if (str[*i] == '\0')// $ only
+	if (str[*i] == '\0')
 		return (ft_strdup("$"));
-	if (str[*i] == '?')// $?
+	if (str[*i] == '?')
 	{
 		(*i)++;
 		return (ft_itoa(shell->exit_status));
 	}
-	if (str[*i] == '$')//$$ -> PID
+	if (str[*i] == '$')
 	{
 		(*i)++;
 		return (ft_strdup("$"));
 	}
-	if (!ft_isalnum(str[*i]) && str[*i] != '_')   // <-- ADD THIS
-		return (ft_strdup("$"));                   // <-- ADD THIS
+	if (!ft_isalnum(str[*i]) && str[*i] != '_')
+		return (ft_strdup("$"));
 	key = get_var(str, i);
 	if (!key)
 		return (NULL);

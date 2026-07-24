@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_lvl.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 16:16:57 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/23 16:19:45 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/24 17:00:50 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,14 @@ void	init_shlvl(t_shell *shell)
 			addback_env(&shell->env, node);
 	}
 	free(new_value);
+}
+
+void	free_shell(t_shell *shell)
+{
+	free_env(&shell->env);
+	if (shell->commands)
+		free_cmd(&shell->commands);
+	if (shell->tokens)
+		ft_free_tokens(&shell->tokens);
+	rl_clear_history();
 }

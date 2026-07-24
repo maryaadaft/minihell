@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/10 18:20:34 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/23 16:12:02 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/24 17:02:27 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,31 @@ void	update_env_value(t_env *node, char *value)
 	if (!value)
 		return ;
 	node->value = ft_strdup(value);
+}
+
+void	free_env(t_env **env_list)
+{
+	t_env	*head;
+	t_env	*next;
+
+	if (!env_list || !*env_list)
+		return ;
+	head = *env_list;
+	while (head)
+	{
+		next = head->next;
+		if (head->key)
+		{
+			free(head->key);
+			head->key = NULL;
+		}
+		if (head->value)
+		{
+			free(head->value);
+			head->value = NULL;
+		}
+		free(head);
+		head = next;
+	}
+	*env_list = NULL;
 }

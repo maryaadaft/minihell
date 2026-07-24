@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/01 21:35:18 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/23 20:07:14 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/24 17:01:31 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	free_args(char **args)
 	}
 	free(args);
 	args = NULL;
-	// error_message("Memory Freed and exited", 0);
 }
 
 void	free_redir(t_redir **redir_list)
@@ -106,41 +105,4 @@ void	free_env_node(t_env *node)
 	if (node->value)
 		free(node->value);
 	free(node);
-}
-
-void	free_env(t_env **env_list)
-{
-	t_env	*head;
-	t_env	*next;
-
-	if (!env_list || !*env_list)
-		return ;
-	head = *env_list;
-	while (head)
-	{
-		next = head->next;
-		if (head->key)
-		{
-			free(head->key);
-			head->key = NULL;
-		}
-		if (head->value)
-		{
-			free(head->value);
-			head->value = NULL;
-		}
-		free(head);
-		head = next;
-	}
-	*env_list = NULL;
-}
-
-void	free_shell(t_shell *shell)
-{
-	free_env(&shell->env);
-	if (shell->commands)
-		free_cmd(&shell->commands);
-	if (shell->tokens)
-		ft_free_tokens(&shell->tokens);
-	rl_clear_history();
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 20:16:29 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/23 20:35:17 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/24 16:46:55 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@
 # include <linux/limits.h>
 
 extern int	g_signal;
+
+# define ERR_PIPE	"minishell: syntax error near unexpected token `|'"
+# define ERR_DPIPE	"minishell: syntax error near unexpected token `||'"
+# define ERR_REDIR	"minishell: syntax error near unexpected token"
 
 typedef enum e_type
 {
@@ -102,12 +106,14 @@ int		ft_atoi(const char *str);
 t_token	*make_token(t_shell	*shell, t_type type, char *value);
 void	addback_token(t_token **head, t_token *new_token);
 char	*ft_read_word(t_shell	*shell, const char *input, int *pos);
-char	*ft_read_quoted(t_shell	*shell, const char *input, int *pos, char quote);
+char	*ft_read_quoted(t_shell	*shell,
+			const char *input, int *pos, char quote);
 t_token	*ft_read_redir(t_shell	*shell, const char *input, int *pos);
 t_token	*tokeniser(t_shell	*shell, const char *input);
 t_token	*create_next_token(t_shell	*shell, const char *input, int *pos);
 t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos);
-t_token	*build_word_token(t_shell *shell, char *result, char *raw, int was_quoted);
+t_token	*build_word_token(t_shell *shell,
+			char *result, char *raw, int was_quoted);
 // t_token	*build_word_token(t_shell *shell, char *result, int was_quoted);
 
 //parsing fns
@@ -122,7 +128,6 @@ void	ft_addback_cmd(t_cmd **cmd_head, t_cmd *next_cmd);
 int		is_delimiter(char c);
 int		is_valid_key(char *str);
 int		check_token_delimiter(char c);
-void	error_message(char *str, int exit_code);
 void	*null_err_msg(char *str);
 int		num_err_msg(char *str);
 void	malloc_exit(t_shell *shell);
@@ -148,7 +153,8 @@ int		is_builtin(char *cmd_name);
 void	run_builtin(t_cmd *cmd, t_shell *shell);
 int		env_len(t_shell *shell);
 void	init_shlvl(t_shell *shell);
-void	child_process(t_cmd *cmd, char *valid_path, char **envp, t_shell *shell);
+void	child_process(t_cmd *cmd,
+			char *valid_path, char **envp, t_shell *shell);
 
 // Builtins
 void	ft_echo(t_cmd *cmd, t_shell *shell);
