@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/11 18:11:37 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/23 20:08:09 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/24 17:10:17 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,7 @@ t_redir	*ft_parse_redir(t_token **tok)
 		free(redi);
 		return (NULL);
 	}
-	if (redi->type == Ty_HEREDOC && (*tok)->raw_value)
-		redi->file = ft_strdup((*tok)->raw_value);
-	else
-		redi->file = ft_strdup((*tok)->value);
+	redi->file = dup_redir_file(*tok, redi->type);
 	if (!redi->file)
 	{
 		free(redi);

@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/23 17:52:47 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/24 16:54:53 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/24 17:13:33 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,12 @@ static char	*handle_dollar(char *str, int *i, t_shell *shell)
 
 static char	*handle_literal(char *str, int *i)
 {
-	int start;
+	int	start;
 
 	start = *i;
-	while (str[*i] && ( str[*i] != '$'))
+	while (str[*i] && (str[*i] != '$'))
 		(*i)++;
-	return(ft_substr(str, start, (*i - start)));
+	return (ft_substr(str, start, (*i - start)));
 }
 
 static int	append_piece(char **final_str, char *piece)
@@ -102,36 +102,5 @@ char	*expand_str(char *str, t_shell *shell)
 		if (append_piece(&final_str, piece) == -1)
 			return (NULL);
 	}
-	return (final_str);
-}
-
-char	*get_var(char *str, int *pos)
-{
-	int start;
-
-	start = *pos;
-	while (str[*pos] && (ft_isalnum(str[*pos]) || str[*pos] == '_'))
-		(*pos)++;
-	return (ft_substr(str, start, (*pos - start)));
-}
-
-char	*get_env_value(t_shell *shell, char *key)
-{
-	t_env *node;
-
-	node = find_env(shell, key);
-	if (node && node->value)
-		return (ft_strdup(node->value));
-	return(ft_strdup(""));
-}
-
-char	*ft_strjoin_free(char *s1, char *s2)
-{
-	char *final_str;
-
-	final_str = ft_strjoin(s1, s2);
-	free(s1);
-	if (!final_str)
-		free(s2);
 	return (final_str);
 }

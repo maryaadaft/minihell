@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/05/25 15:29:03 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/24 16:37:27 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/24 17:10:26 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,11 @@ int	check_syntax(t_token *tokenaya)
 		tokenaya = tokenaya->next;
 	}
 	return (0);
+}
+
+char	*dup_redir_file(t_token *tok, int type)
+{
+	if (type == Ty_HEREDOC && tok->raw_value)
+		return (ft_strdup(tok->raw_value));
+	return (ft_strdup(tok->value));
 }

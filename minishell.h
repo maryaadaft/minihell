@@ -6,7 +6,7 @@
 /*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 20:16:29 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/24 16:46:55 by walneama         ###   ########.fr       */
+/*   Updated: 2026/07/24 17:10:11 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ int		apply_redirs(t_redir *redirs);
 void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell);
 // for redir only without a command "> file.txt"
 void	apply_redir_only(t_redir *redirs, t_shell *shell);
+char	*dup_redir_file(t_token *tok, int type);
 
 //heredoc
 int		ft_heredoc(t_redir *redir, t_shell *shell);
