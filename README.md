@@ -9,23 +9,12 @@ A shell is ...
 ## Project Workflow
 Every command entered into Minishell passes through the following stages:
 
-```
-User Input 
-     │
-     ▼
-Tokenizer (Lexer)
-     │
-     ▼
-Syntax Validation
-     │
-     ▼
-Parser
-     │
-     ▼
-Built-ins / Execution
-     │
-     ▼
-Operating System
+```mermaid
+flowchart LR
+    A[User Input] --> B[Tokenizer / Lexer]
+    B --> C[Syntax Validation]
+    C --> D[Parser]
+    D --> E[Built-ins / Execution]
 ```
 
 ## Lexer (Tokenization)
@@ -38,3 +27,22 @@ The lexer is responsible for transforming the raw input string into a sequence o
 - output redirections (>)
 - append redirections (>>)
 - heredocs (<<)
+
+
+
+## Instructions
+
+```text
+┌──────────────────────────────────────────────┐
+│ ●  ●  ●             Terminal                 │
+├──────────────────────────────────────────────┤
+│ maryaada@lab:~/minishell$ make               │
+│ Compiling...                                 │
+│ ....                                         │
+│                                              │
+│ maryaada@lab:~/minishell$ ./minishell        │
+│ minishell$ pwd                               │
+│ /home/maryaada/minishell                     │
+│ minishell$                                   │
+└──────────────────────────────────────────────┘
+```
