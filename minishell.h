@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/07/23 20:16:29 by maryaada          #+#    #+#             */
-/*   Updated: 2026/07/24 17:30:28 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/27 14:41:25 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,10 @@ t_token	*create_next_token(t_shell	*shell, const char *input, int *pos);
 t_token	*ft_read_word_token(t_shell *shell, const char *input, int *pos);
 t_token	*build_word_token(t_shell *shell,
 			char *result, char *raw, int was_quoted);
-// t_token	*build_word_token(t_shell *shell, char *result, int was_quoted);
 
 //parsing fns
 t_cmd	*ft_parse(t_token *tokens);
 t_cmd	*ft_parse_cmd(t_token **tok);
-// char		**ft_parse_args(t_token **tok);
 int		ft_args_append(char ***args, char *new_arg);
 t_redir	*ft_parse_redir(t_token **tok);
 void	ft_redir_addback(t_redir **head, t_redir *new_redir);
@@ -176,13 +174,11 @@ void	ft_export(t_cmd *cmd, t_shell *shell);
 void	print_export(t_shell *shell);
 t_env	*create_env_node(char *key, char *value);
 void	update_env_value(t_env *node, char *value);
-
 char	*resolve_cmd_path(t_cmd *cmd, t_shell *shell);
 
 // Redirs
 int		apply_redirs(t_redir *redirs);
 void	run_builtin_with_redir(t_cmd *cmd, t_shell *shell);
-// for redir only without a command "> file.txt"
 void	apply_redir_only(t_redir *redirs, t_shell *shell);
 char	*dup_redir_file(t_token *tok, int type);
 
@@ -190,14 +186,6 @@ char	*dup_redir_file(t_token *tok, int type);
 int		ft_heredoc(t_redir *redir, t_shell *shell);
 int		prep_heredocs(t_cmd *cmd, t_shell *shell);
 
-//DELETE LATER -- FOR TESTING ONLY !!!!!!
-// void	test_print(char *input);
-void	print_tokens(t_token *tok);
-void	print_redirs(t_redir *redir);
-void	print_cmds(t_cmd *cmd);
-void	print_env(t_env *env);
-
-// NEW CAT	
 void	ft_execute(t_cmd *cmd, t_shell *shell);
 char	**env_to_array(t_shell *shell);
 char	*get_path(t_cmd *cmd, t_shell *shell);
