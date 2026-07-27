@@ -9,7 +9,7 @@ Minishell is a 42 project written in C where it's a simple and "mini" recreation
 
 A shell is a program that acts as the middleman between the user and the operating system's kernel. Rather than interacting with the system directly, the user types commands into the shell, which interprets them and asks the kernel to carry them out, whether that's running a program, moving files around, or managing processes. Bash (Bourne Again Shell) is one of the most widely used shells on Linux and Unix systems, and it's the one Minishell takes its behaviour from.
 
-## Project Workflow
+### Project Workflow
 Every command entered into Minishell passes through the following stages:
 
 ```mermaid
@@ -19,6 +19,7 @@ flowchart LR
     C --> D[Parser]
     D --> E[Built-ins / Execution]
 ```
+
 - User Input: upon running the minishell program, the user is expected to write out instructions as commands as they see fit to their need. This is seen as a single string and not separate commands and files.
 
 - Tokeniser/Lexer: Here our program begins to splice through the string weaving in between white spaces to identify every non-white space character as a separate split string i.e Tokens, ready to be validated as commands or errors.
@@ -31,7 +32,7 @@ flowchart LR
 
 - Signal Handling: Minishell also replicates Bash's behaviour when it comes to signals. Pressing `ctrl-C` interrupts the current line and starts a fresh prompt, `ctrl-D` exits the shell when the input line is empty, and `ctrl-\` is ignored in interactive mode just as it is in Bash. These signals are handled differently depending on whether the shell is idle at the prompt, waiting on a child process, or reading a heredoc, so each state has its own signal behaviour to stay consistent with how Bash would respond.
 
-## Lexer (Tokenization)
+### Lexer (Tokenization)
 
 The lexer is responsible for transforming the raw input string into a sequence of tokens. Instead of processing the entire command as plain text, the lexer identifies meaningful elements such as:
 
@@ -109,7 +110,7 @@ echo $PATH | tr ':' '\n'
 ls -l | sort | head -5
 ```
 
-## Your minishell should look like this
+### Your minishell should look like this
 
 ```text
 ┌──────────────────────────────────────────────┐
@@ -125,3 +126,30 @@ ls -l | sort | head -5
 │ minishell$                                   │
 └──────────────────────────────────────────────┘
 ```
+
+## Resources
+
+### Main Bash Functionality
+- Bash in the terminal!
+    - comparing command outputs with our minishell.
+    - matching exit statuses and overall functionality.
+- Other 42 students <3
+- [man bash](https://man7.org/linux/man-pages/man1/bash.1.html)
+
+### Functions explained:
+- [Waitpid](https://www.ibm.com/docs/en/zvm/7.3.0?topic=descriptions-waitpid-wait-specific-child-process-end)
+- [fork()](https://www.geeksforgeeks.org/c/fork-system-call/)
+- [access()](https://pubs.opengroup.org/onlinepubs/009695299/functions/access.html)
+- [open()](https://www.ibm.com/docs/en/zos/3.1.0?topic=functions-open-open-file)
+- [pipe()](https://www.geeksforgeeks.org/c/pipe-system-call/)
+- [ **[Youtube]** Communicating between processes (using pipes) in C ](https://www.youtube.com/watch?v=Mqb2dVRe0uo)
+- [sigaction](https://pubs.opengroup.org/onlinepubs/007904875/functions/sigaction.html)
+- [Readline Library Fns Explained](https://42-cursus.gitbook.io/guide/3-rank-03/minishell/functions)
+- [perror()](https://www.ibm.com/docs/en/i/7.5.0?topic=functions-perror-print-error-message)
+- [chdir()](https://www.geeksforgeeks.org/linux-unix/chdir-in-c-language-with-examples/)
+- [getcwd()](https://man7.org/linux/man-pages/man3/getcwd.3.html)
+
+### AI Resources and How they were used
+Asked AI to create a roadmap to better understand and flow thorugh the project scope.
+- Mostly Claude to fix/split functions longer than 25 lines while maintaining functionality
+- Claude / Chatgpt for test commands and their outputs (also compared with Bash)

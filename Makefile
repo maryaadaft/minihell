@@ -1,6 +1,6 @@
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g3 # -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror
 
 SRCs = main.c \
 	mylib/ft_isalpha.c \
@@ -18,7 +18,7 @@ SRCs = main.c \
 	mylib/ft_isalnum.c \
 	mylib/is_valid_number.c \
 	mylib/ft_atoi.c \
-	token.c token_utils.c error.c parsing.c parsing_utils.c parsing_check.c free.c redirs.c env.c execute.c execute_utils.c read_token.c expansion.c expansion_utils.c pipe.c heredoc.c signals.c signal_heredoc.c env_utils.c shell_lvl.c run_builtin.c \
+	\
 	builtins/call_cd.c \
 	builtins/call_cd_utils.c \
 	builtins/call_echo.c \
@@ -27,18 +27,25 @@ SRCs = main.c \
 	builtins/call_env.c \
 	builtins/call_unset.c \
 	builtins/call_export.c \
-	builtins/call_export_utils.c
+	builtins/call_export_utils.c \
+	\
+	token.c token_utils.c read_token.c\
+	error.c free.c \
+	parsing.c parsing_utils.c parsing_check.c \
+	redirs.c heredoc.c \
+	signals.c signal_heredoc.c \
+	expansion.c expansion_utils.c \
+	execute.c execute_utils.c run_builtin.c\
+	env.c env_utils.c \
+	pipe.c shell_lvl.c \
 
 OBJs = $(SRCs:.c=.o)
-
-# READLINE = -lreadline
 
 Name = minishell
 
 all : $(Name)
 
 $(Name) : $(OBJs)
-# 	@echo "\n\n\n$(CFLAGs)\n\n\n"
 	$(CC) $(CFLAGS) -o $(Name) $(OBJs) -lreadline
 
 clean :
