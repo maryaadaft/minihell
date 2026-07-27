@@ -20,10 +20,15 @@ flowchart LR
     D --> E[Built-ins / Execution]
 ```
 - User Input: upon running the minishell program, the user is expected to write out instructions as commands as they see fit to their need. This is seen as a single string and not separate commands and files.
+
 - Tokeniser/Lexer: Here our program begins to splice through the string weaving in between white spaces to identify every non-white space character as a separate split string i.e Tokens, ready to be validated as commands or errors.
+
 - Syntax Validation: Here is where the tokens are then further split into commands, files, pipes, redirections each within their own struct in the code. As the raw string tokens are validated they are categorised with enums of their types.
+
 - Parser: The parser's job is to take each saved token and their types and send it to the correct function that will carry out the main job of the shell i.e execution of the command.
+
 - Builtins and Execution: The main job of the minishell, this is where the parsed commands are finally carried out. Builtins such as `cd`, `echo`, `pwd`, `export`, `unset`, `env`, and `exit` are handled directly within the program itself, while any other command is searched for in the system's PATH and executed as an external process using `execve`. Pipes and redirections are set up beforehand so that input and output are correctly routed between commands, just as they would be in Bash.
+
 - Signal Handling: Minishell also replicates Bash's behaviour when it comes to signals. Pressing `ctrl-C` interrupts the current line and starts a fresh prompt, `ctrl-D` exits the shell when the input line is empty, and `ctrl-\` is ignored in interactive mode just as it is in Bash. These signals are handled differently depending on whether the shell is idle at the prompt, waiting on a child process, or reading a heredoc, so each state has its own signal behaviour to stay consistent with how Bash would respond.
 
 ## Lexer (Tokenization)
@@ -56,7 +61,55 @@ Great! Now you're inside of our minishell!
 
 Follow the evaluation sheet and run commands as instructed or below are some examples of commands to run that were implemented by us according to the project rubric.
 
-Your minishell should look like this
+### Basic Commands
+```bash
+echo "Hello World"
+pwd
+ls -l
+```
+
+### Builtins
+```bash
+cd /tmp
+cd ..
+export MY_VAR="hello"
+env
+unset MY_VAR
+exit
+```
+
+### Pipes
+```bash
+ls -l | grep minishell
+cat file.txt | wc -l
+echo "hello" | tr a-z A-Z | rev
+```
+
+### Redirections
+```bash
+echo "hello" > output.txt
+cat < output.txt
+echo "world" >> output.txt
+cat << EOF
+this is a heredoc
+EOF
+```
+
+### Variable Expansion
+```bash
+echo $HOME
+echo "User is $USER"
+echo $?
+```
+
+### Combined Examples
+```bash
+cat file.txt | grep "hello" > result.txt
+echo $PATH | tr ':' '\n'
+ls -l | sort | head -5
+```
+
+## Your minishell should look like this
 
 ```text
 ┌──────────────────────────────────────────────┐
