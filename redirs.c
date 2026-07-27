@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maryaada <maryaada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: walneama <walneama@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/15 13:45:32 by walneama          #+#    #+#             */
-/*   Updated: 2026/07/16 18:16:28 by maryaada         ###   ########.fr       */
+/*   Updated: 2026/07/27 13:28:49 by walneama         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ int	apply_redirs(t_redir *redirs)
 		}
 		fd = open_redir_file(redirs);
 		if (fd < 0)
-			return (redir_error(redirs->file), -1);
+		{
+			redir_error(redirs->file);
+			return (-1);
+		}
 		if (redirs->type == Ty_RE_OUT || redirs->type == Ty_APPEND)
 			dup2(fd, STDOUT_FILENO);
 		else if (redirs->type == Ty_RE_IN)
